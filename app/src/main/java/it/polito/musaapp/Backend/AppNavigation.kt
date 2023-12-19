@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import it.polito.musaapp.Frontend.FormStart
 import it.polito.musaapp.Frontend.HelpPage
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
@@ -87,7 +88,7 @@ fun AppNavigation() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screens.HelpPage.name,
+            startDestination = Screens.FormStart.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             this.composable(route = Screens.HelpPage.name) {
@@ -107,6 +108,11 @@ fun AppNavigation() {
             {
                 //greetings(auth, navController)
                 TaskPage(navController = navController)
+            }
+            composable(route = Screens.FormStart.name)
+            {
+                //greetings(auth, navController)
+                FormStart(navController = navController)
             }
         }
     }
