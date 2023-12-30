@@ -1,6 +1,7 @@
 package it.polito.musaapp.Backend
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -34,11 +35,12 @@ import it.polito.musaapp.Screens
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigation() {
+fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
 
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
 
     Scaffold(
         bottomBar = {
@@ -92,7 +94,7 @@ fun AppNavigation() {
             modifier = Modifier.padding(paddingValues)
         ) {
             this.composable(route = Screens.HelpPage.name) {
-                HelpPage(navController)
+                HelpPage(navController, vm, applicationContext)
             }
             composable(route = Screens.ProjectPage.name)
             {
