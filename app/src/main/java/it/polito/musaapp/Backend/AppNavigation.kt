@@ -2,6 +2,7 @@ package it.polito.musaapp.Backend
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,6 +26,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Frontend.FormStart
 import it.polito.musaapp.Frontend.HelpPage
 import it.polito.musaapp.Frontend.ProfilePage
@@ -40,6 +43,20 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    var startingPage: String=Screens.FormStart.name
+
+    val myRef = Firebase.database.getReference("UtenteGiaRegistrato");
+    myRef.get().addOnSuccessListener {
+        Log.d("FORM", "valori ${it.value}");
+        if(it.value==true){
+          startingPage=Screens.HelpPage.name
+        }
+        else{
+            startingPage=Screens.FormStart.name
+        }
+    }.addOnFailureListener {
+        Log.d("FORM", "Error", it);
+    }
 
 
     Scaffold(
@@ -87,10 +104,12 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                     }
                 }
         }
-    ) { paddingValues ->
+    ) {
+
+        paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screens.FormStart.name,
+            startDestination = startingPage,
             modifier = Modifier.padding(paddingValues)
         ) {
             this.composable(route = Screens.HelpPage.name) {
