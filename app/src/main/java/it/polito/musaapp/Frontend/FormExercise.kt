@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.Screens
 
 @Composable
@@ -88,6 +89,7 @@ fun FormExercise(navController: NavController){
 
             Button(
                 onClick = {
+                    //RefreshVariablesTask()
                     navController.navigate(Screens.TaskPage.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true

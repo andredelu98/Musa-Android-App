@@ -80,7 +80,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
 
 }
 
-@Composable
+/*@Composable
 fun PopUp(vm: MusaViewModel, applicationContext: Context){
 
    // val value by vm.popUpHelp.
@@ -131,3 +131,4 @@ fun PopUp(vm: MusaViewModel, applicationContext: Context){
         }
     }
 }
+*/

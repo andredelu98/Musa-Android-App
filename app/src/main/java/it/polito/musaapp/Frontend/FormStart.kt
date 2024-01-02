@@ -43,6 +43,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Screens
 import kotlinx.coroutines.selects.select
 import java.util.Locale.Category
@@ -50,7 +51,7 @@ import java.util.Locale.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormStart(navController: NavController){
+fun FormStart(navController: NavController, vm: MusaViewModel){
     var filledName by remember {
         mutableStateOf("")
     }
@@ -58,9 +59,9 @@ fun FormStart(navController: NavController){
         mutableStateOf("")
     }
 
-    Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
-    Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
-    Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
+   // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
+   // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
+   // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
     Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
     Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
     Column(
@@ -113,7 +114,7 @@ fun FormStart(navController: NavController){
 
         Spacer(modifier = Modifier.height(8.dp))
         Text("Categoria")
-        CategoryDropdown()
+        CategoryDropdown(vm)
         Spacer(modifier = Modifier.height(8.dp))
 
         Text("Perchè lo fai?")
@@ -121,7 +122,7 @@ fun FormStart(navController: NavController){
         Spacer(modifier = Modifier.height(8.dp))
 
         Text("A che livello artistico ti senti?")
-        LevelDropdown()
+        LevelDropdown(vm)
         Spacer(modifier = Modifier.height(8.dp))
 
 
@@ -145,7 +146,7 @@ fun FormStart(navController: NavController){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDropdown(){
+fun CategoryDropdown(vm:MusaViewModel){
     val context = LocalContext.current
     val category = arrayOf("Disegno", "Musica")
     var expanded by remember { mutableStateOf(false) }
@@ -180,6 +181,7 @@ fun CategoryDropdown(){
                         onClick = {
                             selectedText = item
                             Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
+                            vm.setCategory(selectedText)
                             expanded = false
                             Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
@@ -191,7 +193,7 @@ fun CategoryDropdown(){
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LevelDropdown(){
+fun LevelDropdown(vm: MusaViewModel){
     val context = LocalContext.current
     val levels = arrayOf("Principiante", "Intermedio", "Esperto")
     var expanded by remember { mutableStateOf(false) }
@@ -228,6 +230,7 @@ fun LevelDropdown(){
                             Firebase.database.getReference("ModuloStart").child("Livello").setValue(
                                 selectedText
                             );
+                            vm.setLevel(selectedText)
                             expanded = false
                             Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
