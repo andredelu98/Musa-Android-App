@@ -5,5 +5,6 @@ enum class Screens {
     TaskPage,
     ProjectPage,
     ProfilePage,
-    FormStart
+    FormStart,
+    FormExercise
 }

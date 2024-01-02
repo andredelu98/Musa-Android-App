@@ -1,5 +1,6 @@
 package it.polito.musaapp.Frontend
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
@@ -36,22 +39,15 @@ import java.util.Vector
 
 
 @Composable
-fun HelpPage(
-    navController: NavController,
-    musaViewModel: MusaViewModel,
-    applicationContext: Context
-){
+fun HelpPage(navController: NavController, musaViewModel: MusaViewModel,
+             applicationContext: Context){
     //Text("HelpPage")
-
-    PageContent(musaViewModel)
-    PopUp(musaViewModel, applicationContext)
-
-    Log.d("POPUP", "${musaViewModel.popUpHelp.value}")
-    musaViewModel.unsetPopUpHelp()
+    PageContent(musaViewModel, navController)
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun PageContent(musaViewModel: MusaViewModel){
+fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,31 +55,37 @@ fun PageContent(musaViewModel: MusaViewModel){
     ){
         Button(
             onClick = {
-                //POPUP
-                Log.d("POPUP", "${musaViewModel.popUpHelp.value}")
-                musaViewModel.setPopUpHelp()
-                Log.d("POPUP", "${musaViewModel.popUpHelp.value}")
+                navController.navigate(Screens.FormExercise.name) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }
+
         ){
             Text(
                 text= "Aiuto"
-                //AGGIUNGERE SOTTOLINEATURA
             )
         }
 
         Text(
             text="Oppure inserisci un tuo progetto personale",
+            //aggiungere sottolineato
             modifier = Modifier.clickable { /*NAVIGARE VERSO PROGETTI*/},
         )
     }
+
+
 }
 
 @Composable
 fun PopUp(vm: MusaViewModel, applicationContext: Context){
 
    // val value by vm.popUpHelp.
-    //if(value == true)
-   // {
+   if(vm.popUpHelp.value == true)
+   {
 
         Box(
             modifier= Modifier
@@ -127,121 +129,5 @@ fun PopUp(vm: MusaViewModel, applicationContext: Context){
                 }
             }
         }
-}
-
-@Composable
-fun SelettoreCountGiorni(){
-    var count by remember {
-        mutableIntStateOf(0)
     }
-   /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
-    myRef.get().addOnSuccessListener {
-        Log.d("FORM", "valori ${it.value}");
-        count=it.value.toString().toInt();
-    }.addOnFailureListener {
-        Log.d("FORM", "Error", it);
-    }*/
-
-    Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
-    Row(){
-
-        Button(
-            onClick = {
-                if(count>0){
-                    count--;
-                }
-            }
-        ){
-            Text("-")
-        }
-
-        Text("$count")
-
-        Button(
-            onClick = {
-                if(count<7){
-                    count++;
-                }
-            }
-        ){
-            Text("+")
-        }
-    }
-}
-
-@Composable
-fun SelettoreCountSettimane(){
-    var count by remember {
-        mutableIntStateOf(0)
-    }
-    /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
-     myRef.get().addOnSuccessListener {
-         Log.d("FORM", "valori ${it.value}");
-         count=it.value.toString().toInt();
-     }.addOnFailureListener {
-         Log.d("FORM", "Error", it);
-     }*/
-
-    Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue("$count");
-    Row(){
-
-        Button(
-            onClick = {
-                if(count>0){
-                    count--;
-                }
-            }
-        ){
-            Text("-")
-        }
-
-        Text("$count")
-
-        Button(
-            onClick = {
-                count++;
-            }
-        ){
-            Text("+")
-        }
-    }
-}
-
-@Composable
-fun SelettoreGiorni(){
-    val selected = remember {
-        mutableStateListOf<Boolean>()
-    }
-    val days : Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
-    for(i in 0..6)
-        selected.add(false)
-
-    Row(
-        modifier = Modifier.fillMaxWidth()
-
-    ){
-        for(i in 0..6){
-            var isCardClicked by remember { mutableStateOf(false) }
-            Card(
-                modifier=Modifier
-                    .clickable {
-                        isCardClicked=!isCardClicked
-                        if(isCardClicked){
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(days[i]).setValue(true);
-                        }
-                        else{
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(days[i]).setValue(false);
-                        }
-                    }
-                    .background(if (isCardClicked) Color.Gray else Color.White)
-                    .weight(1f),
-            ){
-                Text(days[i])
-            }
-        }
-    }
-
-
 }

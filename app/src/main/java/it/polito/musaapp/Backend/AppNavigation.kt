@@ -28,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Frontend.FormExercise
 import it.polito.musaapp.Frontend.FormStart
 import it.polito.musaapp.Frontend.HelpPage
 import it.polito.musaapp.Frontend.ProfilePage
@@ -134,6 +135,11 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             {
                 //greetings(auth, navController)
                 FormStart(navController = navController)
+            }
+            composable(route = Screens.FormExercise.name)
+            {
+                //greetings(auth, navController)
+                FormExercise(navController = navController)
             }
         }
     }
