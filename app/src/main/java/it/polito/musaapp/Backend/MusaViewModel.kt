@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 
 class MusaViewModel : ViewModel() {
 
+    //VARIABILI PROFILO DELLA PERSONA
     private var _category = MutableLiveData<String>("")
     var category: LiveData<String> = _category
     fun setCategory(cat :String){
@@ -24,6 +25,25 @@ class MusaViewModel : ViewModel() {
         _level.value=lev
     }
 
+    private var _name= MutableLiveData<String>("")
+    var name: LiveData<String> = _name
+    fun setName(s:String){
+        _name.value=s
+    }
+
+    private var _mail= MutableLiveData<String>("")
+    var mail: LiveData<String> = _mail
+    fun setMail(s:String){
+        _mail.value=s
+    }
+
+    private var _professione= MutableLiveData<String>("")
+    var professione: LiveData<String> = _professione
+    fun setProfessione(s:String){
+        _professione.value=s
+    }
+
+    //VARIABILI MODULO ESERCIZI CREATIVITA
     private var _daysEx = MutableLiveData<Int>(0)
     var daysEx: LiveData<Int> = _daysEx
     fun setDaysEx(n: Int){
@@ -53,6 +73,7 @@ class MusaViewModel : ViewModel() {
     fun setTaskList(s: MutableList<String>){
         _taskList.value=s
     }
+
 
 
 

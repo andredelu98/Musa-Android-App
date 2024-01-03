@@ -42,6 +42,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Firebase
+import com.google.firebase.database.MutableData
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Screens
@@ -51,7 +52,7 @@ import java.util.Locale.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormStart(navController: NavController, vm: MusaViewModel){
+fun ModifyProfile(navController: NavController, vm: MusaViewModel){
     var filledName by remember {
         mutableStateOf("")
     }
@@ -59,13 +60,22 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
         mutableStateOf("")
     }
 
-   // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
-   // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
-   // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
-    Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
-    Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
-    vm.setName(filledName)
-    vm.setMail(filledMail)
+    var filledCategory by remember {
+        mutableStateOf("")
+    }
+
+    var filledLevel by remember {
+        mutableStateOf("")
+    }
+
+    var filledProfession by remember {
+        mutableStateOf("")
+    }
+
+    // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
+    // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
+    // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
+
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -76,7 +86,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             onValueChange = {
                 filledName = it
             },
-            placeholder = { Text(text = "Inserisci il nome")},
+            placeholder = { Text(text = vm.name.value.toString())},
             modifier = Modifier
                 .clip(RoundedCornerShape(15.dp)) // Make the corners rounded with a radius of 8dp
                 .background(Color.Gray)
@@ -93,7 +103,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             onValueChange = {
                 filledMail = it
             },
-            placeholder = { Text(text = "Inserisci la mail")},
+            placeholder = { Text(text = vm.mail.value.toString())},
             modifier = Modifier
                 .clip(RoundedCornerShape(15.dp)) // Make the corners rounded with a radius of 8dp
                 .background(Color.Gray)
@@ -104,34 +114,49 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Data di nascita")
-       /* val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("SelezionaData")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
+        //Text("Data di nascita")
+        /* val datePicker =
+             MaterialDatePicker.Builder.datePicker()
+                 .setTitleText("SelezionaData")
+                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                 .build()
 
-        datePicker.isVisible*/
+         datePicker.isVisible*/
 
         //DATE PICKER DA IMPLEMENTARE
 
-        Spacer(modifier = Modifier.height(8.dp))
+        //Spacer(modifier = Modifier.height(8.dp))
         Text("Categoria")
-        CategoryDropdown(vm)
+        filledCategory=categoryDropdownModify(vm)
         Spacer(modifier = Modifier.height(8.dp))
 
         Text("Perchè lo fai?")
-        ProfessionDropdown(vm)
+        filledProfession=professionDropdownModify(vm)
         Spacer(modifier = Modifier.height(8.dp))
 
         Text("A che livello artistico ti senti?")
-        LevelDropdown(vm)
+        filledLevel=levelDropdownModify(vm)
         Spacer(modifier = Modifier.height(8.dp))
 
 
 
         Button(onClick = {
-            navController.navigate(Screens.HelpPage.name) {
+            if(filledName!=""){
+                Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
+                vm.setName(filledName)
+            }
+            if(filledMail!=""){
+                Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
+                vm.setMail(filledMail)
+            }
+            Firebase.database.getReference("ModuloStart").child("Categoria").setValue(filledCategory);
+            Firebase.database.getReference("ModuloStart").child("Livello").setValue(filledLevel);
+            Firebase.database.getReference("ModuloStart").child("Professione").setValue(filledProfession);
+            vm.setCategory(filledCategory)
+            vm.setLevel(filledLevel)
+            vm.setProfessione(filledProfession)
+
+            navController.navigate(Screens.ProfilePage.name) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
                 }
@@ -149,11 +174,11 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDropdown(vm:MusaViewModel){
+fun categoryDropdownModify(vm:MusaViewModel) : String{
     val context = LocalContext.current
     val category = arrayOf("Disegno", "Musica")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(category[0]) }
+    var selectedText by remember { mutableStateOf(vm.category.value.toString()) }
 
     Box(
         modifier = Modifier
@@ -169,6 +194,7 @@ fun CategoryDropdown(vm:MusaViewModel){
             TextField(
                 value = selectedText,
                 onValueChange = {},
+                //placeholder = { Text(text = vm.category.value!!)},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier.menuAnchor()
@@ -183,8 +209,6 @@ fun CategoryDropdown(vm:MusaViewModel){
                         text = { Text(text = item) },
                         onClick = {
                             selectedText = item
-                            Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
-                            vm.setCategory(selectedText)
                             expanded = false
                             Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
@@ -193,14 +217,15 @@ fun CategoryDropdown(vm:MusaViewModel){
             }
         }
     }
+    return selectedText
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LevelDropdown(vm: MusaViewModel){
+fun levelDropdownModify(vm: MusaViewModel) : String{
     val context = LocalContext.current
     val levels = arrayOf("Principiante", "Intermedio", "Esperto")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(levels[0]) }
+    var selectedText by remember { mutableStateOf(vm.level.value.toString()) }
 
     Box(
         modifier = Modifier
@@ -230,10 +255,6 @@ fun LevelDropdown(vm: MusaViewModel){
                         text = { Text(text = item) },
                         onClick = {
                             selectedText = item
-                            Firebase.database.getReference("ModuloStart").child("Livello").setValue(
-                                selectedText
-                            );
-                            vm.setLevel(selectedText)
                             expanded = false
                             Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
@@ -242,15 +263,16 @@ fun LevelDropdown(vm: MusaViewModel){
             }
         }
     }
+    return selectedText
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfessionDropdown(vm:MusaViewModel){
+fun professionDropdownModify(vm:MusaViewModel) : String{
     val context = LocalContext.current
     val profession = arrayOf("Studio", "Professione", "Hobby")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(profession[0]) }
+    var selectedText by remember { mutableStateOf(vm.professione.value.toString()) }
 
     Box(
         modifier = Modifier
@@ -280,10 +302,6 @@ fun ProfessionDropdown(vm:MusaViewModel){
                         text = { Text(text = item) },
                         onClick = {
                             selectedText = item
-                            Firebase.database.getReference("ModuloStart").child("Professione").setValue(
-                                selectedText
-                            );
-                            vm.setProfessione(selectedText)
                             expanded = false
                             Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
@@ -292,4 +310,5 @@ fun ProfessionDropdown(vm:MusaViewModel){
             }
         }
     }
+    return selectedText
 }

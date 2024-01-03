@@ -31,6 +31,7 @@ import com.google.firebase.database.database
 import it.polito.musaapp.Frontend.FormExercise
 import it.polito.musaapp.Frontend.FormStart
 import it.polito.musaapp.Frontend.HelpPage
+import it.polito.musaapp.Frontend.ModifyProfile
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
 import it.polito.musaapp.Frontend.TaskPage
@@ -124,7 +125,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             composable(route = Screens.ProfilePage.name)
             {
                 //greetings(auth, navController)
-                ProfilePage(navController = navController)
+                ProfilePage(navController = navController, vm)
             }
             composable(route = Screens.TaskPage.name)
             {
@@ -140,6 +141,11 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             {
                 //greetings(auth, navController)
                 FormExercise(navController = navController, vm)
+            }
+            composable(route = Screens.ModifyProfile.name)
+            {
+                //greetings(auth, navController)
+                ModifyProfile(navController = navController, vm)
             }
         }
     }
