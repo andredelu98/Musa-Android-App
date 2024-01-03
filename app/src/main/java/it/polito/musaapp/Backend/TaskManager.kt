@@ -3,8 +3,6 @@ package it.polito.musaapp.Backend
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
-import it.polito.musaapp.Screens
-import java.util.Vector
 
 var WorkingDays: Array<Int> = arrayOf(0,0,0,0,0,0,0)
 var NumberOfDays: Int = 0
@@ -53,11 +51,17 @@ fun RefreshVariablesTask(){
     }
 }
 fun GetTask(number: Int, vm: MusaViewModel){
-    Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value} numeroTask $number TASK Task${number+1}");
-    val myRef= Firebase.database.getReference("Esercizi")
-    myRef.child(vm.category.value!!).child(vm.level.value!!).child("Task${number+1}").get().addOnSuccessListener {
-        vm.setNextTask(it.value.toString())
-    }.addOnFailureListener {
-        Log.d("TASKMANAGER", "Error", it);
+    val list: MutableList<String> = mutableListOf();
+    if(number<(vm.weeksEx.value!!*vm.daysEx.value!!)){
+        Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value} numeroTask $number TASK Task${number+1}");
+        val myRef= Firebase.database.getReference("Esercizi")
+        myRef.child(vm.category.value!!).child(vm.level.value!!).get().addOnSuccessListener {
+            Log.d("TASKMANAGER", "${it.value}")
+            for(i in it.children)
+                list.add(i.value!!.toString())
+            vm.setTaskList(list)
+        }.addOnFailureListener {
+            Log.d("TASKMANAGER", "Error", it);
+        }
     }
 }

@@ -33,11 +33,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.Screens
 
 @Composable
-fun FormExercise(navController: NavController){
+fun FormExercise(navController: NavController, vm: MusaViewModel){
     Box(
         modifier= Modifier
             .fillMaxSize()
@@ -70,7 +71,7 @@ fun FormExercise(navController: NavController){
                 text= "Quanti giorni a settimana vuoi lavorare?",
                 modifier= Modifier.fillMaxWidth()
             )
-            SelettoreCountGiorni()
+            SelettoreCountGiorni(vm)
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
@@ -84,7 +85,7 @@ fun FormExercise(navController: NavController){
                 text= "Per quante settimane vuoi avere degli esercizi per la tua creatività?",
                 modifier= Modifier.fillMaxWidth()
             )
-            SelettoreCountSettimane()
+            SelettoreCountSettimane(vm)
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
@@ -106,7 +107,7 @@ fun FormExercise(navController: NavController){
 }
 
 @Composable
-fun SelettoreCountGiorni(){
+fun SelettoreCountGiorni(vm: MusaViewModel){
     var count by remember {
         mutableIntStateOf(0)
     }
@@ -119,6 +120,7 @@ fun SelettoreCountGiorni(){
      }*/
 
     Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
+    vm.setDaysEx(count)
     Row(){
 
         Button(
@@ -146,7 +148,7 @@ fun SelettoreCountGiorni(){
 }
 
 @Composable
-fun SelettoreCountSettimane(){
+fun SelettoreCountSettimane(vm: MusaViewModel){
     var count by remember {
         mutableIntStateOf(0)
     }
@@ -159,6 +161,7 @@ fun SelettoreCountSettimane(){
      }*/
 
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue("$count");
+    vm.setWeeksEx(count)
     Row(){
 
         Button(

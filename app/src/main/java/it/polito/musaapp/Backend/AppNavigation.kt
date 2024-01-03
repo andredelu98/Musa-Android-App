@@ -139,7 +139,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             composable(route = Screens.FormExercise.name)
             {
                 //greetings(auth, navController)
-                FormExercise(navController = navController)
+                FormExercise(navController = navController, vm)
             }
         }
     }

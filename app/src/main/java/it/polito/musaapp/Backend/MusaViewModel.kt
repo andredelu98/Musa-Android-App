@@ -1,5 +1,11 @@
 package it.polito.musaapp.Backend
 
+import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,9 +36,24 @@ class MusaViewModel : ViewModel() {
         _weeksEx.value=n
     }
 
+
     private var _nextTask = MutableLiveData<String>("")
     var nextTask: LiveData<String> = _nextTask
-    fun setNextTask(s: String){
-        _nextTask.value=s
+    fun setNextTask(i :Int){
+        if(i<=weeksEx.value!!*daysEx.value!!){
+            Log.d("NEXTTASK", TaskList.value?.get(i).toString())
+            _nextTask.value=TaskList.value?.get(i).toString()
+
+        }
+
     }
+
+    private var _taskList = MutableLiveData<List<String>>()
+    var TaskList: LiveData<List<String>> = _taskList
+    fun setTaskList(s: MutableList<String>){
+        _taskList.value=s
+    }
+
+
+
 }

@@ -14,8 +14,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Screens
 
 
 @Composable
@@ -23,21 +25,38 @@ fun TaskPage(navController: NavController, vm:MusaViewModel){
     var TaskCounter by remember {
         mutableStateOf(0)
     }
+    var TaskCounterToPrint by remember {
+        mutableStateOf(0)
+    }
+    GetTask(TaskCounter, vm)
     Column {
         Row(){
            //ICONE CALENDARIO E MODIFICA
         }
         Text(
-            "Task ${TaskCounter+1}/TASKTOTALI"
+            "Task ${TaskCounterToPrint+1}/ ${vm.weeksEx.value!!*vm.daysEx.value!!}"
         )
         Spacer(modifier = Modifier.height(8.dp))
-        GetTask(TaskCounter, vm)
+        vm.setNextTask(TaskCounter)
         Text(vm.nextTask.value!!)
         Spacer(modifier = Modifier.height(18.dp))
         Button(
             onClick={
                 TaskCounter++;
-
+                TaskCounterToPrint++;
+                if(TaskCounter>=vm.TaskList.value!!.size){
+                    TaskCounter=0
+                }
+                vm.setNextTask(TaskCounter)
+                if(TaskCounterToPrint>=(vm.weeksEx.value!!*vm.daysEx.value!!)) {
+                    navController.navigate(Screens.HelpPage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             }
         )
         {
