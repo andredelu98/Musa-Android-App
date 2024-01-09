@@ -104,16 +104,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Data di nascita")
-       /* val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("SelezionaData")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
 
-        datePicker.isVisible*/
-
-        //DATE PICKER DA IMPLEMENTARE
 
         Spacer(modifier = Modifier.height(8.dp))
         Text("Categoria")
