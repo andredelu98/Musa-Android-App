@@ -7,5 +7,6 @@ enum class Screens {
     ProfilePage,
     FormStart,
     FormExercise,
-    ModifyProfile
+    ModifyProfile,
+    ModifyExercise
 }

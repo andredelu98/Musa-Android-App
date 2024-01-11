@@ -57,6 +57,15 @@ class MusaViewModel : ViewModel() {
     }
 
 
+    private var _daysListEx = MutableLiveData<MutableList<Boolean>>()
+    var daysListEx: LiveData<MutableList<Boolean>> = _daysListEx
+    fun setDaysListEx(n: MutableList<Boolean>){
+        _daysListEx.value=n
+    }
+
+    fun getDaysListEx(): MutableList<Boolean>{
+        return _daysListEx.value!!
+    }
     private var _nextTask = MutableLiveData<String>("")
     var nextTask: LiveData<String> = _nextTask
     fun setNextTask(i :Int){

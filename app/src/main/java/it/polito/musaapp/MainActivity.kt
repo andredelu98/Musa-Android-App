@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
            AppNavigation(vm, applicationContext)
         }
 
-        /*RESET IMPOSTAZIONI FIREBASE
+        //RESET IMPOSTAZIONI FIREBASE
         Firebase.database.getReference("UtenteGiaRegistrato").setValue(false)
         Firebase.database.getReference("ModuloStart").child("Nome").setValue("")
         Firebase.database.getReference("ModuloStart").child("Mail").setValue("")
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
              .child("GiorniLiberi").child(days[i]).setValue(false);
         }
 
-     */
+
     }
 }
 

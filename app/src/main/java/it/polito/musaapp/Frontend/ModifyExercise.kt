@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -79,7 +80,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                 text= "Quali giorni preferisci lavorare?",
                 modifier= Modifier.fillMaxWidth()
             )
-            SelettoreGiorniModify()
+            SelettoreGiorniModify(vm)
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
@@ -119,7 +120,19 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
      }.addOnFailureListener {
          Log.d("FORM", "Error", it);
      }*/
-
+    var changed by remember {
+        mutableStateOf(false)
+    }
+    /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
+     myRef.get().addOnSuccessListener {
+         Log.d("FORM", "valori ${it.value}");
+         count=it.value.toString().toInt();
+     }.addOnFailureListener {
+         Log.d("FORM", "Error", it);
+     }*/
+    if(!changed){
+        count=vm.daysEx.value!!
+    }
     Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
     vm.setDaysEx(count)
     Row(){
@@ -128,6 +141,7 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
             onClick = {
                 if(count>0){
                     count--;
+                    changed=true
                 }
             }
         ){
@@ -140,6 +154,7 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
             onClick = {
                 if(count<7){
                     count++;
+                    changed =true
                 }
             }
         ){
@@ -153,6 +168,9 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
     var count by remember {
         mutableIntStateOf(0)
     }
+    var changed by remember {
+        mutableStateOf(false)
+    }
     /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
      myRef.get().addOnSuccessListener {
          Log.d("FORM", "valori ${it.value}");
@@ -160,27 +178,31 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
      }.addOnFailureListener {
          Log.d("FORM", "Error", it);
      }*/
-
+    if(!changed){
+        count=vm.weeksEx.value!!
+    }
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue("$count");
     vm.setWeeksEx(count)
+
     Row(){
 
         Button(
             onClick = {
                 if(count>0){
                     count--;
-
+                    changed=true
                 }
             }
         ){
             Text("-")
         }
 
-        Text("${vm.weeksEx.value}")
+        Text(count.toString())
 
         Button(
             onClick = {
                 count++;
+                changed=true
             }
         ){
             Text("+")
@@ -189,9 +211,12 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
 }
 
 @Composable
-fun SelettoreGiorniModify() {
-    val selected = remember {
+fun SelettoreGiorniModify(vm: MusaViewModel) {
+    var selected = remember {
         mutableStateListOf<Boolean>()
+    }
+    var changed by remember {
+        mutableStateOf(false)
     }
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6){
@@ -199,13 +224,17 @@ fun SelettoreGiorniModify() {
         //Firebase.database.getReference("ModuloEsercizi")
         // .child("GiorniLiberi").child(days[i]).setValue(false);
     }
-
+    if(!changed){
+        selected= vm.getDaysListEx() as SnapshotStateList<Boolean>
+        changed=true
+    }
+    vm.setDaysListEx(selected)
     Row(
         modifier = Modifier.fillMaxWidth()
 
     ) {
         for (i in 0..6) {
-            var isCardClicked by remember { mutableStateOf(false) }
+            var isCardClicked by remember { mutableStateOf(vm.daysListEx.value?.get(i)!!) }
             Card(
                 modifier = Modifier
                     .clickable {
@@ -213,9 +242,11 @@ fun SelettoreGiorniModify() {
                         if (isCardClicked) {
                             Firebase.database.getReference("ModuloEsercizi")
                                 .child("GiorniLiberi").child(days[i]).setValue(true);
+                            selected[i]=true
                         } else {
                             Firebase.database.getReference("ModuloEsercizi")
                                 .child("GiorniLiberi").child(days[i]).setValue(false);
+                            selected[i]=false
                         }
                     }
                     .background(if (isCardClicked) Color.Gray else Color.White)

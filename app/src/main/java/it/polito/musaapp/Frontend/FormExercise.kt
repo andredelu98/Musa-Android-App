@@ -78,7 +78,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                 text= "Quali giorni preferisci lavorare?",
                 modifier= Modifier.fillMaxWidth()
             )
-            SelettoreGiorni()
+            SelettoreGiorni(vm)
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
@@ -187,7 +187,7 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
 }
 
 @Composable
-fun SelettoreGiorni() {
+fun SelettoreGiorni(vm:MusaViewModel) {
     val selected = remember {
         mutableStateListOf<Boolean>()
     }
@@ -197,7 +197,7 @@ fun SelettoreGiorni() {
         //Firebase.database.getReference("ModuloEsercizi")
            // .child("GiorniLiberi").child(days[i]).setValue(false);
     }
-
+    vm.setDaysListEx(selected)
     Row(
         modifier = Modifier.fillMaxWidth()
 
@@ -211,9 +211,11 @@ fun SelettoreGiorni() {
                         if (isCardClicked) {
                             Firebase.database.getReference("ModuloEsercizi")
                                 .child("GiorniLiberi").child(days[i]).setValue(true);
+                            selected[i]=true
                         } else {
                             Firebase.database.getReference("ModuloEsercizi")
                                 .child("GiorniLiberi").child(days[i]).setValue(false);
+                            selected[i]=false
                         }
                     }
                     .background(if (isCardClicked) Color.Gray else Color.White)

@@ -48,7 +48,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
         }
         Button(
             onClick={
-                navController.navigate(Screens.ModifyProfile.name) {
+                navController.navigate(Screens.ModifyExercise.name) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

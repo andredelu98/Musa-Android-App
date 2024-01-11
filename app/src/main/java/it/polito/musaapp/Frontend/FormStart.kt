@@ -189,7 +189,7 @@ fun CategoryDropdown(vm:MusaViewModel){
 @Composable
 fun LevelDropdown(vm: MusaViewModel){
     val context = LocalContext.current
-    val levels = arrayOf("Principiante", "Intermedio", "Esperto")
+    val levels = arrayOf("Principiante", "Esperto")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(levels[0]) }
 
