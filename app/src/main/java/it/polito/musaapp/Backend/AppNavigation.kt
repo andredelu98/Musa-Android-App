@@ -36,6 +36,7 @@ import it.polito.musaapp.Frontend.ModifyProfile
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
 import it.polito.musaapp.Frontend.TaskPage
+import it.polito.musaapp.Frontend.WelcomePage
 import it.polito.musaapp.Screens
 
 @SuppressLint("SuspiciousIndentation")
@@ -46,24 +47,14 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    var startingPage: String=Screens.FormStart.name
 
-    val myRef = Firebase.database.getReference("UtenteGiaRegistrato");
-    myRef.get().addOnSuccessListener {
-        Log.d("FORM", "valori ${it.value}");
-        if(it.value==true){
-          startingPage=Screens.HelpPage.name
-        }
-        else{
-            startingPage=Screens.FormStart.name
-        }
-    }.addOnFailureListener {
-        Log.d("FORM", "Error", it);
-    }
+
 
 
     Scaffold(
         bottomBar = {
+            if (navBackStackEntry?.destination?.route != (Screens.WelcomePage.name)
+                && navBackStackEntry?.destination?.route != (Screens.FormStart.name)){
                 NavigationBar(
                     modifier = Modifier
                         .background(Color(0xFF101010))
@@ -107,12 +98,13 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                     }
                 }
         }
+        }
     ) {
 
         paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = startingPage,
+            startDestination = Screens.WelcomePage.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             this.composable(route = Screens.HelpPage.name) {
@@ -153,6 +145,14 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                 //greetings(auth, navController)
                 ModifyExercise(navController = navController, vm)
             }
+
+            composable(route=Screens.WelcomePage.name){
+                WelcomePage(navController = navController, vm)
+            }
+
+           /* composable(route=Screens.CalendarClass.name){
+                CalendarClass()
+            }*/
         }
     }
 }

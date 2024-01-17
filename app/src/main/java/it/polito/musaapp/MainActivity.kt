@@ -19,6 +19,7 @@ class MainActivity : ComponentActivity() {
         }
 
         //RESET IMPOSTAZIONI FIREBASE
+        /*
         Firebase.database.getReference("UtenteGiaRegistrato").setValue(false)
         Firebase.database.getReference("ModuloStart").child("Nome").setValue("")
         Firebase.database.getReference("ModuloStart").child("Mail").setValue("")
@@ -28,9 +29,7 @@ class MainActivity : ComponentActivity() {
         for (i in 0..6){
             Firebase.database.getReference("ModuloEsercizi")
              .child("GiorniLiberi").child(days[i]).setValue(false);
-        }
-
-
+        }*/
     }
 }
 

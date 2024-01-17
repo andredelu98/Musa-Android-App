@@ -58,7 +58,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
     var filledMail by remember {
         mutableStateOf("")
     }
-
+    val context = LocalContext.current
    // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
    // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
    // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
@@ -122,18 +122,29 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
 
 
         Button(onClick = {
-            navController.navigate(Screens.HelpPage.name) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
+            if(filledName==""||
+                filledMail==""||
+                vm.category.value==""||
+                vm.level.value==""
+                ){
+                Toast.makeText(context, "Inserisci tutti i dati per continuare", Toast.LENGTH_SHORT).show()
             }
-            Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
+            else{
+                navController.navigate(Screens.HelpPage.name) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+                Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
+                vm.setRegistered(true)
+            }
         })
         {
             Text("INVIA")
         }
+
     }
 
 }
@@ -144,7 +155,7 @@ fun CategoryDropdown(vm:MusaViewModel){
     val context = LocalContext.current
     val category = arrayOf("Disegno", "Musica")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(category[0]) }
+    var selectedText by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -191,7 +202,7 @@ fun LevelDropdown(vm: MusaViewModel){
     val context = LocalContext.current
     val levels = arrayOf("Principiante", "Esperto")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(levels[0]) }
+    var selectedText by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -241,7 +252,7 @@ fun ProfessionDropdown(vm:MusaViewModel){
     val context = LocalContext.current
     val profession = arrayOf("Studio", "Professione", "Hobby")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(profession[0]) }
+    var selectedText by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier

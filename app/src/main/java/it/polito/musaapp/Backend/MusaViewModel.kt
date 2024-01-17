@@ -12,6 +12,13 @@ import androidx.lifecycle.ViewModel
 
 class MusaViewModel : ViewModel() {
 
+    private var _registered= MutableLiveData<Boolean>(false)
+    var registered: LiveData<Boolean> = _registered
+
+    fun setRegistered(value: Boolean){
+        _registered.value=value
+    }
+
     //VARIABILI PROFILO DELLA PERSONA
     private var _category = MutableLiveData<String>("")
     var category: LiveData<String> = _category
