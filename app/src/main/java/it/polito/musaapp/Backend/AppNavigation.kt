@@ -104,7 +104,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
         paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screens.WelcomePage.name,
+            startDestination = Screens.CalendarClass.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             this.composable(route = Screens.HelpPage.name) {
@@ -150,9 +150,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                 WelcomePage(navController = navController, vm)
             }
 
-           /* composable(route=Screens.CalendarClass.name){
-                CalendarClass()
-            }*/
+            composable(route=Screens.CalendarClass.name){
+                CalendarActivity()
+            }
         }
     }
 }
