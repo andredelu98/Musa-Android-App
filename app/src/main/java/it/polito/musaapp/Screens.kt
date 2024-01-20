@@ -10,5 +10,6 @@ enum class Screens {
     ModifyProfile,
     ModifyExercise,
     WelcomePage,
-    CalendarClass
+    CalendarClass,
+    TaskFinished
 }

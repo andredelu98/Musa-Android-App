@@ -42,8 +42,18 @@ fun TaskPage(navController: NavController, vm:MusaViewModel){
         Spacer(modifier = Modifier.height(18.dp))
         Button(
             onClick={
+
                 TaskCounter++;
                 TaskCounterToPrint++;
+                if(TaskCounterToPrint>=6){
+                    navController.navigate(Screens.TaskFinished.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
                 if(TaskCounter>=vm.TaskList.value!!.size){
                     TaskCounter=0
                 }

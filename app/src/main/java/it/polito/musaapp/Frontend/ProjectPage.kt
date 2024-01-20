@@ -7,4 +7,8 @@ import androidx.navigation.NavController
 @Composable
 fun ProjectPage(navController: NavController){
     Text("ProjectPage")
+
+
+
+
 }

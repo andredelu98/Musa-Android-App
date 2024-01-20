@@ -35,6 +35,7 @@ import it.polito.musaapp.Frontend.ModifyExercise
 import it.polito.musaapp.Frontend.ModifyProfile
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
+import it.polito.musaapp.Frontend.TaskFinished
 import it.polito.musaapp.Frontend.TaskPage
 import it.polito.musaapp.Frontend.WelcomePage
 import it.polito.musaapp.Screens
@@ -49,8 +50,6 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val currentDestination = navBackStackEntry?.destination
 
 
-
-
     Scaffold(
         bottomBar = {
             if (navBackStackEntry?.destination?.route != (Screens.WelcomePage.name)
@@ -63,7 +62,6 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                     containerColor = Color.DarkGray,
                     contentColor = Color.White,
                 ) {
-
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
 
@@ -97,14 +95,14 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
 
                     }
                 }
-        }
+            }
         }
     ) {
 
         paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screens.CalendarClass.name,
+            startDestination = Screens.WelcomePage.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             this.composable(route = Screens.HelpPage.name) {
@@ -152,6 +150,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
 
             composable(route=Screens.CalendarClass.name){
                 CalendarActivity()
+            }
+            composable(route=Screens.TaskFinished.name){
+                TaskFinished(navController, vm)
             }
         }
     }
