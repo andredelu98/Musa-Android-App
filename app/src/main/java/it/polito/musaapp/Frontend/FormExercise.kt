@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.Screens
@@ -45,8 +46,12 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
             .padding(horizontal = 10.dp, vertical = 10.dp)
     ){
         Column(
-            modifier= Modifier.fillMaxSize().padding(horizontal = 10.dp, vertical = 20.dp).background(
-                Color.LightGray)
+            modifier= Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 20.dp)
+                .background(
+                    Color.LightGray
+                )
         ){
             Icon(
                 Icons.Filled.Close,
@@ -90,8 +95,8 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
 
             Button(
                 onClick = {
-                    //RefreshVariablesTask()
-                    navController.navigate(Screens.TaskPage.name) {
+                    Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
+                    navController.navigate(Screens.TaskListPage.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -209,13 +214,19 @@ fun SelettoreGiorni(vm:MusaViewModel) {
                     .clickable {
                         isCardClicked = !isCardClicked
                         if (isCardClicked) {
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(days[i]).setValue(true);
-                            selected[i]=true
+                            Firebase.database
+                                .getReference("ModuloEsercizi")
+                                .child("GiorniLiberi")
+                                .child(days[i])
+                                .setValue(true);
+                            selected[i] = true
                         } else {
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(days[i]).setValue(false);
-                            selected[i]=false
+                            Firebase.database
+                                .getReference("ModuloEsercizi")
+                                .child("GiorniLiberi")
+                                .child(days[i])
+                                .setValue(false);
+                            selected[i] = false
                         }
                     }
                     .background(if (isCardClicked) Color.Gray else Color.White)

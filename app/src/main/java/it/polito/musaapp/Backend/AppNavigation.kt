@@ -47,6 +47,7 @@ import it.polito.musaapp.Frontend.ModifyProfile
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
 import it.polito.musaapp.Frontend.TaskFinished
+import it.polito.musaapp.Frontend.TaskListPage
 import it.polito.musaapp.Frontend.TaskPage
 import it.polito.musaapp.Frontend.WelcomePage
 import it.polito.musaapp.Screens
@@ -173,6 +174,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             }
             composable(route=Screens.TaskFinished.name){
                 TaskFinished(navController, vm)
+            }
+            composable(route=Screens.TaskListPage.name){
+                TaskListPage(navController, vm)
             }
         }
     }

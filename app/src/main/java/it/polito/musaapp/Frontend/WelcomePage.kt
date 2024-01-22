@@ -20,6 +20,9 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Canvas
@@ -34,7 +37,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.Screens
 
 @Composable
@@ -72,18 +77,41 @@ fun Indicator(
     )
 }
 
+@Composable
 fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
+    val myRefTask=Firebase.database.getReference("ModuloEsercizi")
+    var taskInserito by remember {
+        mutableStateOf(false)
+    }
+    myRefTask.child("Inserito").get().addOnSuccessListener {
+        taskInserito=it.value.toString().toBoolean()
+    }.addOnFailureListener {
+        Log.d("FORM", "Error", it);
+    }
+
     val myRef = Firebase.database.getReference("UtenteGiaRegistrato");
     myRef.get().addOnSuccessListener {
         Log.d("FORM", "valori ${it.value}");
             if (it.value == true) {
-                navController.navigate(Screens.HelpPage.name) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                if(taskInserito){
+                    RefreshVariablesTask(vm)
+                    navController.navigate(Screens.TaskListPage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
+                }
+                else {
+                    navController.navigate(Screens.HelpPage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
 
+                    }
                 }
                 vm.setRegistered(true)
             }

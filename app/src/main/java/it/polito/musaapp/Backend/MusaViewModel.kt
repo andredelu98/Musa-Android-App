@@ -76,21 +76,30 @@ class MusaViewModel : ViewModel() {
     private var _nextTask = MutableLiveData<String>("")
     var nextTask: LiveData<String> = _nextTask
     fun setNextTask(i :Int){
-        if(i<=weeksEx.value!!*daysEx.value!!){
+        if(i<=weeksEx.value!!*daysEx.value!!&&i<TaskList.value?.count()!!){
             Log.d("NEXTTASK", TaskList.value?.get(i).toString())
             _nextTask.value=TaskList.value?.get(i).toString()
-
         }
-
     }
 
+    private var _taskCounter= MutableLiveData<Int>(0)
+    var taskCounter: LiveData<Int> = _taskCounter
+    fun setTaskCounter(i :Int){
+
+        _taskCounter.value=i
+        Log.d("NEXTTASK",_taskCounter.value.toString())
+    }
     private var _taskList = MutableLiveData<List<String>>()
     var TaskList: LiveData<List<String>> = _taskList
     fun setTaskList(s: MutableList<String>){
         _taskList.value=s
     }
 
+    fun resetTaskList(){
+        _taskList.value= emptyList()
+    }
 
 
+   
 
 }
