@@ -58,10 +58,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                 NavigationBar(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
-                        .padding(PaddingValues(horizontal = 20.dp, vertical = 8.dp))
-                        .clip(shape = RoundedCornerShape(50.dp)),
-                    containerColor = Color.DarkGray,
-                    contentColor = Color.White,
+                        .clip(shape = RoundedCornerShape(15.dp, 20.dp, 0.dp, 0.dp)),
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
