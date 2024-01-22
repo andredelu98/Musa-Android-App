@@ -12,6 +12,6 @@ fun TaskReference() {
 
     val httpsReference = storageRef.child("arte-astratta-geometrica-marmorizzata-colorata.jpg")
     
-    
+
 
 }
