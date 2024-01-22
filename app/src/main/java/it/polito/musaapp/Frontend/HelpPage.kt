@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collection.mutableVectorOf
@@ -52,8 +54,11 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .background(MaterialTheme.colorScheme.background)
     ){
         Button(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary),
             onClick = {
                 navController.navigate(Screens.FormExercise.name) {
                     popUpTo(navController.graph.findStartDestination().id) {

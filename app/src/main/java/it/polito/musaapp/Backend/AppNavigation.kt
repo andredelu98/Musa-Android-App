@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -56,7 +57,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                 && navBackStackEntry?.destination?.route != (Screens.FormStart.name)){
                 NavigationBar(
                     modifier = Modifier
-                        .background(Color(0xFF101010))
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(PaddingValues(horizontal = 20.dp, vertical = 8.dp))
                         .clip(shape = RoundedCornerShape(50.dp)),
                     containerColor = Color.DarkGray,

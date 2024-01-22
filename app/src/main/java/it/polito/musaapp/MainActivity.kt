@@ -8,6 +8,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.AppNavigation
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.ui.theme.MusaAppTheme
 
 class MainActivity : ComponentActivity() {
     val vm by viewModels<MusaViewModel>()
@@ -15,7 +16,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           AppNavigation(vm, applicationContext)
+            MusaAppTheme {
+                AppNavigation(vm, applicationContext)
+            }
         }
 
         //RESET IMPOSTAZIONI FIREBASE
