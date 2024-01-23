@@ -12,5 +12,6 @@ enum class Screens {
     WelcomePage,
     CalendarClass,
     TaskFinished,
-    TaskListPage
+    TaskListPage,
+    TaskReference
 }

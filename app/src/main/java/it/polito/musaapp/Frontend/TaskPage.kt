@@ -79,6 +79,7 @@ fun TaskPage(navController: NavController, vm:MusaViewModel){
 
 @Composable
 fun TaskPage(navController: NavController, vm: MusaViewModel){
+    GetReferenceTask(vm)
     val taskCounter by vm.taskCounter.observeAsState()
     val nextTask by vm.nextTask.observeAsState()
     //Log.d ("TASKPAGE", " $taskCounter, next $nextTask" )
@@ -91,6 +92,20 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(nextTask.toString())
+        Spacer(modifier = Modifier.height(18.dp))
+        Button (
+            onClick = {
+                navController.navigate(Screens.TaskReference.name) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        ){
+            Text("Vedi Reference")
+        }
         Spacer(modifier = Modifier.height(18.dp))
         Button(
             onClick={

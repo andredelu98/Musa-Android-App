@@ -99,7 +99,11 @@ class MusaViewModel : ViewModel() {
         _taskList.value= emptyList()
     }
 
-
+    private var _referenceListUrl = MutableLiveData<List<String>>()
+    var referenceListUrl: LiveData<List<String>> = _referenceListUrl
+    fun setReferenceListUrl(s: MutableList<String>){
+        _referenceListUrl.value=s
+    }
 
 
 }
