@@ -53,8 +53,7 @@ fun HelpPage(navController: NavController, musaViewModel: MusaViewModel,
 fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ){
         Button(
@@ -79,7 +78,14 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
         Text(
             text="Oppure inserisci un tuo progetto personale",
             //aggiungere sottolineato
-            modifier = Modifier.clickable { /*NAVIGARE VERSO PROGETTI*/},
+            modifier = Modifier.clickable {
+                navController.navigate(Screens.ProjectPage.name) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }},
         )
     }
 

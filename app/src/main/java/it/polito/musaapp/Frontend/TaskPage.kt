@@ -79,20 +79,25 @@ fun TaskPage(navController: NavController, vm:MusaViewModel){
 
 @Composable
 fun TaskPage(navController: NavController, vm: MusaViewModel){
+    val taskCounter by vm.taskCounter.observeAsState()
+    val nextTask by vm.nextTask.observeAsState()
     //Log.d ("TASKPAGE", " $taskCounter, next $nextTask" )
     Column {
         Row(){
             //ICONE CALENDARIO E MODIFICA
         }
         Text(
-            "Task ${vm.taskCounter.value!!}/ ${vm.weeksEx.value!!*vm.daysEx.value!!}"
+            "Task ${taskCounter}/ ${vm.weeksEx.value!!*vm.daysEx.value!!}"
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(vm.nextTask.value!!)
+        Text(nextTask.toString())
         Spacer(modifier = Modifier.height(18.dp))
         Button(
             onClick={
-                if(vm.taskCounter.value!!>=7){
+                vm.setNextTask(vm.taskCounter.value!!)
+                vm.setTaskCounter(vm.taskCounter.value!!+1)
+
+                if(taskCounter!!>7||vm.taskCounter.value!!-1>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
                     navController.navigate(Screens.TaskFinished.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -101,15 +106,16 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                         restoreState = true
                     }
                 }
-                if(vm.taskCounter.value!!>=(vm.weeksEx.value!!*vm.daysEx.value!!-1)) {
-                    navController.navigate(Screens.HelpPage.name) {
+               /* else if() {
+                    navController.navigate(Screens.TaskFinished.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                }*/
+
             }
         )
         {

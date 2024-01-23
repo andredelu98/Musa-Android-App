@@ -23,12 +23,19 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
     GetTask(vm)
     //GetTask(vm.weeksEx.value!!*vm.daysEx.value!!, vm)
     val taskList by vm.TaskList.observeAsState()
+    var taskToDisplay: Int =0
     Log.d("TASKLIST", taskList.toString())
     if(taskList!=null) {
         Column() {
-            for (i in 0..taskList!!.count() - 1) {
-                vm.setNextTask(i)
-                vm.setTaskCounter(i)
+            if(taskList!!.count()>(vm.weeksEx.value!!*vm.daysEx.value!!)){
+                taskToDisplay=(vm.weeksEx.value!!*vm.daysEx.value!!)
+            }
+            else{
+                taskToDisplay=taskList!!.count()
+            }
+            for (i in 0 until taskToDisplay) {
+                //vm.setNextTask(i)
+                //vm.setTaskCounter(i)
                 Card(
                     modifier = Modifier.clickable {
                         Log.d("I_TASK", "${i+1}.toString()")
