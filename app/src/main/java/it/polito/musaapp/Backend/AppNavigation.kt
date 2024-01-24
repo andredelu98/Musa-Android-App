@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -62,9 +64,6 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val navigationBarColors = NavigationBarItemDefaults.colors(
-        indicatorColor = MaterialTheme.colorScheme.surface
-    )
     Scaffold(
         bottomBar = {
             if (navBackStackEntry?.destination?.route != (Screens.WelcomePage.name)
@@ -73,7 +72,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
                         .clip(shape = RoundedCornerShape(15.dp, 20.dp, 0.dp, 0.dp)),
-                    containerColor = MaterialTheme.colorScheme.surface                  //COLORE NON MOSTRA QUESTO
+                    containerColor = MaterialTheme.colorScheme.onPrimary               //COLORE NON MOSTRA QUESTO
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
@@ -81,7 +80,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                     listOfNavItems.forEach { navItem ->
                         NavigationBarItem(
                             selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
-                            colors = navigationBarColors,
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = MaterialTheme.colorScheme.onPrimary
+                            ),
                             onClick = {
                                 listOfNavItems.forEach { it.selected = it == navItem }
                                 navController.navigate(navItem.route) {
@@ -112,7 +113,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                                     )
                                 }
                             },
-                            modifier = Modifier.fillMaxHeight()
+                            modifier = Modifier.fillMaxSize().alpha(1f)
                         )
 
                     }

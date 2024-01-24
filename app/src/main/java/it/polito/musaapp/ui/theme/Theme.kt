@@ -18,7 +18,7 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     /*Con Primary e primary container indico i colori dei task e del rispettivo bordo*/
     primary = Orange30,
-    onPrimary = Blue80, //colore scritte
+    onPrimary = Blue80, //colore scritte e bottom bar
     primaryContainer = Orange20,
     secondary = Orange60,
     onSecondary = Blue80,
@@ -27,8 +27,6 @@ private val DarkColorScheme = darkColorScheme(
     onTertiary = Blue80,
     tertiaryContainer = Orange70,
 
-    surface = Blue80, //colore bottom bar
-    onSurface = Orange90,
     background = Orange90, //colore sfondo
     onBackground = Blue80 //colore icone e scritte
 )
