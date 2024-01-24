@@ -101,7 +101,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
             verticalArrangement = Arrangement.Center)
         {
             Box(modifier = Modifier
-                .size(280.dp)
+                .size(300.dp)
                 .graphicsLayer(
                     scaleX = if (isPulsating) scale else 1.0f,
                     scaleY = if (isPulsating) scale else 1.0f
