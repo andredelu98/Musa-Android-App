@@ -15,6 +15,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,7 +52,9 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -111,7 +115,8 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     width = 10.dp,
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shape = CircleShape
-                )
+                ),
+                contentAlignment = Alignment.Center
             )
             {
                 Button(
@@ -142,12 +147,13 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                         )
 
                 ){
-                    Text(
-                        text= "Aiuto!",
-                        fontSize = 80.sp,
-                        fontFamily = bangers,
-                        textAlign = TextAlign.Center
-                    )
+                    Box(modifier = Modifier.padding(bottom = 20.dp)){
+                        Text(
+                            text= "Aiuto!",
+                            fontSize = 85.sp,
+                            fontFamily = bangers
+                            )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(35.dp))
