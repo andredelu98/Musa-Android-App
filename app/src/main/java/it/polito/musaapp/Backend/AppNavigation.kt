@@ -108,7 +108,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                                     )
                                     Text(
                                         text = navItem.label,
-                                        fontSize = 11.sp,
+                                        style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.background
                                     )
                                 }

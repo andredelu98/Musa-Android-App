@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -40,8 +41,8 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 }
         }
         Text(
-            "Ciao ${nameProfile.value}",
-            modifier = Modifier.weight(1f)
+            text = "Ciao ${nameProfile.value}",
+            style = MaterialTheme.typography.headlineLarge
         )
 
         Button(

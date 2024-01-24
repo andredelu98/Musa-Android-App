@@ -12,16 +12,65 @@ import it.polito.musaapp.R
 val bangers = FontFamily(
     Font(R.font.bangers_regular, FontWeight.Normal),
 )
+val balsamiqSans = FontFamily(
+    Font(R.font.balsamiqsans_bold, FontWeight.Bold),
+    Font(R.font.balsamiqsans_bolditalic, FontWeight.Bold, FontStyle.Italic),
+    Font(R.font.balsamiqsans_regular, FontWeight.Normal),
+    Font(R.font.balsamiqsans_italic, FontWeight.Normal, FontStyle.Italic),
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    displayLarge = TextStyle(
+        fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
+        fontSize = 60.sp,
+    ),
+    titleLarge = TextStyle( //TASTO AIUTO!
+        fontFamily = bangers,
+        fontWeight = FontWeight.Normal,
+        fontSize = 90.sp,
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 35.sp,
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 25.sp,
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 25.sp,
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+    ),
+    bodySmall = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+    ),
+    labelMedium = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 15.sp,
+    ),
+    labelSmall = TextStyle(
+        fontFamily = balsamiqSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+    ),
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,

@@ -130,7 +130,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                         }
                     },
                     modifier = Modifier
-                        .size(280.dp)  // Imposta un valore fisso per larghezza e altezza
+                        .size(300.dp)  // Imposta un valore fisso per larghezza e altezza
                         .graphicsLayer(
                             scaleX = if (isPulsating) scale else 1.0f,
                             scaleY = if (isPulsating) scale else 1.0f
@@ -150,18 +150,16 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     Box(modifier = Modifier.padding(bottom = 20.dp)){
                         Text(
                             text= "Aiuto!",
-                            fontSize = 85.sp,
-                            fontFamily = bangers
+                            style = MaterialTheme.typography.titleLarge
                             )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(35.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             Text(
                 text="Crea un nuovo progetto personale",
+                style = MaterialTheme.typography.headlineSmall,
                 textDecoration = TextDecoration.Underline,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(horizontal = 50.dp)
