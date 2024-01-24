@@ -50,13 +50,13 @@ val Typography = Typography(
     headlineSmall = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Bold,
-        fontSize = 25.sp,
+        fontSize = 24.sp,
         color = Color(0xFF001E2A)
     ),
     bodyLarge = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 25.sp,
+        fontSize = 24.sp,
         color = Color(0xFF001E2A)
     ),
     bodyMedium = TextStyle(

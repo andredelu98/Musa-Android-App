@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -21,6 +23,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,22 +55,27 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
     Box(
         modifier= Modifier
             .fillMaxSize()
-            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .padding(top = 60.dp, bottom = 20.dp, start = 30.dp, end = 30.dp)
     ){
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
                 .padding(horizontal = 10.dp, vertical = 20.dp)
                 .background(
-                    MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(20.dp)
+                )
+                .border(
+                    width = 10.dp,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(20.dp)
                 )
         ){
             Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier= Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp, end = 10.dp)
+                    .padding(top = 10.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
                     .background(
                         MaterialTheme.colorScheme.primary
                     )
@@ -77,8 +85,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     contentDescription = "Close",
                     tint= MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
-                        .size(50.dp)
-                        .alpha(0.8f)
+                        .size(44.dp)
                         .align(Alignment.End)
                         .clickable {
                             navController.navigate(Screens.HelpPage.name) {
@@ -96,7 +103,13 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                //Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
+                Divider(
+                    color = Color(0XFFD68D02),
+                    thickness = 4.dp,
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text= "Quanti giorni a settimana?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -104,18 +117,28 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     modifier= Modifier.fillMaxWidth()
                 )
                 SelettoreCountGiorni(vm)
-                //Spacer(modifier = Modifier.height(6.dp))
-
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider(
+                    color = Color(0XFFD68D02),
+                    thickness = 4.dp,
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text= "Quali giorni preferisci?",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                //Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 SelettoreGiorni(vm)
-                //Spacer(modifier = Modifier.height(8.dp))
-
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider(
+                    color = Color(0XFFD68D02),
+                    thickness = 4.dp,
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text= "Per quante settimane?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -123,7 +146,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     modifier= Modifier.fillMaxWidth()
                 )
                 SelettoreCountSettimane(vm)
-                //Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Button(
                     shape = MaterialTheme.shapes.large,
@@ -131,7 +154,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                         containerColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
-                        .width(170.dp),
+                        .width(160.dp),
                     onClick = {
                         Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
                         navController.navigate(Screens.TaskListPage.name) {
@@ -267,11 +290,15 @@ fun SelettoreGiorni(vm:MusaViewModel) {
     }
     vm.setDaysListEx(selected)
     Row(
-        modifier = Modifier.fillMaxWidth()
-
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = MaterialTheme.colorScheme.onPrimary,
+                shape = MaterialTheme.shapes.large)
     ) {
         for (i in 0..6) {
-            var isCardClicked by remember { mutableStateOf(false) }
+            /*var isCardClicked by remember { mutableStateOf(false) }
             Card(
                 modifier = Modifier
                     .clickable {
@@ -296,7 +323,33 @@ fun SelettoreGiorni(vm:MusaViewModel) {
                     .weight(1f),
             ) {
                 Text(days[i])
-            }
+            }*/
+            var isDayClicked by remember{ mutableStateOf(false) }
+            Text(
+                text = days[i],
+                style = MaterialTheme.typography.headlineLarge,
+                fontSize = 30.sp,
+                modifier = Modifier
+                    .clickable {
+                    isDayClicked = !isDayClicked
+                        if (isDayClicked) {
+                        Firebase.database
+                            .getReference("ModuloEsercizi")
+                            .child("GiorniLiberi")
+                            .child(days[i])
+                            .setValue(true);
+                        selected[i] = true
+                    } else {
+                        Firebase.database
+                            .getReference("ModuloEsercizi")
+                            .child("GiorniLiberi")
+                            .child(days[i])
+                            .setValue(false);
+                        selected[i] = false
+                    }
+                },
+                color = if (isDayClicked) MaterialTheme.colorScheme.background else Color(0x80EE9B00)
+            )
         }
     }
 

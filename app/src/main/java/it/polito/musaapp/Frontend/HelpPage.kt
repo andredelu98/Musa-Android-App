@@ -80,6 +80,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top=20.dp)
             .background(MaterialTheme.colorScheme.background)
     ){
         var isPulsating by remember { mutableStateOf(true) }
@@ -95,8 +96,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
         )
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center)
         {
@@ -141,7 +141,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                             shape = CircleShape
                         )
                         .border(
-                            width = 10.dp,
+                            width = 12.dp,
                             color = MaterialTheme.colorScheme.primaryContainer,
                             shape = CircleShape
                         )
