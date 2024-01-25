@@ -158,7 +158,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
             Spacer(modifier = Modifier.height(40.dp))
             Text(
                 text="Crea un nuovo progetto personale",
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineMedium,
                 textDecoration = TextDecoration.Underline,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

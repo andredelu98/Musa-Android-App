@@ -1,8 +1,10 @@
 package it.polito.musaapp.Frontend
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -55,12 +59,12 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
     Box(
         modifier= Modifier
             .fillMaxSize()
-            .padding(top = 60.dp, bottom = 20.dp, start = 30.dp, end = 30.dp)
+            .padding(top = 120.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
     ){
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 20.dp)
+                .padding(horizontal = 10.dp, vertical = 10.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(20.dp)
@@ -75,11 +79,12 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier= Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = 15.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
                     .background(
                         MaterialTheme.colorScheme.primary
                     )
             ){
+                Spacer(modifier = Modifier.height(8.dp))
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Close",
@@ -103,7 +108,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(14.dp))
                 Divider(
                     color = Color(0XFFD68D02),
                     thickness = 4.dp,
@@ -132,13 +137,13 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 SelettoreGiorni(vm)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 Divider(
                     color = Color(0XFFD68D02),
                     thickness = 4.dp,
                     modifier = Modifier.width(200.dp)
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text= "Per quante settimane?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -277,6 +282,7 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
     }
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun SelettoreGiorni(vm:MusaViewModel) {
     val selected = remember {

@@ -38,49 +38,49 @@ val Typography = Typography(
     headlineLarge = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 32.sp,
+        fontSize = 26.sp,
         color = Color(0xFF001E2A)
     ),
     headlineMedium = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Bold,
-        fontSize = 28.sp,
+        fontSize = 24.sp,
         color = Color(0xFF001E2A)
     ),
     headlineSmall = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
+        fontSize = 22.sp,
         color = Color(0xFF001E2A)
     ),
     bodyLarge = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
+        fontSize = 20.sp,
         color = Color(0xFF001E2A)
     ),
     bodyMedium = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         color = Color(0xFF001E2A)
     ),
     bodySmall = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
+        fontSize = 14.sp,
         color = Color(0xFF001E2A)
     ),
     labelMedium = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 15.sp,
+        fontSize = 12.sp,
         color = Color(0xFF001E2A)
     ),
     labelSmall = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
+        fontSize = 10.sp,
         color = Color(0xFFFAEABC)
     ),
     /* Other default text styles to override
