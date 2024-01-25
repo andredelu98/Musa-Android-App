@@ -1,6 +1,7 @@
 package it.polito.musaapp.Frontend
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 
@@ -151,7 +154,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     modifier= Modifier.fillMaxWidth()
                 )
                 SelettoreCountSettimane(vm)
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
                     shape = MaterialTheme.shapes.large,
@@ -209,14 +212,16 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
                 }
             }
         ){
-            Text(
-                text = "<",
-                style = MaterialTheme.typography.headlineLarge,
+            Icon(
+                painter = painterResource(id = R.drawable.frecciasx),
+                contentDescription = "",
+                modifier = Modifier.size(28.dp)
             )
         }
         Text(
             text = "$count",
             style = MaterialTheme.typography.headlineLarge,
+            fontSize = 32.sp
         )
         Button(
             onClick = {
@@ -225,9 +230,10 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
                 }
             }
         ){
-            Text(
-                text = ">",
-                style = MaterialTheme.typography.headlineLarge,
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(28.dp),
             )
         }
     }
@@ -260,23 +266,26 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
                 }
             }
         ){
-            Text(
-                text = "<",
-                style = MaterialTheme.typography.headlineLarge,
+            Icon(
+                painter = painterResource(id = R.drawable.frecciasx),
+                contentDescription = "",
+                modifier = Modifier.size(28.dp)
             )
         }
         Text(
             text = "$count",
             style = MaterialTheme.typography.headlineLarge,
+            fontSize = 32.sp
         )
         Button(
             onClick = {
                 count++;
             }
         ){
-            Text(
-                text = ">",
-                style = MaterialTheme.typography.headlineLarge,
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(28.dp)
             )
         }
     }
