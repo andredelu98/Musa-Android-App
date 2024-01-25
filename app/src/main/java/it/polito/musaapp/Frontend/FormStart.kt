@@ -199,62 +199,94 @@ fun CategoryDropdown(vm:MusaViewModel){
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
-    ExposedDropdownMenuBox(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
-            .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp)),
-        expanded = expanded,
-        onExpandedChange = {
-            expanded = !expanded
-        }
-    ) {
-        TextField(
-            shape = RoundedCornerShape(15.dp),
-            value = selectedText,
-            onValueChange = {},
-            readOnly = true,
-            placeholder =
-            { Text(text = "Ambito creativo",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF775c15)
-            ) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                textColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
-                unfocusedTrailingIconColor = Color(0xFF775c15)
-            ),
-            modifier = Modifier
-                .menuAnchor()
-                .fillMaxWidth()
-                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp)),
-        )
-
-        ExposedDropdownMenu(
+    Box(modifier = Modifier.fillMaxWidth()){
+        ExposedDropdownMenuBox(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary)
-                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp)),
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            category.forEach { item ->
-                DropdownMenuItem(
-                    text = { Text(text = item) },
-                    onClick = {
-                        selectedText = item
-                        Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
-                        vm.setCategory(selectedText)
-                        expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                    }
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    RoundedCornerShape(15.dp)
                 )
+                .border(
+                    4.dp,
+                    MaterialTheme.colorScheme.primaryContainer,
+                    RoundedCornerShape(15.dp)
+                ),
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            }
+        ) {
+            TextField(
+                shape = RoundedCornerShape(15.dp),
+                value = selectedText,
+                onValueChange = {},
+                readOnly = true,
+                placeholder =
+                { Text(text = "Ambito creativo",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color(0xFF775c15)
+                ) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unfocusedTrailingIconColor = Color(0xFF775c15)
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(15.dp)
+                    )
+                    .border(
+                        4.dp,
+                        MaterialTheme.colorScheme.primaryContainer,
+                        RoundedCornerShape(15.dp)
+                    )
+                    .clip(RoundedCornerShape(15.dp))
+                    .menuAnchor(),
+            )
+            ExposedDropdownMenu(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(15.dp)
+                    )
+                    .border(
+                        4.dp,
+                        MaterialTheme.colorScheme.primaryContainer,
+                        RoundedCornerShape(15.dp)
+                    )
+                    .clip(RoundedCornerShape(15.dp)),
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                category.forEach { item ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = item,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            ) },
+                        onClick = {
+                            selectedText = item
+                            Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
+                            vm.setCategory(selectedText)
+                            expanded = false
+                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                }
             }
         }
     }
+
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LevelDropdown(vm: MusaViewModel){
@@ -288,7 +320,8 @@ fun LevelDropdown(vm: MusaViewModel){
             ) {
                 levels.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item) },
+                        text = {
+                            Text(text = item) },
                         onClick = {
                             selectedText = item
                             Firebase.database.getReference("ModuloStart").child("Livello").setValue(
