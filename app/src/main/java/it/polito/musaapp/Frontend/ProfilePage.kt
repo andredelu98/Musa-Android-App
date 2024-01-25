@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
@@ -28,8 +31,8 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
     val nameProfile= vm.name.observeAsState()
     Column (
         modifier= Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxSize()
+            .padding(horizontal = 30.dp, vertical = 100.dp)
     ){
         if(vm.registered.value==true){
             val myRef = Firebase.database.getReference("ModuloStart").child("Nome");
@@ -40,6 +43,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                     Log.d("FORM", "Error", it);
                 }
         }
+
         Text(
             text = "Ciao ${nameProfile.value}",
             style = MaterialTheme.typography.headlineLarge

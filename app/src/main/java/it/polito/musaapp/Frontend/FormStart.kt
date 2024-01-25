@@ -4,13 +4,16 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +29,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -70,60 +75,91 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
     vm.setMail(filledMail)
 
     Column(
-        modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 25.dp, vertical = 75.dp)
+            .verticalScroll(rememberScrollState())
     ){
-        Text("Nome")
+        Text(
+            text = "MUSA",
+            style = MaterialTheme.typography.displayLarge,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
         OutlinedTextField(
             value = filledName,
             onValueChange = {
                 filledName = it
             },
-            placeholder = { Text(text = "Inserisci il nome")},
+            shape = RoundedCornerShape(15.dp),
+            placeholder =
+            { Text(text = "Nome utente",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0xFF775c15)
+                )
+            },
             modifier = Modifier
-                .clip(RoundedCornerShape(15.dp)) // Make the corners rounded with a radius of 8dp
-                .background(Color.Gray)
-                .size(width = 500.dp, height = 50.dp),
+                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+                .fillMaxWidth(),
+
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0x00FFFFFF),
-                unfocusedBorderColor = Color(0x00FFFFFF)
+                containerColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                textColor = MaterialTheme.colorScheme.onPrimary
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text("Mail")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
             value = filledMail,
             onValueChange = {
                 filledMail = it
             },
-            placeholder = { Text(text = "Inserisci la mail")},
+            shape = RoundedCornerShape(15.dp),
+            placeholder =
+            { Text(text = "Email",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0xFF775c15)
+            )
+            },
             modifier = Modifier
-                .clip(RoundedCornerShape(15.dp)) // Make the corners rounded with a radius of 8dp
-                .background(Color.Gray)
-                .size(width = 500.dp, height = 50.dp),
+                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+                .fillMaxWidth(),
+
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0x00FFFFFF),
-                unfocusedBorderColor = Color(0x00FFFFFF)
+                containerColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                textColor = MaterialTheme.colorScheme.onPrimary
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-
-        Spacer(modifier = Modifier.height(8.dp))
-        Text("Categoria")
         CategoryDropdown(vm)
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text("Perchè lo fai?")
+
         ProfessionDropdown(vm)
-        Spacer(modifier = Modifier.height(8.dp))
 
+        Spacer(modifier = Modifier.height(16.dp))
         Text("A che livello artistico ti senti?")
+
         LevelDropdown(vm)
-        Spacer(modifier = Modifier.height(8.dp))
 
+        Spacer(modifier = Modifier.height(16.dp))
 
-
-        Button(onClick = {
+        Button(
+            shape = MaterialTheme.shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.onPrimary
+            ),
+            modifier = Modifier
+                .width(160.dp),
+            onClick = {
             if(filledName==""||
                 filledMail==""||
                 vm.category.value==""||
@@ -144,7 +180,11 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             }
         })
         {
-            Text("INVIA")
+            Text(
+                text= "AVANTI",
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.background
+            )
         }
 
     }
@@ -159,41 +199,58 @@ fun CategoryDropdown(vm:MusaViewModel){
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
-    Box(
+    ExposedDropdownMenuBox(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(32.dp)
+            .background(MaterialTheme.colorScheme.primary)
+            .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp)),
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded
+        }
     ) {
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            TextField(
-                value = selectedText,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor()
-            )
+        TextField(
+            shape = RoundedCornerShape(15.dp),
+            value = selectedText,
+            onValueChange = {},
+            readOnly = true,
+            placeholder =
+            { Text(text = "Ambito creativo",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0xFF775c15)
+            ) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTrailingIconColor = Color(0xFF775c15)
+            ),
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
+                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp)),
+        )
 
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                category.forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(text = item) },
-                        onClick = {
-                            selectedText = item
-                            Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
-                            vm.setCategory(selectedText)
-                            expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
+        ExposedDropdownMenu(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp)),
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            category.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(text = item) },
+                    onClick = {
+                        selectedText = item
+                        Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
+                        vm.setCategory(selectedText)
+                        expanded = false
+                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
         }
     }
