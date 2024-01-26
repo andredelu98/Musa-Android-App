@@ -52,6 +52,11 @@ import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
+
+var dayPerWeek: Int=-1
+var weeks: Int = -1
+var daysL: MutableList<Boolean> = mutableListOf(false, false, false, false, false, false, false)
+
 @Composable
 fun ModifyExercise(navController: NavController, vm: MusaViewModel){
     val myRefTask=Firebase.database.getReference("ModuloEsercizi")
@@ -64,6 +69,9 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
         Log.d("FORM", "Error", it);
     }
 
+    dayPerWeek= vm.daysEx.value!!
+    weeks=vm.weeksEx.value!!
+    daysL=vm.getDaysListEx()
 
 
 
@@ -107,7 +115,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                             .size(44.dp)
                             .align(Alignment.End)
                             .clickable {
-                                navController.navigate(Screens.HelpPage.name) {
+                                navController.navigate(Screens.ProfilePage.name) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
@@ -176,6 +184,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                             .width(160.dp),
                         onClick = {
                             //RefreshVariablesTask()
+                            SaveChanges(vm)
                             navController.navigate(Screens.TaskListPage.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
@@ -193,6 +202,24 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                     }
                 }
                 else{
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = "Close",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .size(44.dp)
+                            .align(Alignment.End)
+                            .clickable {
+                                navController.navigate(Screens.ProfilePage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                    )
                     Text("Non hai nessun piano attivo al momento")
                     Text("Crea un nuovo piano di esercizi")
                     Button(
@@ -239,8 +266,9 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
     if(!changed){
         count=vm.daysEx.value!!
     }
-    Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
-    vm.setDaysEx(count)
+    dayPerWeek=count
+  //  Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
+   // vm.setDaysEx(count)
     Row(modifier = Modifier
         .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -261,7 +289,7 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
         }
 
         Text(
-            text = "${vm.daysEx.value}",
+            text = count.toString(),
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 32.sp
         )
@@ -301,9 +329,9 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
     if(!changed){
         count=vm.weeksEx.value!!
     }
-    Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue("$count");
-    vm.setWeeksEx(count)
-
+    //Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue("$count");
+    //vm.setWeeksEx(count)
+    weeks=count
     Row(modifier = Modifier
         .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -347,7 +375,7 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
 
 @Composable
 fun SelettoreGiorniModify(vm: MusaViewModel) {
-    var selected = remember {
+    val selected = remember {
         mutableStateListOf<Boolean>()
     }
     val daysSel by vm.daysListEx.observeAsState()
@@ -355,17 +383,18 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
         mutableStateOf(false)
     }
     val days: Array<String> = arrayOf("L", "M", "M", "G", "V", "S", "D")
-    val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
+
     for (i in 0..6){
         selected.add(false)
         //Firebase.database.getReference("ModuloEsercizi")
         // .child("GiorniLiberi").child(days[i]).setValue(false);
     }
-   /* if(!changed){
+    /*if(!changed){
         selected= vm.getDaysListEx() as SnapshotStateList<Boolean>
         changed=true
     }*/
-    vm.setDaysListEx(selected)
+    //vm.setDaysListEx(selected)
+
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
@@ -376,8 +405,20 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
             )
     ) {
         for (i in 0..6) {
-            var isDayClicked =daysSel!![i]
-            Log.d("ISDAY", isDayClicked.toString())
+            //Log.d("ISDAY", daysSel!!.get(i).toString())
+            var isDayClicked by remember{ mutableStateOf(false) }
+            if(daysSel!!.get(i)){
+                isDayClicked=true
+                selected[i]=true
+                daysL[i]=true
+            }
+            else{
+                isDayClicked=false
+                selected[i]=false
+                daysL[i]=false
+            }
+
+            //Log.d("ISDAY", isDayClicked.toString())
             Text(
                 text = days[i],
                 style = MaterialTheme.typography.headlineLarge,
@@ -386,12 +427,14 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
                     .clickable {
                         isDayClicked = !isDayClicked
                         if (isDayClicked) {
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(daysDb[i]).setValue(true);
+                            daysL[i]=true
+                            //Firebase.database.getReference("ModuloEsercizi")
+                              //  .child("GiorniLiberi").child(daysDb[i]).setValue(true);
                             selected[i]=true
                         } else {
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(daysDb[i]).setValue(false);
+                            daysL[i]=false
+                           // Firebase.database.getReference("ModuloEsercizi")
+                              //  .child("GiorniLiberi").child(daysDb[i]).setValue(false);
                             selected[i]=false
                         }
                     },
@@ -400,5 +443,25 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
         }
     }
 
+
+}
+
+fun SaveChanges(vm: MusaViewModel){
+
+    //GIORNI DELLA SETTIMANA
+    val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
+    for(i in 0..6){
+        Firebase.database.getReference("ModuloEsercizi")
+            .child("GiorniLiberi").child(daysDb[i]).setValue(daysL[i]);
+    }
+    vm.setDaysListEx(daysL)
+
+    //NUMERO GIORNI
+    Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue(dayPerWeek);
+    vm.setDaysEx(dayPerWeek)
+
+    //NUMERO SETTIMANE
+    Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(weeks);
+    vm.setWeeksEx(weeks)
 
 }

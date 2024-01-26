@@ -34,6 +34,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -303,6 +304,7 @@ fun SelettoreGiorni(vm:MusaViewModel) {
     }
     val days: Array<String> = arrayOf("L", "M", "M", "G", "V", "S", "D")
     val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
+    val daysList by vm.daysListEx.observeAsState()
     for (i in 0..6){
         selected.add(false)
         //Firebase.database.getReference("ModuloEsercizi")
@@ -315,7 +317,8 @@ fun SelettoreGiorni(vm:MusaViewModel) {
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.onPrimary,
-                shape = MaterialTheme.shapes.large)
+                shape = MaterialTheme.shapes.large
+            )
     ) {
         for (i in 0..6) {
             /*var isCardClicked by remember { mutableStateOf(false) }
@@ -345,6 +348,8 @@ fun SelettoreGiorni(vm:MusaViewModel) {
                 Text(days[i])
             }*/
             var isDayClicked by remember{ mutableStateOf(false) }
+         
+
             Text(
                 text = days[i],
                 style = MaterialTheme.typography.headlineLarge,
