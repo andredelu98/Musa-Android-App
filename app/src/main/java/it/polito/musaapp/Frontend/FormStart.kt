@@ -5,6 +5,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,9 +20,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,9 +46,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -193,98 +201,78 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDropdown(vm:MusaViewModel){
+fun CategoryDropdown(vm: MusaViewModel){
     val context = LocalContext.current
     val category = arrayOf("Disegno", "Musica")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.fillMaxWidth()){
-        ExposedDropdownMenuBox(
+    var textFiledSize by remember { mutableStateOf(Size.Zero) }
+
+    val icon = if (expanded){
+        Icons.Filled.KeyboardArrowUp
+    } else Icons.Filled.KeyboardArrowDown
+
+    Column(modifier = Modifier.fillMaxWidth()){
+        OutlinedTextField(
+            shape = RoundedCornerShape(15.dp),
+            value = selectedText,
+            onValueChange = { selectedText = it},
+            readOnly = true,
+            placeholder =
+            { Text(text = "Ambito creativo",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0xFF775c15)
+            ) },
+            trailingIcon = {
+                Icon(icon , "", modifier = Modifier
+                    .clickable { expanded = !expanded })
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTrailingIconColor = Color(0xFF775c15)
+            ),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    MaterialTheme.colorScheme.primary,
-                    RoundedCornerShape(15.dp)
-                )
-                .border(
-                    4.dp,
-                    MaterialTheme.colorScheme.primaryContainer,
-                    RoundedCornerShape(15.dp)
-                ),
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            TextField(
-                shape = RoundedCornerShape(15.dp),
-                value = selectedText,
-                onValueChange = {},
-                readOnly = true,
-                placeholder =
-                { Text(text = "Ambito creativo",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color(0xFF775c15)
-                ) },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    textColor = MaterialTheme.colorScheme.onPrimary,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
-                    unfocusedTrailingIconColor = Color(0xFF775c15)
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(15.dp)
-                    )
-                    .border(
-                        4.dp,
-                        MaterialTheme.colorScheme.primaryContainer,
-                        RoundedCornerShape(15.dp)
-                    )
-                    .clip(RoundedCornerShape(15.dp))
-                    .menuAnchor(),
-            )
-            ExposedDropdownMenu(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(15.dp)
-                    )
-                    .border(
-                        4.dp,
-                        MaterialTheme.colorScheme.primaryContainer,
-                        RoundedCornerShape(15.dp)
-                    )
-                    .clip(RoundedCornerShape(15.dp)),
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                category.forEach { item ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = item,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            ) },
-                        onClick = {
-                            selectedText = item
-                            Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
-                            vm.setCategory(selectedText)
-                            expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                        }
-                    )
+                .onGloballyPositioned { coordinates ->
+                    textFiledSize = coordinates.size.toSize()
                 }
+                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15.dp))
+                .border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+        )
+        DropdownMenu(
+            modifier = Modifier
+                .width(with(LocalDensity.current){textFiledSize.width.toDp()})
+                .background(MaterialTheme.colorScheme.primary),
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            for (index in category.indices) {
+                val item = category[index]
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        ) },
+                    onClick = {
+                        selectedText = item
+                        Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
+                        vm.setCategory(selectedText)
+                        expanded = false
+                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                    }
+                )
+                if (index < category.size - 1){
+                    Divider(thickness = 3.dp, color = Color(0x1A001219))
+                }
+
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
