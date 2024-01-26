@@ -48,7 +48,7 @@ fun RefreshVariablesTask(vm: MusaViewModel){
         Log.d("TASKMANAGER", "Error", it);
     }
     myRef.child("GiorniLiberi").get().addOnSuccessListener {
-       // Log.d("TASKMANAGER", "GiorniLiberi ${it.value}");
+        Log.d("TASKMANAGER", "GiorniLiberi ${it.value}");
         for ((j, i) in it.children.withIndex()) {
             if(it.value==true){
                 WorkingDays[j]=true

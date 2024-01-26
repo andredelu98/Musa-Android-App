@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -349,19 +350,21 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
     var selected = remember {
         mutableStateListOf<Boolean>()
     }
+    val daysSel by vm.daysListEx.observeAsState()
     var changed by remember {
         mutableStateOf(false)
     }
     val days: Array<String> = arrayOf("L", "M", "M", "G", "V", "S", "D")
+    val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6){
         selected.add(false)
         //Firebase.database.getReference("ModuloEsercizi")
         // .child("GiorniLiberi").child(days[i]).setValue(false);
     }
-    if(!changed){
+   /* if(!changed){
         selected= vm.getDaysListEx() as SnapshotStateList<Boolean>
         changed=true
-    }
+    }*/
     vm.setDaysListEx(selected)
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -369,10 +372,12 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.onPrimary,
-                shape = MaterialTheme.shapes.large)
+                shape = MaterialTheme.shapes.large
+            )
     ) {
         for (i in 0..6) {
-            var isDayClicked by remember { mutableStateOf(vm.daysListEx.value?.get(i)!!) }
+            var isDayClicked =daysSel!![i]
+            Log.d("ISDAY", isDayClicked.toString())
             Text(
                 text = days[i],
                 style = MaterialTheme.typography.headlineLarge,
@@ -382,11 +387,11 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
                         isDayClicked = !isDayClicked
                         if (isDayClicked) {
                             Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(days[i]).setValue(true);
+                                .child("GiorniLiberi").child(daysDb[i]).setValue(true);
                             selected[i]=true
                         } else {
                             Firebase.database.getReference("ModuloEsercizi")
-                                .child("GiorniLiberi").child(days[i]).setValue(false);
+                                .child("GiorniLiberi").child(daysDb[i]).setValue(false);
                             selected[i]=false
                         }
                     },

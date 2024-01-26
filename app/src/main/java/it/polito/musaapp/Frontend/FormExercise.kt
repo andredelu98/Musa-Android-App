@@ -302,6 +302,7 @@ fun SelettoreGiorni(vm:MusaViewModel) {
         mutableStateListOf<Boolean>()
     }
     val days: Array<String> = arrayOf("L", "M", "M", "G", "V", "S", "D")
+    val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6){
         selected.add(false)
         //Firebase.database.getReference("ModuloEsercizi")
@@ -355,14 +356,14 @@ fun SelettoreGiorni(vm:MusaViewModel) {
                         Firebase.database
                             .getReference("ModuloEsercizi")
                             .child("GiorniLiberi")
-                            .child(days[i])
+                            .child(daysDb[i])
                             .setValue(true);
                         selected[i] = true
                     } else {
                         Firebase.database
                             .getReference("ModuloEsercizi")
                             .child("GiorniLiberi")
-                            .child(days[i])
+                            .child(daysDb[i])
                             .setValue(false);
                         selected[i] = false
                     }
