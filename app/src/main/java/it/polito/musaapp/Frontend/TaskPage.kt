@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Screens
@@ -81,7 +83,9 @@ fun TaskPage(navController: NavController, vm:MusaViewModel){
 fun TaskPage(navController: NavController, vm: MusaViewModel){
     GetReferenceTask(vm)
     val taskCounter by vm.taskCounter.observeAsState()
+    val taskCompleted by vm.taskCompleted.observeAsState()
     val nextTask by vm.nextTask.observeAsState()
+    Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
     //Log.d ("TASKPAGE", " $taskCounter, next $nextTask" )
     Column {
         Row(){
@@ -107,34 +111,61 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Text("Vedi Reference")
         }
         Spacer(modifier = Modifier.height(18.dp))
-        Button(
-            onClick={
-                vm.setNextTask(vm.taskCounter.value!!)
-                vm.setTaskCounter(vm.taskCounter.value!!+1)
+        if(vm.taskCompleted.value!!>=vm.taskCounter.value!!-1){
+            Button(
+                onClick={
+                    vm.setNextTask(vm.taskCounter.value!!)
+                    vm.setTaskCounter(vm.taskCounter.value!!+1)
+                    vm.setTaskCompleted(vm.taskCompleted.value!!+1)
+                    Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
+                    Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati")
+                        .setValue(vm.taskCompleted.value!!);
 
-                if(taskCounter!!>7||vm.taskCounter.value!!-1>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
-                    navController.navigate(Screens.TaskFinished.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if(taskCounter!!>7||vm.taskCounter.value!!-1>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
+                        navController.navigate(Screens.TaskFinished.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
+                    /* else if() {
+                         navController.navigate(Screens.TaskFinished.name) {
+                             popUpTo(navController.graph.findStartDestination().id) {
+                                 saveState = true
+                             }
+                             launchSingleTop = true
+                             restoreState = true
+                         }
+                     }*/
+
                 }
-               /* else if() {
-                    navController.navigate(Screens.TaskFinished.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }*/
-
+            )
+            {
+                Text(text = "TaskCompletato")
             }
-        )
-        {
-            Text(text = "TaskCompletato")
         }
+        else{
+            Button(
+                onClick={
+                    vm.setNextTask(vm.taskCompleted.value!!)
+                    vm.setTaskCounter(vm.taskCompleted.value!!+1)
+                    }
+                    /* else if() {
+                         navController.navigate(Screens.TaskFinished.name) {
+                             popUpTo(navController.graph.findStartDestination().id) {
+                                 saveState = true
+                             }
+                             launchSingleTop = true
+                             restoreState = true
+                         }
+                     }*/
+            )
+            {
+                Text(text = "Vai al task corrente")
+            }
+        }
+
     }
 }

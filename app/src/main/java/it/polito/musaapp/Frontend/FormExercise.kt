@@ -166,6 +166,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                         .width(160.dp),
                     onClick = {
                         Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
+                        Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
                         navController.navigate(Screens.TaskListPage.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -173,6 +174,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                             launchSingleTop = true
                             restoreState = true
                             setRoute(Screens.TaskListPage.name)
+
                         }
                     }
                 ){

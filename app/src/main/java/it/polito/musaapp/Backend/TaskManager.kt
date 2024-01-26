@@ -60,6 +60,13 @@ fun RefreshVariablesTask(vm: MusaViewModel){
     }
     //Log.d("TASKMANAGER", "WorkingDays $WorkingDays");
 
+    val myRefTaskIns= Firebase.database.getReference("ModuloEsercizi")
+    myRefTaskIns.child("TaskCompletati").get().addOnSuccessListener {
+        //  Log.d("TASKMANAGER", "Giorni ${it.value}")
+        vm.setTaskCompleted(it.value.toString().toInt())
+    }.addOnFailureListener {
+        Log.d("TASKMANAGER", "Error", it);
+    }
 
 }
 
