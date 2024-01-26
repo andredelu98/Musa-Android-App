@@ -115,7 +115,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                             .size(44.dp)
                             .align(Alignment.End)
                             .clickable {
-                                navController.navigate(Screens.ProfilePage.name) {
+                                navController.navigate(Screens.ModifyPlanExercise.name) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
@@ -211,7 +211,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                             .size(44.dp)
                             .align(Alignment.End)
                             .clickable {
-                                navController.navigate(Screens.ProfilePage.name) {
+                                navController.navigate(Screens.ModifyPlanExercise.name) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }

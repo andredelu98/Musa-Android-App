@@ -45,6 +45,7 @@ import it.polito.musaapp.Frontend.FormExercise
 import it.polito.musaapp.Frontend.FormStart
 import it.polito.musaapp.Frontend.HelpPage
 import it.polito.musaapp.Frontend.ModifyExercise
+import it.polito.musaapp.Frontend.ModifyPlanExercise
 import it.polito.musaapp.Frontend.ModifyProfile
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
@@ -113,7 +114,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                                     )
                                 }
                             },
-                            modifier = Modifier.fillMaxSize().alpha(1f)
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .alpha(1f)
                         )
 
                     }
@@ -182,6 +185,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             }
             composable(route=Screens.TaskReference.name){
                 TaskReference(navController, vm)
+            }
+            composable(route=Screens.ModifyPlanExercise.name){
+                ModifyPlanExercise(navController = navController, vm)
             }
         }
     }

@@ -13,5 +13,7 @@ enum class Screens {
     CalendarClass,
     TaskFinished,
     TaskListPage,
-    TaskReference
+    TaskReference,
+    ModifyNotificationExercise,
+    ModifyPlanExercise
 }

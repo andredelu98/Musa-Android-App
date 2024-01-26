@@ -95,3 +95,20 @@ fun GetTask(vm: MusaViewModel){
 
 
 }
+
+fun DeletePlanExercise(vm: MusaViewModel) {
+    Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue(0)
+    Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false)
+    Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0)
+    Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
+    val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
+    for (i in 0..6) {
+        Firebase.database.getReference("ModuloEsercizi")
+            .child("GiorniLiberi").child(days[i]).setValue(false);
+    }
+    vm.setWeeksEx(0)
+    vm.setWeeksEx(0)
+    vm.setTaskCompleted(0)
+    vm.resetTaskList()
+    vm.setDaysListEx(mutableListOf(false, false, false, false, false, false, false))
+}
