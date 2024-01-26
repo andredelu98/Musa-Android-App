@@ -1,5 +1,6 @@
 package it.polito.musaapp.Backend
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -18,13 +19,21 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Frontend.SelettoreCountGiorniModify
 import it.polito.musaapp.Frontend.SelettoreCountSettimaneModify
 import it.polito.musaapp.Frontend.SelettoreGiorniModify
@@ -37,10 +46,12 @@ data class NavItem(
     val iconId_unselected: Int,
     val iconId_selected: Int,
     var selected: Boolean = false,
-    val route: String,
+    var route: String,
 )
 
-val listOfNavItems = listOf(
+
+
+var listOfNavItems = mutableListOf(
     NavItem(
         label = "Progetti",
         iconId_unselected = R.drawable.progetti,
@@ -62,3 +73,9 @@ val listOfNavItems = listOf(
         route = Screens.ProfilePage.name,
     )
 )
+
+
+fun setRoute(s:String){
+   listOfNavItems[1].route=s
+}
+

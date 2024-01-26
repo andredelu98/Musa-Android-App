@@ -40,6 +40,7 @@ import com.google.firebase.database.database
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
+import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.Screens
 
 @Composable
@@ -102,6 +103,7 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
                         launchSingleTop = true
                         restoreState = true
                     }
+                    setRoute(Screens.TaskListPage.name)
                 }
                 else {
                     navController.navigate(Screens.HelpPage.name) {
@@ -110,7 +112,7 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
                         }
                         launchSingleTop = true
                         restoreState = true
-
+                        setRoute(Screens.HelpPage.name)
                     }
                 }
                 vm.setRegistered(true)

@@ -53,6 +53,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
@@ -171,6 +172,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                             }
                             launchSingleTop = true
                             restoreState = true
+                            setRoute(Screens.TaskListPage.name)
                         }
                     }
                 ){
