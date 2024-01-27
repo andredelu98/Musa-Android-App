@@ -129,6 +129,7 @@ fun CalculateDueDates(vm: MusaViewModel){
     val daysList by vm.daysListEx.observeAsState()
     val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
     var todayWeekday: Int= -1
+    var used=0
 
 
     val monthDays=31
@@ -153,34 +154,48 @@ fun CalculateDueDates(vm: MusaViewModel){
                 todayWeekday=j
         }
         //CI SONO ESERCIZI == GIORNI DELLA SETTIMANA LIBERI
-
+         var c=0
          if(daysEx!!.equals(counter)){
-             Log.d("DATATROVATA", "Sono nell'if")
+             Log.d("DATATROVATA", "Sono nell'if, c $c, used $used")
 
             for(j in todayWeekday..6){
+
                 if(daysList!!.get(j)==true){
-                    taskWeekday=j
-                    dayDistance=taskWeekday-todayWeekday
+                    if(c>=used){
+                        taskWeekday=j
+                        dayDistance=taskWeekday-todayWeekday
+                    }
+                  c++
                 }
             }
             if(taskWeekday== -1){
+                c=0
                 for(j in 0..todayWeekday){
                     if(daysList!!.get(j)==true){
-                        taskWeekday=j
-                        dayDistance=6-todayWeekday+taskWeekday
+                        if(c>=used) {
+                            taskWeekday = j
+                            dayDistance = 6 - todayWeekday + taskWeekday
+                        }
+                        c++;
                     }
                 }
+
             }
-            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
-            if(monthDays>today.dayOfMonth+dayDistance){
+             if(taskWeekday!=-1){
+                 Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+                 used++;
+                 InsertDate(vm, newDate, i)
+             }
+
+             if(monthDays>today.dayOfMonth+dayDistance){
                 //SIAMO ANCORA A FEBBRAIO
                 newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
             }
             else {
                 //MESE SUCCESSIVO
-                newDate= LocalDate.of(today.year, today.month+1, (monthDays-today.dayOfMonth)+(dayDistance-(monthDays-today.dayOfMonth)))
+                newDate= LocalDate.of(today.year, today.month+1, (1+monthDays-today.dayOfMonth)+(dayDistance-(monthDays-today.dayOfMonth)))
             }
-            InsertDate(vm, newDate, i)
+
         }
    /*     //CI SONO PIU' ESERCIZI RISPETTO AI GIORNI DELLA SETTIMANA LIBERI
         else {
