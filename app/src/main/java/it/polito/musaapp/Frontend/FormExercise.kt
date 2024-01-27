@@ -1,6 +1,8 @@
 package it.polito.musaapp.Frontend
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -53,12 +55,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.CalculateDueDates
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FormExercise(navController: NavController, vm: MusaViewModel){
     Box(

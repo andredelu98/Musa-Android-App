@@ -1,6 +1,8 @@
 package it.polito.musaapp.Frontend
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.StartOffsetType.Companion.Delay
 import androidx.compose.animation.core.VectorConverter
@@ -42,6 +44,7 @@ import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.Screens
+import java.time.LocalDate
 
 @Composable
 fun WelcomePage(navController: NavController, vm: MusaViewModel){
@@ -78,6 +81,7 @@ fun Indicator(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
     val myRefTask=Firebase.database.getReference("ModuloEsercizi")
@@ -118,6 +122,7 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
                 vm.setRegistered(true)
             }
             else {
+            DeleteProfile()
             navController.navigate(Screens.FormStart.name) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
@@ -130,4 +135,5 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
         }.addOnFailureListener {
             Log.d("FORM", "Error", it);
         }
+
 }

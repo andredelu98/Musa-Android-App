@@ -115,7 +115,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = vm.mail.value.toString())
+            //Text(text = vm.mail.value.toString())
             OutlinedTextField(
                 value = filledMail,
                 onValueChange = {

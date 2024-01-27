@@ -1,12 +1,18 @@
 package it.polito.musaapp.Backend
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.Observer
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import java.time.LocalDate
+import java.time.Period
+import java.util.Date
+import kotlin.time.days
 
 var WorkingDays: Array<Boolean> = arrayOf(false,false,false,false,false,false,false)
 var NumberOfDays: Int = 0
@@ -111,4 +117,81 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     vm.setTaskCompleted(0)
     vm.resetTaskList()
     vm.setDaysListEx(mutableListOf(false, false, false, false, false, false, false))
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun CalculateDueDates(vm: MusaViewModel){
+    val today= LocalDate.now()
+    val daysEx by vm.daysEx.observeAsState()
+    val weeksEx by vm.weeksEx.observeAsState()
+    val daysList by vm.daysListEx.observeAsState()
+    val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+    var todayWeekday: Int= -1
+
+
+    val monthDays=31
+
+    for(i in 0..daysEx!!)
+    {
+        var taskWeekday: Int = -1
+        var dayDistance: Int = -1
+        var newDate: LocalDate= today
+        Log.d("DATATROVATA", "Sono nel for")
+        Log.d("DATATROVATA", "$daysEx + ${daysList!!.size}")
+       /* //CI SONO MENO ESERCIZI RISPETTO AI GIORNI DELLA SETTIMANA LIBERI
+        if(daysEx!!<daysList!!.size){
+            Log.d("DATA", today.dayOfWeek.toString())
+           // InsertData(vm)
+        }*/
+        var counter=0
+        for(j in 0..6){
+            if(daysList!!.get(j)==true)
+                counter++;
+            if(today.dayOfWeek.toString().equals(weekdays[j]))
+                todayWeekday=j
+        }
+        //CI SONO ESERCIZI == GIORNI DELLA SETTIMANA LIBERI
+
+         if(daysEx!!.equals(counter)){
+             Log.d("DATATROVATA", "Sono nell'if")
+
+            for(j in todayWeekday..6){
+                if(daysList!!.get(j)==true){
+                    taskWeekday=j
+                    dayDistance=taskWeekday-todayWeekday
+                }
+            }
+            if(taskWeekday== -1){
+                for(j in 0..todayWeekday){
+                    if(daysList!!.get(j)==true){
+                        taskWeekday=j
+                        dayDistance=6-todayWeekday+taskWeekday
+                    }
+                }
+            }
+            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+            if(monthDays>today.dayOfMonth+dayDistance){
+                //SIAMO ANCORA A FEBBRAIO
+                newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
+            }
+            else {
+                //MESE SUCCESSIVO
+                newDate= LocalDate.of(today.year, today.month+1, (monthDays-today.dayOfMonth)+(dayDistance-(monthDays-today.dayOfMonth)))
+            }
+            InsertDate(vm, newDate, i)
+        }
+   /*     //CI SONO PIU' ESERCIZI RISPETTO AI GIORNI DELLA SETTIMANA LIBERI
+        else {
+
+            //InsertData(vm)
+        }*/
+
+    }
+}
+
+fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
+
+    Log.d("DATATROVATA", "$d +  $task}")
 }
