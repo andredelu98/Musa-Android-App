@@ -9,6 +9,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.Observer
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import okhttp3.internal.userAgent
 import java.time.LocalDate
 import java.time.Period
 import java.util.Date
@@ -145,10 +146,25 @@ fun CalculateDueDates(vm: MusaViewModel){
     var todayWeekday: Int= -1
     var used=0
     var used2=0
-
-
     val monthDays=31
 
+    var counter=0
+    for(j in 0..6){
+        if(daysList!!.get(j)==true)
+            counter++;
+        if(today.dayOfWeek.toString().equals(weekdays[j]))
+            todayWeekday=j
+    }
+    if(daysEx?.equals(counter) == true)
+        CalculateDateEqual(vm, todayWeekday)
+
+    else if(daysEx!!<counter){
+        CalculateDateDaysMinor(vm, todayWeekday)
+    }
+    else if(daysEx!!>counter){
+        CalculateDateDaysMajor(vm, todayWeekday)
+    }
+/*
     for(i in 0..daysEx!!)
     {
         var taskWeekday: Int = -1
@@ -163,13 +179,7 @@ fun CalculateDueDates(vm: MusaViewModel){
         }*/
 
         //CI SONO ESERCIZI == GIORNI DELLA SETTIMANA LIBERI
-        var counter=0
-        for(j in 0..6){
-            if(daysList!!.get(j)==true)
-                counter++;
-            if(today.dayOfWeek.toString().equals(weekdays[j]))
-                todayWeekday=j
-        }
+
 
          var c=0
          if(daysEx!!.equals(counter)){
@@ -181,6 +191,7 @@ fun CalculateDueDates(vm: MusaViewModel){
                     if(c>=used){
                         taskWeekday=j
                         dayDistance=taskWeekday-todayWeekday
+                        used++;
                     }
                   c++
                 }
@@ -190,9 +201,10 @@ fun CalculateDueDates(vm: MusaViewModel){
                 for(j in 0..todayWeekday){
                     if(daysList!!.get(j)==true && taskWeekday==-1){
                         Log.d("DATATROVATA", "il giorno è  $j")
-                        if(c2>=used) {
+                        if(c2>=used2) {
                             taskWeekday = j
                             dayDistance = 7 - todayWeekday + taskWeekday
+                            used2++
                         }
                         c2++;
                     }
@@ -201,7 +213,7 @@ fun CalculateDueDates(vm: MusaViewModel){
             }
              if(taskWeekday!=-1){
                  Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
-                 used++;
+
 
              }
 
@@ -223,6 +235,229 @@ fun CalculateDueDates(vm: MusaViewModel){
         }*/
 
     }
+    */
+
+
+}
+
+
+
+@Composable
+@RequiresApi(Build.VERSION_CODES.O)
+fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
+    val today= LocalDate.now()
+    val daysEx by vm.daysEx.observeAsState()
+    val weeksEx by vm.weeksEx.observeAsState()
+    val daysList by vm.daysListEx.observeAsState()
+    val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+    //var todayWeekday: Int= -1
+    var used=0
+    var used2=0
+
+
+    val monthDays=31
+
+    for(i in 0..daysEx!!)
+    {
+        var taskWeekday: Int = -1
+        var dayDistance: Int = -1
+        var newDate: LocalDate= today
+
+        var c=0
+
+        Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
+
+        for(j in todayWeekday..6){
+
+            if(daysList!!.get(j)==true){
+                if(c>=used){
+                    taskWeekday=j
+                    dayDistance=taskWeekday-todayWeekday
+                    used++;
+                }
+                c++
+            }
+        }
+        var c2=0
+        if(taskWeekday== -1){
+            for(j in 0..todayWeekday){
+                if(daysList!!.get(j)==true && taskWeekday==-1){
+                    Log.d("DATATROVATA", "il giorno è  $j")
+                    if(c2>=used2) {
+                        taskWeekday = j
+                        dayDistance = 7 - todayWeekday + taskWeekday
+                        used2++
+                    }
+                    c2++;
+                }
+            }
+
+        }
+
+        if(monthDays>today.dayOfMonth+dayDistance){
+            //SIAMO ANCORA A FEBBRAIO
+            newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
+        }
+        else {
+            //MESE SUCCESSIVO
+            Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
+            newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
+        }
+        if(taskWeekday!=-1){
+            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+            InsertDate(vm, newDate, i)
+        }
+
+    }
+    SaveInViewModel(vm)
+}
+@Composable
+@RequiresApi(Build.VERSION_CODES.O)
+fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
+    val today= LocalDate.now()
+    val daysEx by vm.daysEx.observeAsState()
+    val weeksEx by vm.weeksEx.observeAsState()
+    val daysList by vm.daysListEx.observeAsState()
+    val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+    //var todayWeekday: Int= -1
+    var used=0
+    var used2=0
+
+
+    val monthDays=31
+
+    for(i in 0..daysEx!!)
+    {
+        var taskWeekday: Int = -1
+        var dayDistance: Int = -1
+        var newDate: LocalDate= today
+
+        var c=0
+
+        Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
+
+        for(j in todayWeekday..6){
+
+            if(daysList!!.get(j)==true){
+                if(c>=used){
+                    taskWeekday=j
+                    dayDistance=taskWeekday-todayWeekday
+                    used++;
+                }
+                c++
+            }
+        }
+        var c2=0
+        if(taskWeekday== -1){
+            for(j in 0..todayWeekday){
+                if(daysList!!.get(j)==true && taskWeekday==-1){
+                    Log.d("DATATROVATA", "il giorno è  $j")
+                    if(c2>=used2) {
+                        taskWeekday = j
+                        dayDistance = 7 - todayWeekday + taskWeekday
+                        used2++
+                    }
+                    c2++;
+                }
+            }
+
+        }
+
+        if(monthDays>today.dayOfMonth+dayDistance){
+            //SIAMO ANCORA A FEBBRAIO
+            newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
+        }
+        else {
+            //MESE SUCCESSIVO
+            Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
+            newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
+        }
+        if(taskWeekday!=-1){
+            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+            InsertDate(vm, newDate, i)
+        }
+
+    }
+    SaveInViewModel(vm)
+}
+
+@Composable
+@RequiresApi(Build.VERSION_CODES.O)
+fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
+    val today= LocalDate.now()
+    val daysEx by vm.daysEx.observeAsState()
+    val weeksEx by vm.weeksEx.observeAsState()
+    val daysList by vm.daysListEx.observeAsState()
+    val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+    //var todayWeekday: Int= -1
+    var used=0
+    var used2=0
+
+
+    val monthDays=31
+
+    for(i in 0..daysEx!!)
+    {
+        var taskWeekday: Int = -1
+        var dayDistance: Int = -1
+        var newDate: LocalDate= today
+
+        var c=0
+
+        Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
+
+        for(j in todayWeekday..6){
+
+            if(daysList!!.get(j)==true){
+                if(c>=used){
+                    taskWeekday=j
+                    dayDistance=taskWeekday-todayWeekday
+                    used++;
+                }
+                c++
+            }
+        }
+        var c2=0
+        if(taskWeekday== -1){
+            for(j in 0..todayWeekday){
+                if(daysList!!.get(j)==true && taskWeekday==-1){
+                    Log.d("DATATROVATA", "il giorno è  $j")
+                    if(c2>=used2) {
+                        taskWeekday = j
+                        dayDistance = 7 - todayWeekday + taskWeekday
+                        used2++
+                    }
+                    c2++;
+                }
+            }
+
+        }
+
+        if(monthDays>=today.dayOfMonth+dayDistance){
+            //SIAMO ANCORA A FEBBRAIO
+            newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
+        }
+        else {
+            //MESE SUCCESSIVO
+               newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
+            }
+
+
+        if(taskWeekday!=-1){
+            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+            InsertDate(vm, newDate, i)
+        }
+
+    }
+    SaveInViewModel(vm)
+}
+fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
+
+    Log.d("DATATROVATA", "$d +  $task}")
+    Firebase.database.getReference("ModuloEsercizi").child("Scadenze").child("Task${task+1}").setValue(d.toString())
+}
+
+fun SaveInViewModel(vm: MusaViewModel){
     //INSERIMENTO DATE SCADENZA IN VM
     val s :MutableList<String> = mutableListOf();
     val myRef= Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
@@ -236,10 +471,4 @@ fun CalculateDueDates(vm: MusaViewModel){
     }.addOnFailureListener {
         Log.d("DATADATATROVATA", "Error", it);
     }
-}
-
-fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
-
-    Log.d("DATATROVATA", "$d +  $task}")
-    Firebase.database.getReference("ModuloEsercizi").child("Scadenze").child("Task${task+1}").setValue(d.toString())
 }

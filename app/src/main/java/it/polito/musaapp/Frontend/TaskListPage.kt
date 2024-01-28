@@ -63,7 +63,8 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                     }
                 ) {
                     Text(vm.TaskList.value!!.get(i))
-                    Text(vm.taskDueDate.value!!.get(i))
+                    if(vm.taskDueDate.isInitialized)
+                        Text(vm.taskDueDate.value!!.get(i))
                 }
             }
         }
