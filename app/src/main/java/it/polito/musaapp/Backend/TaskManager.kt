@@ -20,6 +20,8 @@ var NumberOfDays: Int = 0
 var NumberOfWeeks: Int = 0
 var Category: String = ""
 var Level: String = ""
+var Professione: String=""
+var Mail: String=""
 
 
 fun RefreshVariablesTask(vm: MusaViewModel){
@@ -35,6 +37,21 @@ fun RefreshVariablesTask(vm: MusaViewModel){
        // Log.d("TASKMANAGER", "Livello ${it.value}");
         Level= it.value.toString()
         vm.setLevel(Level)
+    }.addOnFailureListener {
+        Log.d("TASKMANAGER", "Error", it);
+    }
+    myRefStart.child("Professione").get().addOnSuccessListener {
+        // Log.d("TASKMANAGER", "Livello ${it.value}");
+        Professione= it.value.toString()
+        vm.setProfessione(Professione)
+    }.addOnFailureListener {
+        Log.d("TASKMANAGER", "Error", it);
+    }
+
+    myRefStart.child("Mail").get().addOnSuccessListener {
+        // Log.d("TASKMANAGER", "Livello ${it.value}");
+        Mail= it.value.toString()
+        vm.setMail(Mail)
     }.addOnFailureListener {
         Log.d("TASKMANAGER", "Error", it);
     }

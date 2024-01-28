@@ -46,6 +46,7 @@ import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.Screens
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WelcomePage(navController: NavController, vm: MusaViewModel){
     Column(
