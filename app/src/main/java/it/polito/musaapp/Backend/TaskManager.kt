@@ -146,6 +146,8 @@ fun CalculateDueDates(vm: MusaViewModel){
             Log.d("DATA", today.dayOfWeek.toString())
            // InsertData(vm)
         }*/
+
+        //CI SONO ESERCIZI == GIORNI DELLA SETTIMANA LIBERI
         var counter=0
         for(j in 0..6){
             if(daysList!!.get(j)==true)
@@ -153,10 +155,10 @@ fun CalculateDueDates(vm: MusaViewModel){
             if(today.dayOfWeek.toString().equals(weekdays[j]))
                 todayWeekday=j
         }
-        //CI SONO ESERCIZI == GIORNI DELLA SETTIMANA LIBERI
+
          var c=0
          if(daysEx!!.equals(counter)){
-             Log.d("DATATROVATA", "Sono nell'if, c $c, used $used")
+             Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
 
             for(j in todayWeekday..6){
 
@@ -171,10 +173,11 @@ fun CalculateDueDates(vm: MusaViewModel){
             if(taskWeekday== -1){
                 c=0
                 for(j in 0..todayWeekday){
-                    if(daysList!!.get(j)==true){
+                    if(daysList!!.get(j)==true && taskWeekday==-1){
+                        Log.d("DATATROVATA", "il giorno è  $j")
                         if(c>=used) {
                             taskWeekday = j
-                            dayDistance = 6 - todayWeekday + taskWeekday
+                            dayDistance = 7 - todayWeekday + taskWeekday
                         }
                         c++;
                     }
@@ -184,7 +187,7 @@ fun CalculateDueDates(vm: MusaViewModel){
              if(taskWeekday!=-1){
                  Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
                  used++;
-                 InsertDate(vm, newDate, i)
+
              }
 
              if(monthDays>today.dayOfMonth+dayDistance){
@@ -193,9 +196,9 @@ fun CalculateDueDates(vm: MusaViewModel){
             }
             else {
                 //MESE SUCCESSIVO
-                newDate= LocalDate.of(today.year, today.month+1, (1+monthDays-today.dayOfMonth)+(dayDistance-(monthDays-today.dayOfMonth)))
+                newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
             }
-
+             InsertDate(vm, newDate, i)
         }
    /*     //CI SONO PIU' ESERCIZI RISPETTO AI GIORNI DELLA SETTIMANA LIBERI
         else {
@@ -204,6 +207,7 @@ fun CalculateDueDates(vm: MusaViewModel){
         }*/
 
     }
+
 }
 
 fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
