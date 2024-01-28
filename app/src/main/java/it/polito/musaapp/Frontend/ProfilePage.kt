@@ -2,14 +2,25 @@ package it.polito.musaapp.Frontend
 
 import android.graphics.Paint
 import android.util.Log
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,12 +29,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 @Composable
@@ -32,7 +49,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
     Column (
         modifier= Modifier
             .fillMaxSize()
-            .padding(horizontal = 30.dp, vertical = 100.dp)
+            .padding(horizontal = 25.dp, vertical = 60.dp)
     ){
         if(vm.registered.value==true){
             val myRef = Firebase.database.getReference("ModuloStart").child("Nome");
@@ -46,85 +63,182 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
 
         Text(
             text = "Ciao ${nameProfile.value}",
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.displayLarge,
+            fontSize = 45.sp
         )
 
-        Button(
-            onClick={
-              navController.navigate(Screens.ModifyProfile.name) {
-                  popUpTo(navController.graph.findStartDestination().id) {
-                      saveState = true
-                  }
-                  launchSingleTop = true
-                  restoreState = true }
-          },
-            modifier= Modifier
-                .weight(2f)
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            modifier = Modifier
+                .height(75.dp)
                 .fillMaxWidth()
-        ){
-            Text("Modifica Profilo")
-        }
-        Button(
-            onClick={
-                navController.navigate(Screens.ModifyPlanExercise.name) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                .clickable {
+                    navController.navigate(Screens.ModifyProfile.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true }
-            },
-            modifier= Modifier
-                .weight(2f)
-                .fillMaxWidth()
-        ){
-            Text("Modifica piano di esercizi")
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text(
+                text = "Modifica profilo" ,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
         }
-        Button(
-            onClick={
-                navController.navigate(Screens.ModifyProfile.name) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+
+        Divider(thickness = 3.dp, color = Color(0x1A001219))
+
+        Row(
+            modifier = Modifier
+                .height(75.dp)
+                .fillMaxWidth()
+                .clickable {
+                    navController.navigate(Screens.ModifyPlanExercise.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true }
-            },
-            modifier= Modifier
-                .weight(2f)
-                .fillMaxWidth()
-        ){
-            Text("Reference salvate")
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text(
+                text = "Modifica piano di esercizi" ,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
         }
-        Button(
-            onClick={
-                navController.navigate(Screens.ModifyProfile.name) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+
+        Divider(thickness = 3.dp, color = Color(0x1A001219))
+
+        Row(
+            modifier = Modifier
+                .alpha(0.3f)
+                .height(75.dp)
+                .fillMaxWidth()
+                .clickable {/*TODO()*/},
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text(
+                text = "Reference salvate" ,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        Divider(thickness = 3.dp, color = Color(0x1A001219))
+
+        Row(
+            modifier = Modifier
+                .alpha(0.3f)
+                .height(75.dp)
+                .fillMaxWidth()
+                .clickable {/*TODO()*/ },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text(
+                text = "Storico piano di esercizi" ,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        Divider(thickness = 3.dp, color = Color(0x1A001219))
+
+        Row(
+            modifier = Modifier
+                .alpha(0.3f)
+                .height(75.dp)
+                .fillMaxWidth()
+                .clickable {/*TODO()*/ },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text(
+                text = "Storico progetti personali" ,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        Divider(thickness = 3.dp, color = Color(0x1A001219))
+
+        Row(
+            modifier = Modifier
+                .height(75.dp)
+                .fillMaxWidth()
+                .clickable {
+                    DeleteProfile()
+                    navController.navigate(Screens.FormStart.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true }
-            },
-            modifier= Modifier
-                .weight(2f)
-                .fillMaxWidth()
-        ){
-            Text("Storico progetti")
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text(
+                text = "Elimina account" ,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.frecciadx),
+                contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
         }
+        Spacer(modifier = Modifier.height(12.dp))
         Button(
-            onClick={
-                DeleteProfile()
-                navController.navigate(Screens.FormStart.name) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true }
-            },
-            modifier= Modifier
-                .weight(2f)
-                .fillMaxWidth()
-        ){
-            Text("Elimina account")
-        }
+            shape = MaterialTheme.shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            modifier = Modifier
+                .width(140.dp)
+                .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
+            ,
+            onClick = { /*TODO()*/ }
+        ){ Text(text = "Log out", style = MaterialTheme.typography.headlineSmall)}
+
     }
 }
 
