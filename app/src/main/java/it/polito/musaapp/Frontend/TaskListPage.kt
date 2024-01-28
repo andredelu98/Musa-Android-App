@@ -14,6 +14,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Backend.CalculateDueDates
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
@@ -32,6 +34,8 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
     Log.d("TASKLIST", taskList.toString())
     if(taskList!=null) {
         CalculateDueDates(vm)
+
+
 
         Column() {
             if(taskList!!.count()>(vm.weeksEx.value!!*vm.daysEx.value!!)){
@@ -59,6 +63,7 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                     }
                 ) {
                     Text(vm.TaskList.value!!.get(i))
+                    Text(vm.taskDueDate.value!!.get(i))
                 }
             }
         }

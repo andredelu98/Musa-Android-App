@@ -74,6 +74,19 @@ fun RefreshVariablesTask(vm: MusaViewModel){
         Log.d("TASKMANAGER", "Error", it);
     }
 
+    //INSERIMENTO DATE SCADENZA IN VM
+    val s :MutableList<String> = mutableListOf();
+    val myRefData= Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
+    myRefData.get().addOnSuccessListener {
+        Log.d("DATATASKLIST", "  task list${it.value}")
+        for(i in it.children) {
+            Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
+            s.add(i.value!!.toString())
+        }
+        vm.createDueDateArray(s)
+    }.addOnFailureListener {
+        Log.d("DATADATATROVATA", "Error", it);
+    }
 }
 
 @Composable
@@ -107,6 +120,7 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false)
     Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0)
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
+
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6) {
         Firebase.database.getReference("ModuloEsercizi")
@@ -130,6 +144,7 @@ fun CalculateDueDates(vm: MusaViewModel){
     val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
     var todayWeekday: Int= -1
     var used=0
+    var used2=0
 
 
     val monthDays=31
@@ -170,16 +185,16 @@ fun CalculateDueDates(vm: MusaViewModel){
                   c++
                 }
             }
+            var c2=0
             if(taskWeekday== -1){
-                c=0
                 for(j in 0..todayWeekday){
                     if(daysList!!.get(j)==true && taskWeekday==-1){
                         Log.d("DATATROVATA", "il giorno è  $j")
-                        if(c>=used) {
+                        if(c2>=used) {
                             taskWeekday = j
                             dayDistance = 7 - todayWeekday + taskWeekday
                         }
-                        c++;
+                        c2++;
                     }
                 }
 
@@ -196,6 +211,7 @@ fun CalculateDueDates(vm: MusaViewModel){
             }
             else {
                 //MESE SUCCESSIVO
+                Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
                 newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
             }
              InsertDate(vm, newDate, i)
@@ -207,10 +223,23 @@ fun CalculateDueDates(vm: MusaViewModel){
         }*/
 
     }
-
+    //INSERIMENTO DATE SCADENZA IN VM
+    val s :MutableList<String> = mutableListOf();
+    val myRef= Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
+    myRef.get().addOnSuccessListener {
+        Log.d("DATATASKLIST", "  task list${it.value}")
+        for(i in it.children) {
+            Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
+            s.add(i.value!!.toString())
+        }
+        vm.createDueDateArray(s)
+    }.addOnFailureListener {
+        Log.d("DATADATATROVATA", "Error", it);
+    }
 }
 
 fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
 
     Log.d("DATATROVATA", "$d +  $task}")
+    Firebase.database.getReference("ModuloEsercizi").child("Scadenze").child("Task${task+1}").setValue(d.toString())
 }

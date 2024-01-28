@@ -111,4 +111,11 @@ class MusaViewModel : ViewModel() {
     }
 
 
+
+    private var _taskDueDate = MutableLiveData<List<String>>()
+    var taskDueDate: LiveData<List<String>> = _taskDueDate
+
+    fun createDueDateArray(s: MutableList<String>){
+       _taskDueDate.value=s
+    }
 }

@@ -94,6 +94,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
         Text(
             "Task ${taskCounter}/ ${vm.weeksEx.value!!*vm.daysEx.value!!}"
         )
+        Text(vm.taskDueDate.value!!.get(taskCounter!!-1))
         Spacer(modifier = Modifier.height(8.dp))
         Text(nextTask.toString())
         Spacer(modifier = Modifier.height(18.dp))
