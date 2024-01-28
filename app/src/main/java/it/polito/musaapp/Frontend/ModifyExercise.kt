@@ -2,6 +2,7 @@ package it.polito.musaapp.Frontend
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
+import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
@@ -59,6 +62,8 @@ var daysL: MutableList<Boolean> = mutableListOf(false, false, false, false, fals
 
 @Composable
 fun ModifyExercise(navController: NavController, vm: MusaViewModel){
+    val context = LocalContext.current
+
     val myRefTask=Firebase.database.getReference("ModuloEsercizi")
     var taskInserito by remember {
         mutableStateOf(false)
@@ -184,13 +189,28 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                             .width(160.dp),
                         onClick = {
                             //RefreshVariablesTask()
-                            SaveChanges(vm)
-                            navController.navigate(Screens.TaskListPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+
+                            var i =0
+                            for(j in 0..6){
+                                if(daysL.get(j)==true)
+                                    i++
+                            }
+                            if(dayPerWeek!=i){
+                                Toast.makeText(context, "Inserisci il numero corretto di giorni", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                SaveChanges(vm)
+                                Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
+                                Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
+                                navController.navigate(Screens.TaskListPage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                    setRoute(Screens.TaskListPage.name)
+
                                 }
-                                launchSingleTop = true
-                                restoreState = true
                             }
                         }
                     ) {
