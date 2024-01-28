@@ -62,7 +62,7 @@ val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = balsamiqSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         color = Color(0xFF001E2A)
     ),
     bodySmall = TextStyle(

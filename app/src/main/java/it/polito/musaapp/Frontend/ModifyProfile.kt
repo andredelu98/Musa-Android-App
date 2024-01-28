@@ -51,9 +51,11 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -94,13 +96,6 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
     // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
     // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
 
-    Box(modifier=Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.big_logo),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -108,10 +103,16 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             .padding(horizontal = 25.dp, vertical = 25.dp)
             .verticalScroll(rememberScrollState())
     ){
-        Spacer(modifier = Modifier.height(35.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Modifica profilo",
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "Nome:",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Start)
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -138,11 +139,12 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 textColor = MaterialTheme.colorScheme.onPrimary
             )
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         Text(
             text = "Mail:",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Start)
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -174,7 +176,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 textColor = MaterialTheme.colorScheme.onPrimary
             )
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
         //Text("Data di nascita")
         /* val datePicker =
              MaterialDatePicker.Builder.datePicker()
@@ -187,19 +189,36 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
         //DATE PICKER DA IMPLEMENTARE
 
         //Spacer(modifier = Modifier.height(8.dp))
-        Text("Categoria")
+        Text(
+            text = "Categoria:",
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.Start)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         filledCategory=categoryDropdownModify(vm)
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
-        Text("Perchè lo fai?")
+        Text(
+            text = "Lo fai per?",
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.Start)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         filledProfession=professionDropdownModify(vm)
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
-        Text("A che livello artistico ti senti?")
+        Text(
+            text = "Livello di esperienza:",
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.Start)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         filledLevel=levelDropdownModify(vm)
-        Spacer(modifier = Modifier.height(20.dp))
 
-
+        Spacer(modifier = Modifier.height(30.dp))
 
         Button(
             shape = MaterialTheme.shapes.large,
@@ -234,153 +253,17 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
         })
         {
-            Text("MODIFICA")
+            Text(
+                text= "MODIFICA",
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.background
+            )
         }
     }
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun categoryDropdownModify(vm:MusaViewModel) : String{
-    val context = LocalContext.current
-    val category = arrayOf("Disegno", "Musica")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(vm.category.value.toString()) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp)
-    ) {
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            TextField(
-                value = selectedText,
-                onValueChange = {},
-                //placeholder = { Text(text = vm.category.value!!)},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor()
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                category.forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(text = item) },
-                        onClick = {
-                            selectedText = item
-                            expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
-            }
-        }
-    }
-    return selectedText
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun levelDropdownModify(vm: MusaViewModel) : String{
-    val context = LocalContext.current
-    val levels = arrayOf("Principiante", "Esperto")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(vm.level.value.toString()) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp)
-    ) {
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            TextField(
-                value = selectedText,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor()
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                levels.forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(text = item) },
-                        onClick = {
-                            selectedText = item
-                            expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
-            }
-        }
-    }
-    return selectedText
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun professionDropdownModify(vm:MusaViewModel) : String{
-    val context = LocalContext.current
-    val profession = arrayOf("Studio", "Professione", "Hobby")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(vm.professione.value.toString()) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp)
-    ) {
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            TextField(
-                value = selectedText,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor()
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                profession.forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(text = item) },
-                        onClick = {
-                            selectedText = item
-                            expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
-            }
-        }
-    }
-    return selectedText
-}
-/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun categoryDropdownModify(vm: MusaViewModel) : String{
     val context = LocalContext.current
@@ -401,9 +284,9 @@ fun categoryDropdownModify(vm: MusaViewModel) : String{
             onValueChange = {selectedText = it},
             readOnly = true,
             placeholder =
-            { Text(text = vm.category,
+            { Text(text = vm.category.value.toString(),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF775c15)
+                color = MaterialTheme.colorScheme.onPrimary
             ) },
             trailingIcon = {
                 Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
@@ -457,4 +340,163 @@ fun categoryDropdownModify(vm: MusaViewModel) : String{
         }
     }
     return selectedText
-}*/
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun levelDropdownModify(vm: MusaViewModel) : String{
+    val context = LocalContext.current
+    val levels = arrayOf("Principiante", "Esperto")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(vm.level.value.toString()) }
+
+    var textFiledSize by remember { mutableStateOf(Size.Zero) }
+
+    val icon = if (expanded){
+        painterResource(id = R.drawable.frecciasopra)
+    } else painterResource(id = R.drawable.frecciasotto)
+
+    Column(modifier = Modifier.fillMaxWidth()){
+        OutlinedTextField(
+            shape = RoundedCornerShape(15.dp),
+            value = selectedText,
+            onValueChange = {selectedText = it},
+            readOnly = true,
+            placeholder =
+            { Text(text = vm.level.value.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            ) },
+            trailingIcon = {
+                Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .clickable { expanded = !expanded }
+                        .size(20.dp))
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTrailingIconColor = Color(0xFF775c15)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    textFiledSize = coordinates.size.toSize()
+                }
+                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15.dp))
+                .border(5.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+        )
+        DropdownMenu(
+            offset = DpOffset(0.dp, (8).dp),
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textFiledSize.width.toDp() })
+                .background(MaterialTheme.colorScheme.secondary)
+                .border(5.dp, MaterialTheme.colorScheme.primaryContainer),
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            for (index in levels.indices) {
+                val item = levels[index]
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        ) },
+                    onClick = {
+                        selectedText = item
+                        expanded = false
+                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                    }
+                )
+                if (index < levels.size - 1){
+                    Divider(thickness = 3.dp, color = Color(0x1A001219))
+                }
+
+            }
+        }
+    }
+    return selectedText
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun professionDropdownModify(vm: MusaViewModel) : String{
+    val context = LocalContext.current
+    val profession = arrayOf("Studio", "Professione", "Hobby")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(vm.professione.value.toString()) }
+
+    var textFiledSize by remember { mutableStateOf(Size.Zero) }
+
+    val icon = if (expanded){
+        painterResource(id = R.drawable.frecciasopra)
+    } else painterResource(id = R.drawable.frecciasotto)
+
+    Column(modifier = Modifier.fillMaxWidth()){
+        OutlinedTextField(
+            shape = RoundedCornerShape(15.dp),
+            value = selectedText,
+            onValueChange = {selectedText = it},
+            readOnly = true,
+            placeholder =
+            { Text(text = vm.professione.value.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            ) },
+            trailingIcon = {
+                Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .clickable { expanded = !expanded }
+                        .size(20.dp))
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTrailingIconColor = Color(0xFF775c15)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    textFiledSize = coordinates.size.toSize()
+                }
+                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15.dp))
+                .border(5.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+        )
+        DropdownMenu(
+            offset = DpOffset(0.dp, (8).dp),
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textFiledSize.width.toDp() })
+                .background(MaterialTheme.colorScheme.secondary)
+                .border(5.dp, MaterialTheme.colorScheme.primaryContainer),
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            for (index in profession.indices) {
+                val item = profession[index]
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        ) },
+                    onClick = {
+                        selectedText = item
+                        expanded = false
+                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                    }
+                )
+                if (index < profession.size - 1){
+                    Divider(thickness = 3.dp, color = Color(0x1A001219))
+                }
+
+            }
+        }
+    }
+    return selectedText
+}
+
