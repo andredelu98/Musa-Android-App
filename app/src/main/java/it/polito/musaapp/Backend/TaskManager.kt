@@ -314,6 +314,7 @@ fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
 @Composable
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
+    Log.d("DATATROVATA", "sono in minor!")
     val today= LocalDate.now()
     val daysEx by vm.daysEx.observeAsState()
     val weeksEx by vm.weeksEx.observeAsState()
@@ -322,6 +323,9 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
     //var todayWeekday: Int= -1
     var used=0
     var used2=0
+
+    var daysNoTake: Int= daysList!!.size-daysEx!!
+    var skipped: Boolean=true
 
 
     val monthDays=31
@@ -332,10 +336,9 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
         var dayDistance: Int = -1
         var newDate: LocalDate= today
 
+
         var c=0
-
         Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
-
         for(j in todayWeekday..6){
 
             if(daysList!!.get(j)==true){
@@ -373,8 +376,18 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
             newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
         }
         if(taskWeekday!=-1){
-            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
-            InsertDate(vm, newDate, i)
+            if(daysNoTake!=0){
+                if(skipped){
+                    Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+                    InsertDate(vm, newDate, i)
+                    skipped=false
+                }
+                else{
+                    daysNoTake--
+                    skipped=true
+                }
+            }
+
         }
 
     }
@@ -434,7 +447,7 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
         }
 
         if(monthDays>=today.dayOfMonth+dayDistance){
-            //SIAMO ANCORA A FEBBRAIO
+            //SIAMO ANCORA NEL MESE CORRENTE
             newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
         }
         else {
