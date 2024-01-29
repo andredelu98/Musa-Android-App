@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,13 +37,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -53,7 +59,7 @@ import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun FormStart(navController: NavController, vm: MusaViewModel){
     var filledName by remember {
@@ -70,6 +76,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
     Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
     vm.setName(filledName)
     vm.setMail(filledMail)
+
 
     Box(modifier=Modifier.fillMaxSize()){
         Image(
@@ -96,6 +103,9 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     filledName = it
                 },
                 shape = RoundedCornerShape(15.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
                 placeholder =
                 { Text(text = "Nome utente",
                     style = MaterialTheme.typography.bodyLarge,
@@ -110,6 +120,8 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     containerColor = MaterialTheme.colorScheme.primary,
                     focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
                     unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    cursorColor = MaterialTheme.colorScheme.onPrimary,
+                    selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                     textColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
@@ -122,6 +134,9 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     filledMail = it
                 },
                 shape = RoundedCornerShape(15.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
                 placeholder =
                 { Text(text = "Email",
                     style = MaterialTheme.typography.bodyLarge,
@@ -140,6 +155,8 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     containerColor = MaterialTheme.colorScheme.primary,
                     focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
                     unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    cursorColor = MaterialTheme.colorScheme.onPrimary,
+                    selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                     textColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
@@ -155,7 +172,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
 
             LevelDropdown(vm)
 
-            Spacer(modifier = Modifier.height(45.dp))
+            Spacer(modifier = Modifier.height(42.dp))
 
             Button(
                 shape = MaterialTheme.shapes.large,
@@ -194,7 +211,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
 
         }
     }
-    
+
 
 }
 
@@ -317,7 +334,7 @@ fun ProfessionDropdown(vm: MusaViewModel){
                 Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .clickable { expanded = !expanded }
-                        .size(16.dp))
+                        .size(20.dp))
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -397,7 +414,7 @@ fun LevelDropdown(vm: MusaViewModel){
                 Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .clickable { expanded = !expanded }
-                        .size(16.dp))
+                        .size(20.dp))
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = MaterialTheme.colorScheme.primary,

@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -52,6 +54,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -122,6 +125,9 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 filledName = it
             },
             shape = RoundedCornerShape(15.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            ),
             placeholder =
             { Text(text = vm.name.value.toString(),
                 style = MaterialTheme.typography.bodyLarge,
@@ -136,6 +142,8 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 containerColor = MaterialTheme.colorScheme.primary,
                 focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
                 unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                cursorColor = MaterialTheme.colorScheme.onPrimary,
+                selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                 textColor = MaterialTheme.colorScheme.onPrimary
             )
         )
@@ -155,6 +163,9 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 filledMail = it
             },
             shape = RoundedCornerShape(15.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            ),
             placeholder =
             {  Text(text = vm.mail.value.toString(),
                 style = MaterialTheme.typography.bodyLarge,
@@ -173,6 +184,8 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 containerColor = MaterialTheme.colorScheme.primary,
                 focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
                 unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                cursorColor = MaterialTheme.colorScheme.onPrimary,
+                selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                 textColor = MaterialTheme.colorScheme.onPrimary
             )
         )
