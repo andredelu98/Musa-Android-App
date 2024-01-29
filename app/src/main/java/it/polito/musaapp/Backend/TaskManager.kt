@@ -72,7 +72,7 @@ fun RefreshVariablesTask(vm: MusaViewModel){
         Log.d("TASKMANAGER", "Error", it);
     }
     myRef.child("GiorniLiberi").get().addOnSuccessListener {
-        Log.d("TASKMANAGER", "GiorniLiberi ${it.value}");
+       // Log.d("TASKMANAGER", "GiorniLiberi ${it.value}");
         for ((j, i) in it.children.withIndex()) {
             if(it.value==true){
                 WorkingDays[j]=true
@@ -96,9 +96,9 @@ fun RefreshVariablesTask(vm: MusaViewModel){
     val s :MutableList<String> = mutableListOf();
     val myRefData= Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
     myRefData.get().addOnSuccessListener {
-        Log.d("DATATASKLIST", "  task list${it.value}")
+        //Log.d("DATATASKLIST", "  task list${it.value}")
         for(i in it.children) {
-            Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
+           // Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
             s.add(i.value!!.toString())
         }
         vm.createDueDateArray(s)
@@ -112,14 +112,14 @@ fun GetTask(vm: MusaViewModel){
     val categoryObs by vm.category.observeAsState()
     val levelObs by vm.level.observeAsState()
     val list: MutableList<String> = mutableListOf();
-    Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value}");
+   // Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value}");
 
     if(!categoryObs.isNullOrEmpty() &&!levelObs.isNullOrEmpty()){
         val myRef= Firebase.database.getReference("Esercizi").child(vm.category.value!!).child(vm.level.value!!)
         myRef.get().addOnSuccessListener {
-            Log.d("TASKMANAGER", "  task list${it.value}")
+          //  Log.d("TASKMANAGER", "  task list${it.value}")
             for(i in it.children) {
-                Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
+              //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
                 list.add(i.value!!.toString())
             }
             vm.setTaskList(list)
@@ -282,7 +282,7 @@ fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
 
         var c=0
 
-        Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
+       // Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
 
         for(j in todayWeekday..6){
 
@@ -317,11 +317,11 @@ fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
         }
         else {
             //MESE SUCCESSIVO
-            Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
+          //  Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
             newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
         }
         if(taskWeekday!=-1){
-            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+           // Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
             InsertDate(vm, newDate, i)
         }
 
@@ -331,7 +331,7 @@ fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
 @Composable
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
-    Log.d("DATATROVATA", "sono in minor!")
+   // Log.d("DATATROVATA", "sono in minor!")
     val today= LocalDate.now()
     val daysEx by vm.daysEx.observeAsState()
     val weeksEx by vm.weeksEx.observeAsState()
@@ -355,7 +355,7 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
 
 
         var c=0
-        Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
+       // Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
         for(j in todayWeekday..6){
 
             if(daysList!!.get(j)==true){
@@ -371,7 +371,7 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
         if(taskWeekday== -1){
             for(j in 0..todayWeekday){
                 if(daysList!!.get(j)==true && taskWeekday==-1){
-                    Log.d("DATATROVATA", "il giorno è  $j")
+                  //  Log.d("DATATROVATA", "il giorno è  $j")
                     if(c2>=used2) {
                         taskWeekday = j
                         dayDistance = 7 - todayWeekday + taskWeekday
@@ -389,13 +389,13 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
         }
         else {
             //MESE SUCCESSIVO
-            Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
+          //  Log.d("DATATROVATA", "daydist $dayDistance month $monthDays today ${today.dayOfMonth}")
             newDate= LocalDate.of(today.year, today.month+1, dayDistance-(monthDays-today.dayOfMonth))
         }
         if(taskWeekday!=-1){
             if(daysNoTake!=0){
                 if(skipped){
-                    Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+                //    Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
                     InsertDate(vm, newDate, i)
                     skipped=false
                 }
@@ -434,7 +434,7 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
 
         var c=0
 
-        Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
+       // Log.d("DATATROVATA", "Sono nell'if, c $c, used $used, todayweekday $todayWeekday")
 
         for(j in todayWeekday..6){
 
@@ -451,7 +451,7 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
         if(taskWeekday== -1){
             for(j in 0..todayWeekday){
                 if(daysList!!.get(j)==true && taskWeekday==-1){
-                    Log.d("DATATROVATA", "il giorno è  $j")
+               //     Log.d("DATATROVATA", "il giorno è  $j")
                     if(c2>=used2) {
                         taskWeekday = j
                         dayDistance = 7 - todayWeekday + taskWeekday
@@ -474,7 +474,7 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
 
 
         if(taskWeekday!=-1){
-            Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
+           // Log.d("DATATROVATA", "TASK WEEKDAY = ${weekdays[taskWeekday]}, mancano $dayDistance alla fine del task")
             InsertDate(vm, newDate, i)
         }
 
@@ -483,7 +483,7 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
 }
 fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
 
-    Log.d("DATATROVATA", "$d +  $task}")
+  //  Log.d("DATATROVATA", "$d +  $task}")
     Firebase.database.getReference("ModuloEsercizi").child("Scadenze").child("Task${task+1}").setValue(d.toString())
 }
 
@@ -492,9 +492,9 @@ fun SaveInViewModel(vm: MusaViewModel){
     val s :MutableList<String> = mutableListOf();
     val myRef= Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
     myRef.get().addOnSuccessListener {
-        Log.d("DATATASKLIST", "  task list${it.value}")
+      //  Log.d("DATATASKLIST", "  task list${it.value}")
         for(i in it.children) {
-            Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
+         //   Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
             s.add(i.value!!.toString())
         }
         vm.createDueDateArray(s)

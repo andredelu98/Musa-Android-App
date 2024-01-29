@@ -118,4 +118,13 @@ class MusaViewModel : ViewModel() {
     fun createDueDateArray(s: MutableList<String>){
        _taskDueDate.value=s
     }
+
+
+    //PROGETTI
+
+    private var _projectList= MutableLiveData<List<SingleProject>>()
+    var projectList: LiveData<List<SingleProject>> = _projectList
+    fun addNewProject(s: SingleProject){
+        _projectList.value = _projectList.value?.plus(s)
+    }
 }

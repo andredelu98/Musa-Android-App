@@ -251,6 +251,7 @@ fun DeleteProfile(){
     Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante")
     Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue(0)
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
+    Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(0)
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6){
         Firebase.database.getReference("ModuloEsercizi")

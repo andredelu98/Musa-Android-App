@@ -2,7 +2,9 @@ package it.polito.musaapp.Backend
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +49,7 @@ import it.polito.musaapp.Frontend.HelpPage
 import it.polito.musaapp.Frontend.ModifyExercise
 import it.polito.musaapp.Frontend.ModifyPlanExercise
 import it.polito.musaapp.Frontend.ModifyProfile
+import it.polito.musaapp.Frontend.NewProject
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
 import it.polito.musaapp.Frontend.TaskFinished
@@ -56,6 +59,7 @@ import it.polito.musaapp.Frontend.TaskReference
 import it.polito.musaapp.Frontend.WelcomePage
 import it.polito.musaapp.Screens
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -136,7 +140,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             }
             composable(route = Screens.ProjectPage.name)
             {
-                ProjectPage(navController)
+                ProjectPage(navController, vm)
                 //Access(auth,auth.currentUser!!, login, navController)
             }
             composable(route = Screens.ProfilePage.name)
@@ -188,6 +192,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             }
             composable(route=Screens.ModifyPlanExercise.name){
                 ModifyPlanExercise(navController = navController, vm)
+            }
+            composable(route=Screens.NewProject.name){
+                NewProject(navController = navController, vm)
             }
         }
     }
