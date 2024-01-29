@@ -8,19 +8,23 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -40,6 +45,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 
@@ -55,9 +61,9 @@ fun HelpPage(navController: NavController, musaViewModel: MusaViewModel,
 @Composable
 fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(top=20.dp)
             .background(MaterialTheme.colorScheme.background)
     ){
         var isPulsating by remember { mutableStateOf(true) }
@@ -71,14 +77,36 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                 animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
                 repeatMode = RepeatMode.Reverse), label = ""
         )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp, vertical = 16.dp)
+        ){
+            Box(modifier = Modifier.size(45.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.loghetto),
+                contentDescription = null,
+                modifier = Modifier.size(85.dp)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.info),
+                contentDescription = null,
+                modifier = Modifier.size(45.dp)
+            )
+        }
+        //Spacer(modifier = Modifier.height(50.dp))
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize().padding(top = 25.dp, bottom = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center)
+            verticalArrangement = Arrangement.SpaceEvenly)
         {
             Box(modifier = Modifier
-                .size(300.dp)
+                .size(310.dp)
                 .graphicsLayer(
                     scaleX = if (isPulsating) scale else 1.0f,
                     scaleY = if (isPulsating) scale else 1.0f
@@ -107,7 +135,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                         }
                     },
                     modifier = Modifier
-                        .size(300.dp)  // Imposta un valore fisso per larghezza e altezza
+                        .size(310.dp)  // Imposta un valore fisso per larghezza e altezza
                         .graphicsLayer(
                             scaleX = if (isPulsating) scale else 1.0f,
                             scaleY = if (isPulsating) scale else 1.0f
@@ -132,7 +160,6 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(40.dp))
             Text(
                 text="Crea un nuovo progetto personale",
                 style = MaterialTheme.typography.headlineMedium,
