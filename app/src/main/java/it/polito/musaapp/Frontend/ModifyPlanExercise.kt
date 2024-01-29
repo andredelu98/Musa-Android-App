@@ -1,8 +1,10 @@
 package it.polito.musaapp.Frontend
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -40,102 +42,128 @@ import it.polito.musaapp.Screens
 @Composable
 fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
     Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp, vertical = 80.dp)
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        Text(
-            text = "Modifica piano di esercizi",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(12.dp))
         Row(
-            modifier = Modifier
-                .height(80.dp)
-                .fillMaxWidth()
-                .clickable {
-                    navController.navigate(Screens.ModifyExercise.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
-            Text(
-                text = "Modifica la durata del piano di esercizi" ,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.width(300.dp)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.frecciadx),
-                contentDescription = "",
-                modifier = Modifier.size(30.dp)
-            )
-        }
-
-        Divider(thickness = 3.dp, color = Color(0x1A001219))
-
-        Row(
             modifier = Modifier
-                .height(80.dp)
                 .fillMaxWidth()
-                .clickable {
-                    navController.navigate(Screens.ModifyExercise.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
-            Text(
-                text = "Modifica giorni e orari delle notifiche" ,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.width(300.dp)
-            )
+                .padding(top = 22.dp, bottom = 0.dp, start = 22.dp, end = 22.dp)
+        ){
             Icon(
-                painter = painterResource(id = R.drawable.frecciadx),
-                contentDescription = "",
-                modifier = Modifier.size(30.dp)
+                painter = painterResource(id = R.drawable.back_arrow),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
             )
+            Box(modifier = Modifier.size(40.dp))
+
+            Box(modifier = Modifier.size(40.dp))
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Button(
-            shape = MaterialTheme.shapes.large,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
+        Column(
             modifier = Modifier
-                .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
-            ,
-            onClick={
-                DeletePlanExercise(vm)
-                navController.navigate(Screens.HelpPage.name) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                .fillMaxSize()
+                .padding(horizontal = 25.dp, vertical = 16.dp)
+        ) {
+            Text(
+                text = "Modifica piano di esercizi",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier
+                    .height(80.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        navController.navigate(Screens.ModifyExercise.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+                Text(
+                    text = "Modifica la durata del piano di esercizi" ,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.width(300.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.frecciadx),
+                    contentDescription = "",
+                    modifier = Modifier.size(30.dp)
+                )
             }
-        ){ Text(
-            text = "Elimina piano di esercizi",
-            style = MaterialTheme.typography.headlineSmall,
-            fontSize = 20.sp,
-            modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
-        )}
 
+            Divider(thickness = 3.dp, color = Color(0x1A001219))
+
+            Row(
+                modifier = Modifier
+                    .height(80.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        navController.navigate(Screens.ModifyExercise.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+                Text(
+                    text = "Modifica giorni e orari delle notifiche" ,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.width(300.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.frecciadx),
+                    contentDescription = "",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                shape = MaterialTheme.shapes.large,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+                modifier = Modifier
+                    .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
+                ,
+                onClick={
+                    DeletePlanExercise(vm)
+                    navController.navigate(Screens.HelpPage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            ){ Text(
+                text = "Elimina piano di esercizi",
+                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 20.sp,
+                modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
+            )}
+
+        }
     }
+
 }
 

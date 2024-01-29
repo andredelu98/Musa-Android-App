@@ -1,11 +1,21 @@
 package it.polito.musaapp.Frontend
 
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,7 +23,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -21,6 +33,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 /*TASK PAGE BACKUP
@@ -87,9 +100,36 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
     val nextTask by vm.nextTask.observeAsState()
     Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
     //Log.d ("TASKPAGE", " $taskCounter, next $nextTask" )
-    Column {
-        Row(){
-            //ICONE CALENDARIO E MODIFICA
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp, vertical = 16.dp)
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.back_arrow),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.loghetto),
+                contentDescription = null,
+                modifier = Modifier.size(85.dp)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.pencil),
+                contentDescription = null,
+                modifier = Modifier.size(45.dp)
+            )
         }
         Text(
             "Task ${taskCounter}/ ${vm.weeksEx.value!!*vm.daysEx.value!!}"

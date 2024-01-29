@@ -45,6 +45,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 
 
 fun GetReferenceTask(vm: MusaViewModel){
@@ -73,24 +74,30 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(70.dp)
-        ) {
-            Text(
-                text = "Top bar con back arrow e logo",
-                style = MaterialTheme.typography.headlineMedium,
+                .padding(horizontal = 22.dp, vertical = 16.dp)
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.back_arrow),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
             )
-        }
+            Image(
+                painter = painterResource(id = R.drawable.loghetto),
+                contentDescription = null,
+                modifier = Modifier.size(85.dp)
+            )
 
+            Box(modifier = Modifier.size(45.dp))
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(top = 8.dp)
         )
         {
             Row {
@@ -101,8 +108,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             }
 
             /*TODO() Aggiungere dropdown per filtrare le reference?*/
-
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(2),
                 modifier = Modifier.fillMaxSize(),

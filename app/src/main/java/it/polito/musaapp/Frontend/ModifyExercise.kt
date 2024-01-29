@@ -3,6 +3,7 @@ package it.polito.musaapp.Frontend
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -80,15 +81,36 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
 
 
 
-    Box(
-        modifier = Modifier
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier= Modifier
             .fillMaxSize()
-            .padding(top = 120.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
     ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp, vertical = 16.dp)
+        ){
+            Box(modifier = Modifier.size(45.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.loghetto),
+                contentDescription = null,
+                modifier = Modifier.size(85.dp)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.info),
+                contentDescription = null,
+                modifier = Modifier.size(45.dp)
+            )
+        }
         Box( //box effettivo
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 10.dp)
+                .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(20.dp)

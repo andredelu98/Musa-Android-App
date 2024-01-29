@@ -7,8 +7,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -98,181 +100,209 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
     // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
     // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
     // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 25.dp, vertical = 25.dp)
-            .verticalScroll(rememberScrollState())
-    ){
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Modifica profilo",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "Nome:",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = filledName,
-            onValueChange = {
-                filledName = it
-            },
-            shape = RoundedCornerShape(15.dp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            placeholder =
-            { Text(text = vm.name.value.toString(),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-            },
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .border(5.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
-                .fillMaxWidth(),
-
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                cursorColor = MaterialTheme.colorScheme.onPrimary,
-                selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
-                textColor = MaterialTheme.colorScheme.onPrimary
+                .fillMaxWidth()
+                .padding(top = 22.dp, bottom = 0.dp, start = 22.dp, end = 22.dp)
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.back_arrow),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
             )
-        )
-        Spacer(modifier = Modifier.height(18.dp))
+            Box(modifier = Modifier.size(40.dp))
 
-        Text(
-            text = "Mail:",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = filledMail,
-            onValueChange = {
-                filledMail = it
-            },
-            shape = RoundedCornerShape(15.dp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            placeholder =
-            {  Text(text = vm.mail.value.toString(),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-            },
-            modifier = Modifier
-                .border(
-                    5.dp,
-                    MaterialTheme.colorScheme.primaryContainer,
-                    RoundedCornerShape(15.dp)
-                )
-                .fillMaxWidth(),
-
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                cursorColor = MaterialTheme.colorScheme.onPrimary,
-                selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
-                textColor = MaterialTheme.colorScheme.onPrimary
-            )
-        )
-        Spacer(modifier = Modifier.height(18.dp))
-        //Text("Data di nascita")
-        /* val datePicker =
-             MaterialDatePicker.Builder.datePicker()
-                 .setTitleText("SelezionaData")
-                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                 .build()
-
-         datePicker.isVisible*/
-
-        //DATE PICKER DA IMPLEMENTARE
-
-        //Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Categoria:",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        filledCategory=categoryDropdownModify(vm)
-        Spacer(modifier = Modifier.height(18.dp))
-
-        Text(
-            text = "Lo fai per?",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        filledProfession=professionDropdownModify(vm)
-        Spacer(modifier = Modifier.height(18.dp))
-
-        Text(
-            text = "Livello di esperienza:",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        filledLevel=levelDropdownModify(vm)
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Button(
-            shape = MaterialTheme.shapes.large,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            modifier = Modifier
-                .width(180.dp),
-            onClick = {
-            if(filledName!=""){
-                Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
-                vm.setName(filledName)
-            }
-            if(filledMail!=""){
-                Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
-                vm.setMail(filledMail)
-            }
-            Firebase.database.getReference("ModuloStart").child("Categoria").setValue(filledCategory);
-            Firebase.database.getReference("ModuloStart").child("Livello").setValue(filledLevel);
-            Firebase.database.getReference("ModuloStart").child("Professione").setValue(filledProfession);
-            vm.setCategory(filledCategory)
-            vm.setLevel(filledLevel)
-            vm.setProfessione(filledProfession)
-
-            navController.navigate(Screens.ProfilePage.name) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
-            Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
-        })
-        {
+            Box(modifier = Modifier.size(40.dp))
+        }
+        Row {
             Text(
-                text= "MODIFICA",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.background
+                text = "Modifica profilo",
+                style = MaterialTheme.typography.headlineMedium
             )
         }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 25.dp)
+                .verticalScroll(rememberScrollState())
+        ){
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Nome:",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = filledName,
+                onValueChange = {
+                    filledName = it
+                },
+                shape = RoundedCornerShape(15.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                placeholder =
+                { Text(text = vm.name.value.toString(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+                },
+                modifier = Modifier
+                    .border(
+                        5.dp,
+                        MaterialTheme.colorScheme.primaryContainer,
+                        RoundedCornerShape(15.dp)
+                    )
+                    .fillMaxWidth(),
+
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    cursorColor = MaterialTheme.colorScheme.onPrimary,
+                    selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
+                    textColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = "Mail:",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = filledMail,
+                onValueChange = {
+                    filledMail = it
+                },
+                shape = RoundedCornerShape(15.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                placeholder =
+                {  Text(text = vm.mail.value.toString(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+                },
+                modifier = Modifier
+                    .border(
+                        5.dp,
+                        MaterialTheme.colorScheme.primaryContainer,
+                        RoundedCornerShape(15.dp)
+                    )
+                    .fillMaxWidth(),
+
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    cursorColor = MaterialTheme.colorScheme.onPrimary,
+                    selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
+                    textColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+            Spacer(modifier = Modifier.height(18.dp))
+            //Text("Data di nascita")
+            /* val datePicker =
+                 MaterialDatePicker.Builder.datePicker()
+                     .setTitleText("SelezionaData")
+                     .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                     .build()
+
+             datePicker.isVisible*/
+
+            //DATE PICKER DA IMPLEMENTARE
+
+            //Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Categoria:",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            filledCategory=categoryDropdownModify(vm)
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = "Lo fai per?",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            filledProfession=professionDropdownModify(vm)
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = "Livello di esperienza:",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            filledLevel=levelDropdownModify(vm)
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Button(
+                shape = MaterialTheme.shapes.large,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                modifier = Modifier
+                    .width(185.dp),
+                onClick = {
+                    if(filledName!=""){
+                        Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
+                        vm.setName(filledName)
+                    }
+                    if(filledMail!=""){
+                        Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
+                        vm.setMail(filledMail)
+                    }
+                    Firebase.database.getReference("ModuloStart").child("Categoria").setValue(filledCategory);
+                    Firebase.database.getReference("ModuloStart").child("Livello").setValue(filledLevel);
+                    Firebase.database.getReference("ModuloStart").child("Professione").setValue(filledProfession);
+                    vm.setCategory(filledCategory)
+                    vm.setLevel(filledLevel)
+                    vm.setProfessione(filledProfession)
+
+                    navController.navigate(Screens.ProfilePage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                    Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
+                })
+            {
+                Text(
+                    text= "MODIFICA",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.background
+                )
+            }
+        }
     }
+
 
 }
 

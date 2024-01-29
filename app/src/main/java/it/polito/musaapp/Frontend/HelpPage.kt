@@ -162,7 +162,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
             }
             Text(
                 text="Crea un nuovo progetto personale",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 textDecoration = TextDecoration.Underline,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

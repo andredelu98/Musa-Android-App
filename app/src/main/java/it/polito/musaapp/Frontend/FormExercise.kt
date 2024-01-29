@@ -68,15 +68,36 @@ import it.polito.musaapp.Screens
 @Composable
 fun FormExercise(navController: NavController, vm: MusaViewModel){
     val context = LocalContext.current
-    Box(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier= Modifier
             .fillMaxSize()
-            .padding(top = 120.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
     ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp, vertical = 16.dp)
+        ){
+            Box(modifier = Modifier.size(45.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.loghetto),
+                contentDescription = null,
+                modifier = Modifier.size(85.dp)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.info),
+                contentDescription = null,
+                modifier = Modifier.size(45.dp)
+            )
+        }
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 10.dp)
+                .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(20.dp)

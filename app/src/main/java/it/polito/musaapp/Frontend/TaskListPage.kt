@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -42,6 +45,7 @@ import it.polito.musaapp.Backend.CalculateDueDates
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 import java.time.LocalDate
 
@@ -57,100 +61,131 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
     if(taskList!=null) {
         CalculateDueDates(vm)
 
-
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(36.dp).verticalScroll(rememberScrollState())
+            modifier= Modifier
+                .fillMaxSize()
         ) {
-            Text(
-                text = "I TUOI ESERCIZI",
-                style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            if(taskList!!.count()>(vm.weeksEx.value!!*vm.daysEx.value!!)){
-                taskToDisplay=(vm.weeksEx.value!!*vm.daysEx.value!!)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 16.dp)
+            ){
+                Box(modifier = Modifier.size(45.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.loghetto),
+                    contentDescription = null,
+                    modifier = Modifier.size(85.dp)
+                )
+
+                Icon(
+                    painter = painterResource(id = R.drawable.pencil),
+                    contentDescription = null,
+                    modifier = Modifier.size(45.dp)
+                )
             }
-            else{
-                taskToDisplay=taskList!!.count()
-            }
-            for (i in vm.taskCompleted.value!! until taskToDisplay) {
-                //vm.setNextTask(i)
-                //vm.setTaskCounter(i)
-                Card(
-                    shape = RoundedCornerShape(15.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor= MaterialTheme.colorScheme.onPrimary,
-                    ),
-                    border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
-                    modifier = Modifier.clickable {
-                       // Log.d("I_TASK", "${i+1}.toString()")
-                        vm.setTaskCounter(i+1)
-                        vm.setNextTask(i)
-                       // Log.d("I_TASK", "next ${vm.nextTask.value}")
-                        navController.navigate(Screens.TaskPage.name) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(top = 8.dp, start = 36.dp, end = 36.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    text = "I TUOI ESERCIZI",
+                    style = MaterialTheme.typography.headlineMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                if(taskList!!.count()>(vm.weeksEx.value!!*vm.daysEx.value!!)){
+                    taskToDisplay=(vm.weeksEx.value!!*vm.daysEx.value!!)
+                }
+                else{
+                    taskToDisplay=taskList!!.count()
+                }
+                for (i in vm.taskCompleted.value!! until taskToDisplay) {
+                    //vm.setNextTask(i)
+                    //vm.setTaskCounter(i)
+                    Card(
+                        shape = RoundedCornerShape(15.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor= MaterialTheme.colorScheme.onPrimary,
+                        ),
+                        border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
+                        modifier = Modifier.clickable {
+                            // Log.d("I_TASK", "${i+1}.toString()")
+                            vm.setTaskCounter(i+1)
+                            vm.setNextTask(i)
+                            // Log.d("I_TASK", "next ${vm.nextTask.value}")
+                            navController.navigate(Screens.TaskPage.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
-                    }
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
-                            .height(90.dp)
-                            .fillMaxWidth()
-                    ){
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.primaryContainer,
-                                        shape = CircleShape
-                                    ),
-                                contentAlignment = Alignment.Center
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                                .height(90.dp)
+                                .fillMaxWidth()
+                        ){
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxSize()
                             ) {
-                                Text(
-                                    text = "${i+1}",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    textAlign = TextAlign.Center,
+                                Box(
                                     modifier = Modifier
-                                        .fillMaxSize()
-                                        .offset(x = 0.dp, y = 3.dp)
+                                        .size(50.dp)
+                                        .background(
+                                            color = MaterialTheme.colorScheme.primaryContainer,
+                                            shape = CircleShape
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "${i+1}",
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .offset(x = 0.dp, y = 3.dp)
+                                    )
+                                }
+                                val truncatedText = if (vm.TaskList.value!!.get(i).length > 35) {
+                                    "${vm.TaskList.value!!.get(i).take(42)}..."
+                                } else {
+                                    vm.TaskList.value!!.get(i)
+                                }
+                                Text(
+                                    text = truncatedText,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.width(230.dp)
                                 )
                             }
-                            val truncatedText = if (vm.TaskList.value!!.get(i).length > 35) {
-                                "${vm.TaskList.value!!.get(i).take(42)}..."
-                            } else {
-                                vm.TaskList.value!!.get(i)
-                            }
-                            Text(
-                                text = truncatedText,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.width(230.dp)
-                            )
+                            if(vm.taskDueDate.isInitialized)
+                                Text(
+                                    text = vm.taskDueDate.value!!.get(i),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.align(Alignment.BottomEnd)
+                                )
                         }
-                        if(vm.taskDueDate.isInitialized)
-                            Text(
-                                text = vm.taskDueDate.value!!.get(i),
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.align(Alignment.BottomEnd)
-                            )
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
+
+
+
+
 
     }
 }
