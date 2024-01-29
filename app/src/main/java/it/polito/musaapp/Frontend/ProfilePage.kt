@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -227,6 +228,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
+        /*
         Button(
             shape = MaterialTheme.shapes.large,
             colors = ButtonDefaults.buttonColors(
@@ -234,11 +236,12 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
             ),
             modifier = Modifier
                 .width(140.dp)
+                .height(IntrinsicSize.Min)
                 .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
             ,
             onClick = { /*TODO()*/ }
-        ){ Text(text = "Log out", style = MaterialTheme.typography.headlineSmall)}
-
+        ){ Text(text = "Log out", style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)}
+*/
     }
 }
 
