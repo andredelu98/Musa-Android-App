@@ -2,10 +2,33 @@ package it.polito.musaapp.Frontend
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.firebase.Firebase
@@ -31,23 +54,58 @@ fun GetReferenceTask(vm: MusaViewModel){
     }.addOnFailureListener {
         Log.d("TASKMANAGER", "Error", it);
     }
-
-
 }
 @Composable
 fun TaskReference(navController: NavController, vm:MusaViewModel) {
     //val storageRef = FirebaseStorage.getInstance().getReference("ReferenceTask1Arte")
     val list by vm.referenceListUrl.observeAsState()
-    Column(){
-        for(i in list!!){
-            AsyncImage(
-                model = i,
+
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        list?.forEachIndexed { index, imageUrl ->
+            item(index) {
+                ImageWithHeart(imageUrl = imageUrl)
+            }
+        }
+    }
+}
+@Composable
+fun ImageWithHeart(imageUrl: String) {
+    var isLiked by remember { mutableStateOf(false) }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(8.dp)
+    )
+    {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+            )
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .padding(8.dp)
+                .clickable {
+                    isLiked = !isLiked
+                }
+                .align(Alignment.TopEnd)
+        ) {
+            Icon(
+                Icons.Filled.Favorite,
                 contentDescription = null,
+                tint = if (isLiked) Color.Red else MaterialTheme.colorScheme.background,
+                modifier = Modifier.fillMaxSize()
             )
         }
     }
-
-
-
-
 }
+
+
+
+
