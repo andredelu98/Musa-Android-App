@@ -124,7 +124,15 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp)
+                modifier = Modifier.size(35.dp).clickable {
+                    navController.navigate(Screens.TaskListPage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
 
             Image(
@@ -136,7 +144,15 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.pencil),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(40.dp).clickable {
+                    navController.navigate(Screens.ModifyExercise.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
         }
         Column(
@@ -154,9 +170,9 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                     painter = painterResource(id = R.drawable.frecciasx),
                     contentDescription = null,
                     modifier = Modifier.size(26.dp).clickable {
-                        if(taskCounter!=1){
-                            vm.setNextTask(vm.taskCounter.value!!-1)
-                            vm.setTaskCounter(vm.taskCounter.value!!)
+                        if(taskCounter!=1&&taskCounter!!>taskCompleted!!+1){
+                            vm.setTaskCounter(taskCounter!!-1)
+                            vm.setNextTask(taskCounter!!-1)
                         }
                     }
                 )
@@ -170,9 +186,10 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                     painter = painterResource(id = R.drawable.frecciadx),
                     contentDescription = null,
                     modifier = Modifier.size(26.dp).clickable {
-                        if(taskCounter!!>=7){
-                            vm.setNextTask(vm.taskCounter.value!!)
-                            vm.setTaskCounter(vm.taskCounter.value!!+1)
+                        //RIVEDERE CONDIZIONI FINE
+                        if(taskCounter!!< 6 || taskCounter!! < vm.weeksEx.value!!*vm.daysEx.value!!){
+                            vm.setNextTask(taskCounter!!)
+                            vm.setTaskCounter(taskCounter!!+1)
                         }
                     }
                 )

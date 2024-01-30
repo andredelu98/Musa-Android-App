@@ -84,7 +84,15 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                 Icon(
                     painter = painterResource(id = R.drawable.pencil),
                     contentDescription = null,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp).clickable {
+                        navController.navigate(Screens.ModifyExercise.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 )
             }
             Column(

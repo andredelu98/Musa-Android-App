@@ -57,7 +57,15 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp)
+                modifier = Modifier.size(35.dp).clickable {
+                    navController.navigate(Screens.ProfilePage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
             Box(modifier = Modifier.size(35.dp))
 
