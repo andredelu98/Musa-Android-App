@@ -25,13 +25,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +50,19 @@ import it.polito.musaapp.Screens
 @Composable
 fun ProfilePage(navController: NavController, vm:MusaViewModel) {
     val nameProfile= vm.name.observeAsState()
+
+    val context = LocalContext.current
+
+    val myRefTask = Firebase.database.getReference("ModuloEsercizi")
+    var taskInserito by remember {
+        mutableStateOf(false)
+    }
+    myRefTask.child("Inserito").get().addOnSuccessListener {
+        taskInserito = it.value.toString().toBoolean()
+    }.addOnFailureListener {
+        Log.d("FORM", "Error", it);
+    }
+
     Column (
         modifier= Modifier
             .fillMaxSize()
@@ -58,8 +74,8 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 Log.d("FORM", "valori ${it.value}");
                 vm.setName(it.value.toString())
             }.addOnFailureListener {
-                    Log.d("FORM", "Error", it);
-                }
+                Log.d("FORM", "Error", it);
+            }
         }
 
         Text(
@@ -105,13 +121,24 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .height(75.dp)
                 .fillMaxWidth()
                 .clickable {
-                    navController.navigate(Screens.ModifyPlanExercise.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (taskInserito){
+                        navController.navigate(Screens.ModifyPlanExercise.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    }else{
+                        navController.navigate(Screens.ModifyExerciseEmpty.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
+
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

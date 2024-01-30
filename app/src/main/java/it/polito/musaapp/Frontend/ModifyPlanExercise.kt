@@ -66,7 +66,7 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 25.dp, vertical = 16.dp)
+                .padding(horizontal = 25.dp)
         ) {
             Text(
                 text = "Modifica piano di esercizi",

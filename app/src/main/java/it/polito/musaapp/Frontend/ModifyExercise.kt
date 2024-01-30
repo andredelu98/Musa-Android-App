@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -62,28 +63,26 @@ var weeks: Int = -1
 var daysL: MutableList<Boolean> = mutableListOf(false, false, false, false, false, false, false)
 
 @Composable
-fun ModifyExercise(navController: NavController, vm: MusaViewModel){
+fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
     val context = LocalContext.current
 
-    val myRefTask=Firebase.database.getReference("ModuloEsercizi")
+    val myRefTask = Firebase.database.getReference("ModuloEsercizi")
     var taskInserito by remember {
         mutableStateOf(false)
     }
     myRefTask.child("Inserito").get().addOnSuccessListener {
-        taskInserito=it.value.toString().toBoolean()
+        taskInserito = it.value.toString().toBoolean()
     }.addOnFailureListener {
         Log.d("FORM", "Error", it);
     }
 
-    dayPerWeek= vm.daysEx.value!!
-    weeks=vm.weeksEx.value!!
-    daysL=vm.getDaysListEx()
-
-
+    dayPerWeek = vm.daysEx.value!!
+    weeks = vm.weeksEx.value!!
+    daysL = vm.getDaysListEx()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier= Modifier
+        modifier = Modifier
             .fillMaxSize()
     ) {
         Row(
@@ -91,22 +90,23 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 22.dp, vertical = 16.dp)
+                .padding(top = 22.dp, bottom = 0.dp, start = 22.dp, end = 22.dp)
         ){
-            Box(modifier = Modifier.size(45.dp))
-
-            Image(
-                painter = painterResource(id = R.drawable.loghetto),
-                contentDescription = null,
-                modifier = Modifier.size(85.dp)
-            )
-
             Icon(
-                painter = painterResource(id = R.drawable.info),
+                painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier.size(35.dp)
             )
+            Box(modifier = Modifier.size(35.dp))
+
+            Box(modifier = Modifier.size(35.dp))
         }
+        Text(
+            text = "Modifica durata del piano",
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
         Box( //box effettivo
             modifier = Modifier
                 .fillMaxSize()
@@ -131,142 +131,16 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                     )
             )
             {
-                if(taskInserito)
-                {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Icon(
-                        Icons.Filled.Close,
-                        contentDescription = "Close",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .size(44.dp)
-                            .align(Alignment.End)
-                            .clickable {
-                                navController.navigate(Screens.ModifyPlanExercise.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                    )
-                    Text(
-                        text = "Programma quando vuoi ricevere gli esercizi",
-                        style = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Divider(
-                        color = Color(0XFFD68D02),
-                        thickness = 4.dp,
-                        modifier = Modifier.width(200.dp)
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = "Quanti giorni a settimana?",
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    SelettoreCountGiorniModify(vm)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider(
-                        color = Color(0XFFD68D02),
-                        thickness = 4.dp,
-                        modifier = Modifier.width(200.dp)
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = "Quali giorni preferisci?",
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    SelettoreGiorniModify(vm)
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Divider(
-                        color = Color(0XFFD68D02),
-                        thickness = 4.dp,
-                        modifier = Modifier.width(200.dp)
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = "Per quante settimane?",
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    SelettoreCountSettimaneModify(vm)
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Button(
-                        shape = MaterialTheme.shapes.large,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        modifier = Modifier
-                            .width(160.dp),
-                        onClick = {
-                            //RefreshVariablesTask()
-
-                            var i =0
-                            for(j in 0..6){
-                                if(daysL.get(j)==true)
-                                    i++
-                            }
-                            if(dayPerWeek!=i){
-                                Toast.makeText(context, "Inserisci il numero corretto di giorni", Toast.LENGTH_SHORT).show()
-                            }
-                            else{
-                                SaveChanges(vm)
-                                Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
-                                Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
-                                navController.navigate(Screens.TaskListPage.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                    setRoute(Screens.TaskListPage.name)
-
-                                }
-                            }
-                        }
-                    ) {
-                        Text(
-                            text = "AVVIA",
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = MaterialTheme.colorScheme.background
-                        )
-                    }
-                }
-                else{
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Icon(
-                        Icons.Filled.Close,
-                        contentDescription = "Close",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .size(44.dp)
-                            .align(Alignment.End)
-                            .clickable {
-                                navController.navigate(Screens.ModifyPlanExercise.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                    )
-                    Text("Non hai nessun piano attivo al momento")
-                    Text("Crea un nuovo piano di esercizi")
-                    Button(
-                        onClick={
-                            navController.navigate(Screens.HelpPage.name) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Icon(
+                    Icons.Filled.Close,
+                    contentDescription = "Close",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .size(44.dp)
+                        .align(Alignment.End)
+                        .clickable {
+                            navController.navigate(Screens.ModifyPlanExercise.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
@@ -274,14 +148,110 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel){
                                 restoreState = true
                             }
                         }
-                    ){
-                        Text("Nuovo piano")
+                )
+                Text(
+                    text = "Programma quando vuoi ricevere gli esercizi",
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(14.dp))
+                Divider(
+                    color = Color(0XFFD68D02),
+                    thickness = 4.dp,
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Quanti giorni a settimana?",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                SelettoreCountGiorniModify(vm)
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider(
+                    color = Color(0XFFD68D02),
+                    thickness = 4.dp,
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Quali giorni preferisci?",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                SelettoreGiorniModify(vm)
+                Spacer(modifier = Modifier.height(20.dp))
+                Divider(
+                    color = Color(0XFFD68D02),
+                    thickness = 4.dp,
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Per quante settimane?",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                SelettoreCountSettimaneModify(vm)
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    shape = MaterialTheme.shapes.large,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    modifier = Modifier
+                        .width(160.dp),
+                    onClick = {
+                        //RefreshVariablesTask()
+
+                        var i = 0
+                        for (j in 0..6) {
+                            if (daysL.get(j) == true)
+                                i++
+                        }
+                        if (dayPerWeek != i) {
+                            Toast.makeText(
+                                context,
+                                "Inserisci il numero corretto di giorni",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            SaveChanges(vm)
+                            Firebase.database.getReference("ModuloEsercizi").child("Inserito")
+                                .setValue(true);
+                            Firebase.database.getReference("ModuloEsercizi")
+                                .child("TaskCompletati").setValue(0);
+                            navController.navigate(Screens.TaskListPage.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                                setRoute(Screens.TaskListPage.name)
+                            }
+                        }
                     }
+                ) {
+                    Text(
+                        text = "MODIFICA",
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.background
+                    )
                 }
             }
         }
     }
+
+
 }
+
+
 
 @Composable
 fun SelettoreCountGiorniModify(vm: MusaViewModel){
@@ -309,8 +279,8 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
         count=vm.daysEx.value!!
     }
     dayPerWeek=count
-  //  Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
-   // vm.setDaysEx(count)
+    //  Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue("$count");
+    // vm.setDaysEx(count)
     Row(modifier = Modifier
         .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -398,7 +368,7 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
             text = count.toString(),
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 32.sp
-            )
+        )
 
         Button(
             onClick = {
@@ -471,12 +441,12 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
                         if (isDayClicked) {
                             daysL[i]=true
                             //Firebase.database.getReference("ModuloEsercizi")
-                              //  .child("GiorniLiberi").child(daysDb[i]).setValue(true);
+                            //  .child("GiorniLiberi").child(daysDb[i]).setValue(true);
                             selected[i]=true
                         } else {
                             daysL[i]=false
-                           // Firebase.database.getReference("ModuloEsercizi")
-                              //  .child("GiorniLiberi").child(daysDb[i]).setValue(false);
+                            // Firebase.database.getReference("ModuloEsercizi")
+                            //  .child("GiorniLiberi").child(daysDb[i]).setValue(false);
                             selected[i]=false
                         }
                     },
