@@ -125,7 +125,7 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
                 vm.setRegistered(true)
             }
             else {
-            DeleteProfile()
+            DeleteProfile(vm)
             navController.navigate(Screens.FormStart.name) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true

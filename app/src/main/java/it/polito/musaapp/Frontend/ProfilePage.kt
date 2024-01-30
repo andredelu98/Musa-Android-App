@@ -231,7 +231,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .height(75.dp)
                 .fillMaxWidth()
                 .clickable {
-                    DeleteProfile()
+                    DeleteProfile(vm)
                     navController.navigate(Screens.FormStart.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -272,7 +272,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
     }
 }
 
-fun DeleteProfile(){
+fun DeleteProfile(vm: MusaViewModel){
     Firebase.database.getReference("UtenteGiaRegistrato").setValue(false)
     Firebase.database.getReference("ModuloStart").child("Nome").setValue("")
     Firebase.database.getReference("ModuloStart").child("Mail").setValue("")

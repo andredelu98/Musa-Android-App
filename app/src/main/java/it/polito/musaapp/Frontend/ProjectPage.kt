@@ -50,12 +50,24 @@ import it.polito.musaapp.Screens
 @Composable
 fun ProjectPage(navController: NavController, vm:MusaViewModel){
     val projectList by vm.projectList.observeAsState()
+    var count=-1
+    val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
+    if(count==-1){
+        myRef.get().addOnSuccessListener {
+            Log.d("PROGETTODB", "valori ${it.value}");
+            count = it.value.toString().toInt();
+            vm.setCounterProgetti(count)
+        }.addOnFailureListener {
+            Log.d("PROGETTODB", "Error", it);
+        }
+    }
+    val counterProgetti by vm.counterProgetti.observeAsState()
     Column(
         modifier=Modifier.fillMaxSize()
     ){
         Text("I TUOI PROGETTI")
 
-        if(projectList.isNullOrEmpty()){
+        if(projectList.isNullOrEmpty()|| counterProgetti!! <=0){
             Log.d("LISTAPROGETTI", "Non ci sono progetti")
             Text("Non hai ancora inserito nessun progetto personale")
         }
@@ -70,35 +82,37 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                 var openOptions by remember{
                     mutableStateOf(false)
                 }
-                Card(
-                    shape = RoundedCornerShape(15.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor= MaterialTheme.colorScheme.onPrimary,
-                    ),
-                    border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
-                    modifier = Modifier.clickable {
-                        vm.setProjectToPrint(projectList!![i])
-                        navController.navigate(Screens.SinglePageProject.name) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                if(vm.projectList.value!![i].name!="") {
+
+                    Card(
+                        shape = RoundedCornerShape(15.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                        ),
+                        border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
+                        modifier = Modifier.clickable {
+                            vm.setProjectToPrint(projectList!![i])
+                            navController.navigate(Screens.SinglePageProject.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
-                    }
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
-                            .height(90.dp)
-                            .fillMaxWidth()
-                    ){
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxSize()
-                        ){
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                                .height(90.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
                                 Text(
                                     text = projectList!!.get(i).name,
                                     style = MaterialTheme.typography.headlineMedium,
@@ -111,7 +125,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                 Icon(
                                     Icons.Filled.MoreVert,
                                     contentDescription = "More",
-                                    tint= MaterialTheme.colorScheme.onPrimary,
+                                    tint = MaterialTheme.colorScheme.onPrimary,
                                     modifier = Modifier
                                         .size(44.dp)
                                         .clickable {
@@ -121,48 +135,49 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                 )
 
                             }
-                        if(openOptions){
-                            Spacer(modifier=Modifier.height(100.dp))
-                            Box(
-                                modifier=Modifier.align(Alignment.BottomEnd)
-                            ){
-                                Column {
-                                    Text(
-                                        text="Modifica",
-                                        modifier=Modifier.clickable {
-                                            //MODIFICA SINGLE TASK
-                                            vm.setProjectToModify(i)
-                                            vm.setProjectToModifyCount(i)
-                                            navController.navigate(Screens.ModifyProject.name) {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
+                            if (openOptions) {
+                                Spacer(modifier = Modifier.height(100.dp))
+                                Box(
+                                    modifier = Modifier.align(Alignment.BottomEnd)
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "Modifica",
+                                            modifier = Modifier.clickable {
+                                                //MODIFICA SINGLE TASK
+                                                vm.setProjectToModify(i)
+                                                vm.setProjectToModifyCount(i)
+                                                navController.navigate(Screens.ModifyProject.name) {
+                                                    popUpTo(navController.graph.findStartDestination().id) {
+                                                        saveState = true
+                                                    }
+                                                    launchSingleTop = true
+                                                    restoreState = true
                                                 }
-                                                launchSingleTop = true
-                                                restoreState = true
                                             }
-                                        }
-                                    )
-                                    Text(
-                                        text="Elimina",
-                                        modifier=Modifier.clickable {
-                                            //ELIMINA SINGLE TASK
-                                            //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
-                                            DeleteSingleProject(vm, i)
-                                            navController.navigate(Screens.ProjectPage.name) {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
+                                        )
+                                        Text(
+                                            text = "Elimina",
+                                            modifier = Modifier.clickable {
+                                                //ELIMINA SINGLE TASK
+                                                //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
+                                                DeleteSingleProject(vm, i)
+                                                navController.navigate(Screens.ProjectPage.name) {
+                                                    popUpTo(navController.graph.findStartDestination().id) {
+                                                        saveState = true
+                                                    }
+                                                    launchSingleTop = true
+                                                    restoreState = true
                                                 }
-                                                launchSingleTop = true
-                                                restoreState = true
                                             }
-                                        }
-                                    )
+                                        )
+                                    }
+
                                 }
-
                             }
-                        }
 
                         }
+                    }
                 }
 
             }
@@ -177,18 +192,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                 .size(44.dp)
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    var count=-1
-                    val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
-                    if(count==-1){
-                        myRef.get().addOnSuccessListener {
-                            Log.d("PROGETTODB", "valori ${it.value}");
-                            count = it.value.toString().toInt();
-                            vm.setCounterProgetti(count)
-                        }.addOnFailureListener {
-                            Log.d("PROGETTODB", "Error", it);
-                        }
 
-                    }
                     navController.navigate(Screens.NewProject.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
