@@ -128,6 +128,15 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                         text="Modifica",
                                         modifier=Modifier.clickable {
                                             //MODIFICA SINGLE TASK
+                                            vm.setProjectToModify(i)
+                                            vm.setProjectToModifyCount(i)
+                                            navController.navigate(Screens.ModifyProject.name) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
                                         }
                                     )
                                     Text(

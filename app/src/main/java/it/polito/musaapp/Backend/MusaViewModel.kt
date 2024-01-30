@@ -154,5 +154,24 @@ class MusaViewModel : ViewModel() {
         _projectToPrint.value=s
     }
 
+    private var _projectToModify=MutableLiveData<SingleProject>()
+    var projectToModify: LiveData<SingleProject> = _projectToModify
 
+    fun setProjectToModify(i:Int){
+        _projectToModify.value=_projectList.value!!.get(i)
+    }
+
+    private var _projectToModifyCount=MutableLiveData<Int>()
+    var projectToModifyCount: LiveData<Int> = _projectToModifyCount
+
+    fun setProjectToModifyCount(i:Int){
+        _projectToModifyCount.value=i
+    }
+
+    fun setProjectModified(s: SingleProject, i: Int) {
+        var l = mutableListOf<SingleProject>()
+        l= _projectList.value as MutableList<SingleProject>
+        l[i]=s
+        _projectList.value=l
+    }
 }
