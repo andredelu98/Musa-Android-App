@@ -174,4 +174,10 @@ class MusaViewModel : ViewModel() {
         l[i]=s
         _projectList.value=l
     }
+    fun deleteProject( i: Int) {
+        var l = mutableListOf<SingleProject>()
+        l= _projectList.value as MutableList<SingleProject>
+        l.removeAt(i)
+        _projectList.value=l
+    }
 }

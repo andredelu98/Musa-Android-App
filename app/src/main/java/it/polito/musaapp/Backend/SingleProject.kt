@@ -26,6 +26,7 @@ fun CreateNewProject(name: String, category: String, description: String, vm:Mus
     Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Nome").setValue(name);
     Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Categoria").setValue(category);
     Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Descrizione").setValue(description);
+    Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Stato").setValue("Creato");
 }
 
 fun ModifySingleProject(name: String, category: String, description: String, vm:MusaViewModel, i: Int){
@@ -35,6 +36,12 @@ fun ModifySingleProject(name: String, category: String, description: String, vm:
     Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Nome").setValue(name);
     Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Categoria").setValue(category);
     Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Descrizione").setValue(description);
+}
+
+fun DeleteSingleProject( vm:MusaViewModel, i: Int){
+    // Log.d("COUNTERPROGETTI", i.toString())
+    vm.deleteProject(i)
+    Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Stato").setValue("Eliminato");
 }
 
 @Composable

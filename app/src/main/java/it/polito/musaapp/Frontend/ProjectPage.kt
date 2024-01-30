@@ -40,6 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
+import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
@@ -143,6 +146,15 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                         text="Elimina",
                                         modifier=Modifier.clickable {
                                             //ELIMINA SINGLE TASK
+                                            //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
+                                            DeleteSingleProject(vm, i)
+                                            navController.navigate(Screens.ProjectPage.name) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
                                         }
                                     )
                                 }
