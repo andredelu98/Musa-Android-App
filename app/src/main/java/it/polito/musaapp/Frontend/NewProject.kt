@@ -202,11 +202,7 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier
                         .width(160.dp),
                     onClick = {
-                        if(vm.projectList.value.isNullOrEmpty())
-                            i=0
-                        else
-                            i = vm.projectList.value!!.size
-                        CreateNewProject(filledName, filledCategory, filledDescription, vm, i)
+                        CreateNewProject(filledName, filledCategory, filledDescription, vm, vm.counterProgetti.value!!)
                         navController.navigate(Screens.ProjectPage.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true

@@ -110,7 +110,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                 )
                                 Icon(
                                     Icons.Filled.MoreVert,
-                                    contentDescription = "Add",
+                                    contentDescription = "More",
                                     tint= MaterialTheme.colorScheme.onPrimary,
                                     modifier = Modifier
                                         .size(44.dp)
@@ -177,6 +177,18 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                 .size(44.dp)
                 .align(Alignment.CenterHorizontally)
                 .clickable {
+                    var count=-1
+                    val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
+                    if(count==-1){
+                        myRef.get().addOnSuccessListener {
+                            Log.d("PROGETTODB", "valori ${it.value}");
+                            count = it.value.toString().toInt();
+                            vm.setCounterProgetti(count)
+                        }.addOnFailureListener {
+                            Log.d("PROGETTODB", "Error", it);
+                        }
+
+                    }
                     navController.navigate(Screens.NewProject.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true

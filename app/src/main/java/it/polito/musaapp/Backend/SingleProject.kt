@@ -41,7 +41,7 @@ fun ModifySingleProject(name: String, category: String, description: String, vm:
 fun DeleteSingleProject( vm:MusaViewModel, i: Int){
     // Log.d("COUNTERPROGETTI", i.toString())
     vm.deleteProject(i)
-    Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").child("Stato").setValue("Eliminato");
+    Firebase.database.getReference("Progetti").child("ListaProgetti").child("Progetto${i}").removeValue()
 }
 
 @Composable
