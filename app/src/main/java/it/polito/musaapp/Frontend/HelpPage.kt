@@ -84,7 +84,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                 .fillMaxWidth()
                 .padding(horizontal = 22.dp, vertical = 16.dp)
         ){
-            Box(modifier = Modifier.size(45.dp))
+            Box(modifier = Modifier.size(35.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
@@ -95,7 +95,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
             Icon(
                 painter = painterResource(id = R.drawable.info),
                 contentDescription = null,
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier.size(40.dp)
             )
         }
         //Spacer(modifier = Modifier.height(50.dp))

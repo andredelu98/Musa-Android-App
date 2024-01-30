@@ -116,7 +116,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(35.dp)
             )
 
             Image(
@@ -128,7 +128,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.pencil),
                 contentDescription = null,
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier.size(40.dp)
             )
         }
         Text(

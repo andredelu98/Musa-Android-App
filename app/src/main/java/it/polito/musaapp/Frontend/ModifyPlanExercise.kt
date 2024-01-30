@@ -57,11 +57,11 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(35.dp)
             )
-            Box(modifier = Modifier.size(40.dp))
+            Box(modifier = Modifier.size(35.dp))
 
-            Box(modifier = Modifier.size(40.dp))
+            Box(modifier = Modifier.size(35.dp))
         }
         Column(
             modifier = Modifier

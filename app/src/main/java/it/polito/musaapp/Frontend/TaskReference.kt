@@ -85,7 +85,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(35.dp)
             )
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
@@ -93,7 +93,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
                 modifier = Modifier.size(85.dp)
             )
 
-            Box(modifier = Modifier.size(45.dp))
+            Box(modifier = Modifier.size(40.dp))
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -116,11 +116,11 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(35.dp)
             )
-            Box(modifier = Modifier.size(40.dp))
+            Box(modifier = Modifier.size(35.dp))
 
-            Box(modifier = Modifier.size(40.dp))
+            Box(modifier = Modifier.size(35.dp))
         }
         Row {
             Text(
@@ -267,7 +267,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     containerColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 modifier = Modifier
-                    .width(185.dp),
+                    .width(190.dp),
                 onClick = {
                     if(filledName!=""){
                         Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
@@ -300,6 +300,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     color = MaterialTheme.colorScheme.background
                 )
             }
+            Spacer(modifier = Modifier.height(25.dp))
         }
     }
 

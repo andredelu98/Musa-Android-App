@@ -73,7 +73,7 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                     .fillMaxWidth()
                     .padding(horizontal = 22.dp, vertical = 16.dp)
             ){
-                Box(modifier = Modifier.size(45.dp))
+                Box(modifier = Modifier.size(35.dp))
 
                 Image(
                     painter = painterResource(id = R.drawable.loghetto),
@@ -84,7 +84,7 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                 Icon(
                     painter = painterResource(id = R.drawable.pencil),
                     contentDescription = null,
-                    modifier = Modifier.size(45.dp)
+                    modifier = Modifier.size(40.dp)
                 )
             }
             Column(
