@@ -100,7 +100,6 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
     myRef.get().addOnSuccessListener {
       //  Log.d("FORM", "valori ${it.value}");
             if (it.value == true) {
-              // GetProjectsFromDb(vm)
                 if(taskInserito){
                     RefreshVariablesTask(vm)
 
@@ -140,4 +139,6 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
             Log.d("FORM", "Error", it);
         }
 
+    if(vm.registered.value==true)
+        GetProjectsFromDb( vm)
 }

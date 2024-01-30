@@ -136,6 +136,10 @@ class MusaViewModel : ViewModel() {
         //Log.d("LISTAPROGETTI", _projectList.value.toString())
     }
 
+    fun CleanProjectList(){
+        _projectList.value=null
+    }
+
     private var _counterProgetti=MutableLiveData<Int>()
     var counterProgetti: LiveData<Int> = _counterProgetti
 

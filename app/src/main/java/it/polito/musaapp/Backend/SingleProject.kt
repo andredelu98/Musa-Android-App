@@ -2,6 +2,12 @@ package it.polito.musaapp.Backend
 
 import android.util.Log
 import android.view.View
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 
@@ -23,36 +29,61 @@ fun CreateNewProject(name: String, category: String, description: String, vm:Mus
 }
 
 
+@Composable
 fun GetProjectsFromDb(vm:MusaViewModel) {
-    var count=0
-    var categoria:String=""
-    var descrizione:String=""
-    var nome:String=""
-    var myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
-    myRef.get().addOnSuccessListener {
-        Log.d("PROGETTODB", "valori ${it.value}");
-        count = it.value.toString().toInt();
-    }.addOnFailureListener {
-        Log.d("PROGETTODB", "Error", it);
+    vm.CleanProjectList()
+    var count by remember {
+        mutableIntStateOf(-1)
     }
-    vm.setCounterProgetti(count)
-    for (i in 0..count){
-        myRef = Firebase.database.getReference("Progetti").child("ListaProgetti")
-            .child("Progetto$count")
+    var categoria by remember {
+        mutableStateOf("")
+    }
+    var descrizione by remember {
+        mutableStateOf("")
+    }
+    var nome by remember {
+        mutableStateOf("")
+    }
+    var myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
+    if(count==-1){
         myRef.get().addOnSuccessListener {
-            //Log.d("FORM", "valori ${it.value}");
+            Log.d("PROGETTODB", "valori ${it.value}");
+            count = it.value.toString().toInt();
+        }.addOnFailureListener {
+            Log.d("PROGETTODB", "Error", it);
+        }
+        vm.setCounterProgetti(count)
+    }
+
+    for (i in 0..count-1){
+        Log.d("PROGETTODB", "Progetto$i")
+        myRef = Firebase.database.getReference("Progetti").child("ListaProgetti")
+            .child("Progetto$i")
+        myRef.get().addOnSuccessListener {
+            Log.d("PROGETTODB", "valori ${it.value}");
+
            for(j in it.children){
                if(j.key!!.equals("Nome"))
-                   nome=j.children.toString()
+                   nome= j.value.toString()
                else if(j.key!!.equals("Categoria"))
-                   categoria=j.children.toString()
+                   categoria=j.value.toString()
                else
-                   descrizione=j.children.toString()
+                   descrizione=j.value.toString()
            }
+            if(vm.projectList.value.isNullOrEmpty()){
+                val s: SingleProject= SingleProject(nome, categoria, descrizione)
+                vm.addNewProject(s)
+            }
+            else if(vm.projectList.value?.size!! <count){
+                val s: SingleProject= SingleProject(nome, categoria, descrizione)
+                vm.addNewProject(s)
+            }
+
         }.addOnFailureListener {
             Log.d("FORM", "Error", it);
         }
-        val s: SingleProject= SingleProject(nome, categoria, descrizione)
-        vm.addNewProject(s)
+
+
     }
+
 }

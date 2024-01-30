@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,13 +30,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 @Composable
@@ -58,6 +64,9 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
 
             for(i in 0..projectList!!.size-1){
               //  Spacer(modifier = Modifier.height(16.dp))
+                var openOptions by remember{
+                    mutableStateOf(false)
+                }
                 Card(
                     shape = RoundedCornerShape(15.dp),
                     colors = CardDefaults.cardColors(
@@ -94,12 +103,45 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .offset(x = 0.dp, y = 3.dp)
+                                        .weight(3f)
                                 )
-                            }
+                                Icon(
+                                    Icons.Filled.MoreVert,
+                                    contentDescription = "Add",
+                                    tint= MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier
+                                        .size(44.dp)
+                                        .clickable {
+                                            openOptions = !openOptions
+                                        }
+                                        .weight(1f)
+                                )
 
+                            }
+                        if(openOptions){
+                            Spacer(modifier=Modifier.height(100.dp))
+                            Box(
+                                modifier=Modifier.align(Alignment.BottomEnd)
+                            ){
+                                Column {
+                                    Text(
+                                        text="Modifica",
+                                        modifier=Modifier.clickable {
+                                            //MODIFICA SINGLE TASK
+                                        }
+                                    )
+                                    Text(
+                                        text="Elimina",
+                                        modifier=Modifier.clickable {
+                                            //ELIMINA SINGLE TASK
+                                        }
+                                    )
+                                }
+
+                            }
                         }
 
-
+                        }
                 }
 
             }
