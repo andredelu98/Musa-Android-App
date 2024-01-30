@@ -39,6 +39,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.GetProjectsFromDb
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.RefreshVariablesTask
@@ -97,8 +98,9 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
 
     val myRef = Firebase.database.getReference("UtenteGiaRegistrato");
     myRef.get().addOnSuccessListener {
-        Log.d("FORM", "valori ${it.value}");
+      //  Log.d("FORM", "valori ${it.value}");
             if (it.value == true) {
+              // GetProjectsFromDb(vm)
                 if(taskInserito){
                     RefreshVariablesTask(vm)
 

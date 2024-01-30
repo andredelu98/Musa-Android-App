@@ -124,7 +124,24 @@ class MusaViewModel : ViewModel() {
 
     private var _projectList= MutableLiveData<List<SingleProject>>()
     var projectList: LiveData<List<SingleProject>> = _projectList
-    fun addNewProject(s: SingleProject){
-        _projectList.value = _projectList.value?.plus(s)
+    fun addNewProject(s: SingleProject) {
+        var l= mutableListOf<SingleProject>()
+        if(_projectList.value.isNullOrEmpty())
+            l.add(s)
+        else{
+            l= _projectList.value as MutableList<SingleProject>
+            l.add(s)
+        }
+        _projectList.value = l
+        //Log.d("LISTAPROGETTI", _projectList.value.toString())
     }
+
+    private var _counterProgetti=MutableLiveData<Int>()
+    var counterProgetti: LiveData<Int> = _counterProgetti
+
+    fun setCounterProgetti(i : Int){
+        _counterProgetti.value= i
+    }
+
+
 }

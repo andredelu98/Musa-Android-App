@@ -153,7 +153,12 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 Icon(
                     painter = painterResource(id = R.drawable.frecciasx),
                     contentDescription = null,
-                    modifier = Modifier.size(26.dp)
+                    modifier = Modifier.size(26.dp).clickable {
+                        if(taskCounter!=1){
+                            vm.setNextTask(vm.taskCounter.value!!-1)
+                            vm.setTaskCounter(vm.taskCounter.value!!)
+                        }
+                    }
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
@@ -164,7 +169,12 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 Icon(
                     painter = painterResource(id = R.drawable.frecciadx),
                     contentDescription = null,
-                    modifier = Modifier.size(26.dp)
+                    modifier = Modifier.size(26.dp).clickable {
+                        if(taskCounter!!>=7){
+                            vm.setNextTask(vm.taskCounter.value!!)
+                            vm.setTaskCounter(vm.taskCounter.value!!+1)
+                        }
+                    }
                 )
             }
             Text(

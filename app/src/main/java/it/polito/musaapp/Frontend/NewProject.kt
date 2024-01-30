@@ -202,7 +202,10 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier
                         .width(160.dp),
                     onClick = {
-                        i= GetCounterProgetti()
+                        if(vm.projectList.value.isNullOrEmpty())
+                            i=0
+                        else
+                            i = vm.projectList.value!!.size
                         CreateNewProject(filledName, filledCategory, filledDescription, vm, i)
                         navController.navigate(Screens.ProjectPage.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -314,15 +317,15 @@ fun CategoryDropdownProjects(vm: MusaViewModel) : String{
 }
 
 
-fun GetCounterProgetti(): Int{
+fun GetCounterProgetti(vm: MusaViewModel): Int{
     var i=0
-    val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
-    myRef.get().addOnSuccessListener {
-
-         i=it.value.toString().toInt()
-        Log.d("COUNTERPROGETTI", "valori ${i}");
-    }.addOnFailureListener {
-        Log.d("COUNTERPROGETTI", "Error", it);
+    if(vm.projectList.value.isNullOrEmpty()){
+        i=0
+        Log.d("COUNTERPROGETTI", "$i, è null or empty")
+    }
+    else{
+        i= vm.projectList.value!!.size
+        Log.d("COUNTERPROGETTI", "$i, è maggiore di 0")
     }
     return i
 }
