@@ -57,6 +57,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
            // Log.d("LISTAPROGETTI", projectList!!.get(1).name)
 
             for(i in 0..projectList!!.size-1){
+              //  Spacer(modifier = Modifier.height(16.dp))
                 Card(
                     shape = RoundedCornerShape(15.dp),
                     colors = CardDefaults.cardColors(
@@ -65,7 +66,8 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     ),
                     border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier.clickable {
-                        navController.navigate(Screens.TaskPage.name) {
+                        vm.setProjectToPrint(projectList!![i])
+                        navController.navigate(Screens.SinglePageProject.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -101,7 +103,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                 }
 
             }
-            Spacer(modifier = Modifier.height(16.dp))
+
         }
 
         Icon(

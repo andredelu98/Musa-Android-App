@@ -16,5 +16,6 @@ enum class Screens {
     TaskReference,
     ModifyNotificationExercise,
     ModifyPlanExercise,
-    NewProject
+    NewProject,
+    SinglePageProject
 }

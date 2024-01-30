@@ -143,5 +143,12 @@ class MusaViewModel : ViewModel() {
         _counterProgetti.value= i
     }
 
+    private var _projectToPrint=MutableLiveData<SingleProject>()
+    var projectToPrint: LiveData<SingleProject> = _projectToPrint
+
+    fun setProjectToPrint(s: SingleProject){
+        _projectToPrint.value=s
+    }
+
 
 }
