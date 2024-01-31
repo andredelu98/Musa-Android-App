@@ -117,4 +117,6 @@ fun ProjectCompleted(s:SingleProject, vm:MusaViewModel, i: Int){
         .child("Progetto${counterCompleted}").child("Categoria").setValue(s.category);
     Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
         .child("Progetto${counterCompleted}").child("Descrizione").setValue(s.description);
+    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
+        .child("Progetto${counterCompleted}").child("NumeroProgettoCompletato").setValue(i);
 }
