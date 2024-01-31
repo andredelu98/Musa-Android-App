@@ -127,7 +127,13 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             ) {
                 list?.forEachIndexed { index, imageUrl ->
                     item(index) {
-                        ImageWithHeart(imageUrl = imageUrl, vm)
+                        if(vm.savedRef.value?.contains(imageUrl)==true){
+                            ImageWithHeart(imageUrl = imageUrl, vm, true)
+                        }
+                        else{
+                            ImageWithHeart(imageUrl = imageUrl, vm, false)
+                        }
+
                     }
                 }
             }
@@ -137,16 +143,17 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
 
 }
 @Composable
-fun ImageWithHeart(imageUrl: String, vm: MusaViewModel) {
-    var isLiked by remember { mutableStateOf(false) }
+fun ImageWithHeart(imageUrl: String, vm: MusaViewModel, b: Boolean) {
+    var isLiked by remember { mutableStateOf(b) }
+
+
+    if(!isLiked&&vm.savedRef.value?.contains(imageUrl)==true){
+        RemoveImageInSaved(imageUrl, vm)
+    }
+
 
     if(isLiked){
         InsertImageInSaved(imageUrl, vm)
-    }
-    else{
-        if(vm.savedRef.value?.contains(imageUrl) == true){
-            RemoveImageInSaved(imageUrl, vm)
-        }
     }
 
     Box(modifier = Modifier
@@ -181,12 +188,25 @@ fun ImageWithHeart(imageUrl: String, vm: MusaViewModel) {
 
 
 fun InsertImageInSaved(s: String, vm: MusaViewModel){
-    vm.addRefToSave(s)
-    Firebase.database.getReference("RefereceSalvate").child("Ref${vm.savedRef.value!!.size}").setValue(s)
+    if(vm.savedRef.value.isNullOrEmpty()){
+
+        vm.addRefToSave(s)
+        Log.d("SALVATI", "${vm.savedRef.value!!.size}, $s" )
+        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.savedRef.value!!.size}")
+            .setValue(s)
+    }
+    else if(!vm.savedRef.value!!.contains(s)){
+        Log.d("SALVATI", "${vm.savedRef.value!!.size}, $s" )
+        vm.addRefToSave(s)
+        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.savedRef.value!!.size}")
+            .setValue(s)
+    }
+
 }
 
 fun RemoveImageInSaved(s: String, vm: MusaViewModel){
+    Log.d("SALVATIREM", "${vm.getRefToRemove(s)}, $s" )
     if(vm.getRefToRemove(s)!=-1)
-        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.getRefToRemove(s)}").setValue(s)
+        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.getRefToRemove(s)}").removeValue()
     vm.removeRefToSave(s)
 }
