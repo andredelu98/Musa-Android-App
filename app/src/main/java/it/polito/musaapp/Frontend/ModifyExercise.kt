@@ -206,7 +206,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
                         containerColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
-                        .width(160.dp),
+                        .width(200.dp),
                     onClick = {
                         //RefreshVariablesTask()
 

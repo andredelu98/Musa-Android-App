@@ -60,7 +60,7 @@ fun HelpPage(navController: NavController, musaViewModel: MusaViewModel,
     PageContent(musaViewModel, navController)
 }
 
-@SuppressLint("UnrememberedMutableState")
+@SuppressLint("UnrememberedMutableState", "SuspiciousIndentation")
 @Composable
 fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
     var clicked by remember { mutableStateOf(false) }
@@ -213,7 +213,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     contentDescription = null,
                     modifier = Modifier
                         .width(120.dp)
-                        .offset(x = 15.dp, y = (-5).dp)
+                        .offset(x = 0.dp, y = (-15).dp)
                         .align(Alignment.BottomStart)
                 )
             }
@@ -236,7 +236,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     contentDescription = null,
                     modifier = Modifier
                         .width(120.dp)
-                        .offset(x = (-75).dp, y = (10).dp)
+                        .offset(x = (-60).dp, y = (12).dp)
                         .align(Alignment.TopEnd)
                 )
             }

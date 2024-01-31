@@ -141,13 +141,13 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(18.dp))
                 Divider(
                     color = Color(0XFFD68D02),
                     thickness = 4.dp,
                     modifier = Modifier.width(200.dp)
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(14.dp))
                 Text(
                     text= "Quanti giorni a settimana?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -155,28 +155,28 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     modifier= Modifier.fillMaxWidth()
                 )
                 SelettoreCountGiorni(vm)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Divider(
                     color = Color(0XFFD68D02),
                     thickness = 4.dp,
                     modifier = Modifier.width(200.dp)
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(14.dp))
                 Text(
                     text= "Quali giorni preferisci?",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 SelettoreGiorni(vm)
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 Divider(
                     color = Color(0XFFD68D02),
                     thickness = 4.dp,
                     modifier = Modifier.width(200.dp)
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text= "Per quante settimane?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -184,7 +184,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     modifier= Modifier.fillMaxWidth()
                 )
                 SelettoreCountSettimane(vm)
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 Button(
                     shape = MaterialTheme.shapes.large,
