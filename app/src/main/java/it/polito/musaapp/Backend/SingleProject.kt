@@ -120,3 +120,9 @@ fun ProjectCompleted(s:SingleProject, vm:MusaViewModel, i: Int){
     Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
         .child("Progetto${counterCompleted}").child("NumeroProgettoCompletato").setValue(i);
 }
+
+fun DeleteSingleProjectCompleted( vm:MusaViewModel, i: Int){
+    // Log.d("COUNTERPROGETTI", i.toString())
+    vm.deleteProjectCompleted(i)
+    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati").child("Progetto${i}").removeValue()
+}

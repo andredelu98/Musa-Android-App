@@ -2,7 +2,6 @@ package it.polito.musaapp.Frontend
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,12 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -43,25 +38,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeleteSingleProject
+import it.polito.musaapp.Backend.DeleteSingleProjectCompleted
 import it.polito.musaapp.Backend.MusaViewModel
-import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 @Composable
-fun ProjectPage(navController: NavController, vm:MusaViewModel){
-    val projectList by vm.projectList.observeAsState()
-    var count=-1
-    val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
-    if(count==-1){
-        myRef.get().addOnSuccessListener {
-            Log.d("PROGETTODB", "valori ${it.value}");
-            count = it.value.toString().toInt();
-            vm.setCounterProgetti(count)
-        }.addOnFailureListener {
-            Log.d("PROGETTODB", "Error", it);
-        }
-    }
-    val counterProgetti by vm.counterProgetti.observeAsState()
+fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
+    val projectList by vm.projectListCompleted.observeAsState()
+
 
     var countCompletati=-1
     val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
@@ -74,10 +58,10 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
             Log.d("PROJECTCOMPLETED", "Error", it);
         }
     }
-    val counterProgettiCompletati by vm.counterProgettiCompletati.observeAsState()
+    val counterProgetti by vm.counterProgettiCompletati.observeAsState()
 
     Column(
-        modifier=Modifier.fillMaxSize()
+        modifier= Modifier.fillMaxSize()
     ){
         Text("I TUOI PROGETTI")
 
@@ -89,10 +73,10 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
             Log.d("LISTAPROGETTI", projectList!!.size.toString())
             //DISPLAY LISTA PROGETTI
             Log.d("LISTAPROGETTI", projectList!!.get(0).name)
-           // Log.d("LISTAPROGETTI", projectList!!.get(1).name)
+            // Log.d("LISTAPROGETTI", projectList!!.get(1).name)
 
             for(i in 0..projectList!!.size-1){
-              //  Spacer(modifier = Modifier.height(16.dp))
+                //  Spacer(modifier = Modifier.height(16.dp))
                 var openOptions by remember{
                     mutableStateOf(false)
                 }
@@ -157,18 +141,9 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                 ) {
                                     Column {
                                         Text(
-                                            text = "Modifica",
+                                            text = "Restore",
                                             modifier = Modifier.clickable {
-                                                //MODIFICA SINGLE TASK
-                                                vm.setProjectToModify(i)
-                                                vm.setProjectToModifyCount(i)
-                                                navController.navigate(Screens.ModifyProject.name) {
-                                                    popUpTo(navController.graph.findStartDestination().id) {
-                                                        saveState = true
-                                                    }
-                                                    launchSingleTop = true
-                                                    restoreState = true
-                                                }
+                                                //RESTORE SINGLE TASK
                                             }
                                         )
                                         Text(
@@ -176,8 +151,8 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                             modifier = Modifier.clickable {
                                                 //ELIMINA SINGLE TASK
                                                 //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
-                                                DeleteSingleProject(vm, i)
-                                                navController.navigate(Screens.ProjectPage.name) {
+                                                DeleteSingleProjectCompleted(vm, i)
+                                                navController.navigate(Screens.StoricoProgetti.name) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
                                                     }
@@ -199,24 +174,6 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
 
         }
 
-        Icon(
-            Icons.Filled.Add,
-            contentDescription = "Add",
-            tint= MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier
-                .size(44.dp)
-                .align(Alignment.CenterHorizontally)
-                .clickable {
-
-                    navController.navigate(Screens.NewProject.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-        )
 
     }
 

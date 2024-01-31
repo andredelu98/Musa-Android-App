@@ -55,6 +55,7 @@ import it.polito.musaapp.Frontend.NewProject
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
 import it.polito.musaapp.Frontend.SingleProjectPage
+import it.polito.musaapp.Frontend.StoricoProgetti
 import it.polito.musaapp.Frontend.TaskFinished
 import it.polito.musaapp.Frontend.TaskListPage
 import it.polito.musaapp.Frontend.TaskPage
@@ -208,6 +209,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             }
             composable(route=Screens.ModifyProject.name){
                 ModifyProject(navController = navController, vm)
+            }
+            composable(route=Screens.StoricoProgetti.name){
+                StoricoProgetti(navController = navController, vm)
             }
         }
     }

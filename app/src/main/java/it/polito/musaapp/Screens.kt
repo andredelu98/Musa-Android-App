@@ -19,5 +19,6 @@ enum class Screens {
     ModifyPlanExercise,
     NewProject,
     SinglePageProject,
-    ModifyProject
+    ModifyProject,
+    StoricoProgetti
 }

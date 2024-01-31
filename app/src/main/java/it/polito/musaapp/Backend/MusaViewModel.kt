@@ -211,4 +211,13 @@ class MusaViewModel : ViewModel() {
         setCounterProgetti(_projectList.value!!.size)
        // Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(_projectList.value!!.size)
     }
+
+    fun deleteProjectCompleted(i: Int) {
+        var l = mutableListOf<SingleProject>()
+        l= _projectListCompleted.value as MutableList<SingleProject>
+        l.removeAt(i)
+        _projectListCompleted.value=l
+        setCounterProgettiCompletati(_projectListCompleted.value!!.size)
+        // Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(_projectList.value!!.size)
+    }
 }

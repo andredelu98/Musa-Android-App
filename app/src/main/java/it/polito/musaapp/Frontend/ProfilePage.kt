@@ -208,7 +208,15 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .alpha(0.3f)
                 .height(75.dp)
                 .fillMaxWidth()
-                .clickable {/*TODO()*/ },
+                .clickable {
+                    navController.navigate(Screens.StoricoProgetti.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+               },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         )
