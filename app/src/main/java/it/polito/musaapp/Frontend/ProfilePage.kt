@@ -283,6 +283,8 @@ fun DeleteProfile(vm: MusaViewModel){
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
     Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(0)
     Firebase.database.getReference("Progetti").child("ListaProgetti").removeValue()
+    Firebase.database.getReference("Progetti").child("CounterProgettiCompletati").setValue(0)
+    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati").removeValue()
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6){
         Firebase.database.getReference("ModuloEsercizi")

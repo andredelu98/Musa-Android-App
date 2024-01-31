@@ -102,3 +102,19 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
     }
 
 }
+
+fun ProjectCompleted(s:SingleProject, vm:MusaViewModel, i: Int){
+    Log.d("PROJECTCOMPLETED", "Sono in projectCompleted, $s, $i, ${vm.counterProgettiCompletati.value!!}")
+    DeleteSingleProject(vm,i)
+    vm.addProjectCompleted(s)
+    val counterCompleted= vm.counterProgettiCompletati.value!!
+    vm.setCounterProgettiCompletati(counterCompleted+1)
+    Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+        .setValue(counterCompleted+1)
+    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
+        .child("Progetto${counterCompleted}").child("Nome").setValue(s.name);
+    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
+        .child("Progetto${counterCompleted}").child("Categoria").setValue(s.category);
+    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
+        .child("Progetto${counterCompleted}").child("Descrizione").setValue(s.description);
+}

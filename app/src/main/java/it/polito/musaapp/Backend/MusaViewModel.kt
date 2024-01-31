@@ -9,6 +9,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
 class MusaViewModel : ViewModel() {
 
@@ -136,6 +138,20 @@ class MusaViewModel : ViewModel() {
         //Log.d("LISTAPROGETTI", _projectList.value.toString())
     }
 
+    private var _projectListCompleted= MutableLiveData<List<SingleProject>>()
+    var projectListCompleted: LiveData<List<SingleProject>> = _projectListCompleted
+    fun addProjectCompleted(s: SingleProject) {
+        var l= mutableListOf<SingleProject>()
+        if(_projectListCompleted.value.isNullOrEmpty())
+            l.add(s)
+        else{
+            l= _projectListCompleted.value as MutableList<SingleProject>
+            l.add(s)
+        }
+        _projectListCompleted.value = l
+        //Log.d("LISTAPROGETTI", _projectList.value.toString())
+    }
+
     fun CleanProjectList(){
         _projectList.value=null
     }
@@ -146,12 +162,25 @@ class MusaViewModel : ViewModel() {
     fun setCounterProgetti(i : Int){
         _counterProgetti.value= i
     }
+    private var _counterProgettiCompletati=MutableLiveData<Int>()
+    var counterProgettiCompletati: LiveData<Int> = _counterProgettiCompletati
+
+    fun setCounterProgettiCompletati(i : Int){
+        _counterProgettiCompletati.value= i
+    }
 
     private var _projectToPrint=MutableLiveData<SingleProject>()
     var projectToPrint: LiveData<SingleProject> = _projectToPrint
 
     fun setProjectToPrint(s: SingleProject){
         _projectToPrint.value=s
+    }
+
+    private var _projectToPrintCounter=MutableLiveData<Int>()
+    var projectToPrintCounter: LiveData<Int> = _projectToPrintCounter
+
+    fun setProjectToPrintCounter(i: Int){
+        _projectToPrintCounter.value=i
     }
 
     private var _projectToModify=MutableLiveData<SingleProject>()
@@ -180,5 +209,6 @@ class MusaViewModel : ViewModel() {
         l.removeAt(i)
         _projectList.value=l
         setCounterProgetti(_projectList.value!!.size)
+       // Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(_projectList.value!!.size)
     }
 }

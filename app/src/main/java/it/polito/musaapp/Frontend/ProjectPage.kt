@@ -62,6 +62,20 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
         }
     }
     val counterProgetti by vm.counterProgetti.observeAsState()
+
+    var countCompletati=-1
+    val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+    if(countCompletati==-1){
+        myRef2.get().addOnSuccessListener {
+            Log.d("PROJECTCOMPLETED", "valori ${it.value}");
+            countCompletati = it.value.toString().toInt();
+            vm.setCounterProgettiCompletati(countCompletati)
+        }.addOnFailureListener {
+            Log.d("PROJECTCOMPLETED", "Error", it);
+        }
+    }
+    val counterProgettiCompletati by vm.counterProgettiCompletati.observeAsState()
+
     Column(
         modifier=Modifier.fillMaxSize()
     ){
@@ -93,6 +107,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                         border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
                         modifier = Modifier.clickable {
                             vm.setProjectToPrint(projectList!![i])
+                            vm.setProjectToPrintCounter(i)
                             navController.navigate(Screens.SinglePageProject.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
