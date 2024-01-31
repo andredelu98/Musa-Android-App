@@ -1,5 +1,6 @@
 package it.polito.musaapp.Frontend
 
+
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -51,27 +52,11 @@ import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 
-fun GetReferenceTask(vm: MusaViewModel){
-    val listUrl: MutableList<String> = mutableListOf()
-    val myRef= FirebaseDatabase.getInstance().getReference("Reference").child(vm.category.value!!)
-        .child(vm.level.value!!).child("Task${vm.taskCounter.value}")
-    Log.d("REFERENCE", "Task${vm.taskCounter.value}")
-    myRef.get().addOnSuccessListener {
-        Log.d("REFERENCE", "${it.value}")
-        for(i in it.children){
-            Log.d("Single REFERENCE", "${i.value!!}")
-            listUrl.add(i.value!!.toString())
-        }
-        Log.d("REFERENCE1", "$listUrl")
-        vm.setReferenceListUrl(listUrl)
-    }.addOnFailureListener {
-        Log.d("TASKMANAGER", "Error", it);
-    }
-}
+
 @Composable
-fun TaskReference(navController: NavController, vm:MusaViewModel) {
+fun SavedReference(navController: NavController, vm:MusaViewModel) {
     //val storageRef = FirebaseStorage.getInstance().getReference("ReferenceTask1Arte")
-    val list by vm.referenceListUrl.observeAsState()
+    val list by vm.savedRef.observeAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -89,7 +74,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
                 modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(Screens.TaskPage.name) {
+                    navController.navigate(Screens.ProfilePage.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -113,7 +98,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
         {
             Row {
                 Text(
-                    text = "REFERENCES",
+                    text = "REFERENCES SALVATE",
                     style = MaterialTheme.typography.headlineMedium,
                 )
             }
@@ -127,7 +112,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             ) {
                 list?.forEachIndexed { index, imageUrl ->
                     item(index) {
-                        ImageWithHeart(imageUrl = imageUrl, vm)
+                        ImageWithHeartSaved(imageUrl = imageUrl, vm)
                     }
                 }
             }
@@ -137,16 +122,11 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
 
 }
 @Composable
-fun ImageWithHeart(imageUrl: String, vm: MusaViewModel) {
-    var isLiked by remember { mutableStateOf(false) }
+fun ImageWithHeartSaved(imageUrl: String, vm: MusaViewModel) {
+    var isLiked by remember { mutableStateOf(true) }
 
-    if(isLiked){
-        InsertImageInSaved(imageUrl, vm)
-    }
-    else{
-        if(vm.savedRef.value?.contains(imageUrl) == true){
-            RemoveImageInSaved(imageUrl, vm)
-        }
+    if(!isLiked){
+        RemoveImageInSaved(imageUrl, vm)
     }
 
     Box(modifier = Modifier
@@ -159,7 +139,7 @@ fun ImageWithHeart(imageUrl: String, vm: MusaViewModel) {
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
-            )
+        )
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -180,13 +160,5 @@ fun ImageWithHeart(imageUrl: String, vm: MusaViewModel) {
 }
 
 
-fun InsertImageInSaved(s: String, vm: MusaViewModel){
-    vm.addRefToSave(s)
-    Firebase.database.getReference("RefereceSalvate").child("Ref${vm.savedRef.value!!.size}").setValue(s)
-}
 
-fun RemoveImageInSaved(s: String, vm: MusaViewModel){
-    if(vm.getRefToRemove(s)!=-1)
-        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.getRefToRemove(s)}").setValue(s)
-    vm.removeRefToSave(s)
-}
+

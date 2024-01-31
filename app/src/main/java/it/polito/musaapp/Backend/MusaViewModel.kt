@@ -220,4 +220,47 @@ class MusaViewModel : ViewModel() {
         setCounterProgettiCompletati(_projectListCompleted.value!!.size)
         // Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(_projectList.value!!.size)
     }
+
+
+    //SAVED REFERENCE
+    private var _savedRef= MutableLiveData<List<String>>()
+    var savedRef: LiveData<List<String>> = _savedRef
+    fun addRefToSave(s: String) {
+        _savedRef.value?.toString()?.let { Log.d("SALVATI", it) }
+        var l= mutableListOf<String>()
+        if(_savedRef.value.isNullOrEmpty())
+            l.add(s)
+        else{
+            l= _savedRef.value as MutableList<String>
+            l.add(s)
+        }
+        _savedRef.value = l
+        _savedRef.value?.toString()?.let { Log.d("SALVATIFINEADD", it) }
+        //Log.d("LISTAPROGETTI", _projectList.value.toString())
+    }
+    fun removeRefToSave(s: String) {
+        var l = mutableListOf<String>()
+        _savedRef.value?.toString()?.let { Log.d("SALVATIREMOVE", it) }
+        l= _savedRef.value as MutableList<String>
+        for(i in 0.. l.size-1){
+            if(l[i].equals(s)){
+               l.removeAt(i)
+            }
+        }
+        _savedRef.value=l
+        _savedRef.value?.toString()?.let { Log.d("SALVATIREMOVEFINE", it) }
+    }
+
+    fun getRefToRemove(s: String): Int{
+        var l = mutableListOf<String>()
+        l= _savedRef.value as MutableList<String>
+        for(i in 0.. l.size-1){
+            if(l[i].equals(s)){
+                Log.d("SALVATIREMOVE",i.toString())
+               return i
+            }
+        }
+      return -1
+
+    }
 }

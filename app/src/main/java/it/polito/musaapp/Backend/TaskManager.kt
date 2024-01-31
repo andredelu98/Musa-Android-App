@@ -138,7 +138,7 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false)
     Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0)
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
-    Firebase.database.getReference("ModuloEsercizi").child("Scadenze").removeValue()
+   // Firebase.database.getReference("ModuloEsercizi").child("Scadenze").removeValue()
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6) {
         Firebase.database.getReference("ModuloEsercizi")
