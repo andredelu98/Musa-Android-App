@@ -138,7 +138,7 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false)
     Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0)
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
-
+    Firebase.database.getReference("ModuloEsercizi").child("Scadenze").removeValue()
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6) {
         Firebase.database.getReference("ModuloEsercizi")
@@ -172,6 +172,7 @@ fun CalculateDueDates(vm: MusaViewModel){
         if(today.dayOfWeek.toString().equals(weekdays[j]))
             todayWeekday=j
     }
+    /*
     if(daysEx?.equals(counter) == true)
         CalculateDateEqual(vm, todayWeekday)
 
@@ -181,7 +182,7 @@ fun CalculateDueDates(vm: MusaViewModel){
     else if(daysEx!!>counter){
         CalculateDateDaysMajor(vm, todayWeekday)
     }
-/*
+*/
     for(i in 0..daysEx!!)
     {
         var taskWeekday: Int = -1
@@ -252,13 +253,11 @@ fun CalculateDueDates(vm: MusaViewModel){
         }*/
 
     }
-    */
-
 
 }
 
 
-
+/*
 @Composable
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
@@ -410,7 +409,7 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
     }
     SaveInViewModel(vm)
 }
-
+*/
 @Composable
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){

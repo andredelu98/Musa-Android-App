@@ -187,7 +187,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                     contentDescription = null,
                     modifier = Modifier.size(26.dp).clickable {
                         //RIVEDERE CONDIZIONI FINE
-                        if(taskCounter!!< 6 || taskCounter!! < vm.weeksEx.value!!*vm.daysEx.value!!){
+                        if(taskCounter!!< 6 && taskCounter!! < vm.weeksEx.value!!*vm.daysEx.value!!){
                             vm.setNextTask(taskCounter!!)
                             vm.setTaskCounter(taskCounter!!+1)
                         }
@@ -262,7 +262,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                                 Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati")
                                     .setValue(vm.taskCompleted.value!!);
 
-                                if(taskCounter!!>7||vm.taskCounter.value!!-1>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
+                                if(taskCounter!!>7 || vm.taskCounter.value!!-1>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
                                     navController.navigate(Screens.TaskFinished.name) {
                                         popUpTo(navController.graph.findStartDestination().id) {
                                             saveState = true

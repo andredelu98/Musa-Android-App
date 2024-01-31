@@ -39,6 +39,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.AsyncImage
 import com.google.firebase.Firebase
 import com.google.firebase.database.FirebaseDatabase
@@ -46,6 +47,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.R
+import it.polito.musaapp.Screens
 
 
 fun GetReferenceTask(vm: MusaViewModel){
@@ -85,7 +87,15 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp)
+                modifier = Modifier.size(35.dp).clickable {
+                    navController.navigate(Screens.TaskPage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
