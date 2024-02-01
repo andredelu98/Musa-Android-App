@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -40,12 +41,12 @@ import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.DeleteSingleProjectCompleted
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 @Composable
 fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
     val projectList by vm.projectListCompleted.observeAsState()
-
 
     var countCompletati=-1
     val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
@@ -63,6 +64,31 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
     Column(
         modifier= Modifier.fillMaxSize()
     ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 22.dp, bottom = 0.dp, start = 22.dp, end = 22.dp)
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.back_arrow),
+                contentDescription = null,
+                modifier = Modifier.size(35.dp).clickable {
+                    navController.navigate(Screens.ProfilePage.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+            Box(modifier = Modifier.size(35.dp))
+
+            Box(modifier = Modifier.size(35.dp))
+        }
+
         Text("I TUOI PROGETTI")
 
         if(projectList.isNullOrEmpty()|| counterProgetti!! <=0){

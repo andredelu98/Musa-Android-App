@@ -50,6 +50,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -63,7 +64,6 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun ProjectPage(navController: NavController, vm:MusaViewModel){
-    var clicked by remember { mutableStateOf(false) }
     val projectList by vm.projectList.observeAsState()
     var count=-1
     val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
@@ -110,32 +110,22 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     contentDescription = null,
                     modifier = Modifier.size(85.dp)
                 )
-                if (projectList.isNullOrEmpty() || counterProgetti!! <= 0){
-                    Icon(
-                        painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(
-                            id = R.drawable.info
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable {
-                                clicked = !clicked
-                            }
-                    )
-                } else {
-                    Icon(
-                        painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(
-                            id = R.drawable.info
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable {
-                                /*TODO*/
-                            }
-                    )
-                }
 
+                Icon(
+                    painter = painterResource(id = R.drawable.archivio),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            navController.navigate(Screens.StoricoProgetti.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                )
             }
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -223,12 +213,16 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                     }
                                             )
                                             DropdownMenu(
+                                                offset = DpOffset(0.dp, 8.dp),
                                                 expanded = openOptions,
                                                 onDismissRequest = { openOptions = false },
                                                 modifier = Modifier
                                                     .align(Alignment.CenterEnd)
                                                     .background(MaterialTheme.colorScheme.secondary)
-                                                    //.border(5.dp, MaterialTheme.colorScheme.primaryContainer)
+                                                    .border(
+                                                        5.dp,
+                                                        MaterialTheme.colorScheme.primaryContainer
+                                                    )
                                             )
                                             {
                                                 DropdownMenuItem(
@@ -321,33 +315,6 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                             }
                         }
                 )
-            }
-        }
-        if (clicked) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Box(
-                    modifier = Modifier
-                        .height(160.dp)
-                        .align(Alignment.Center)
-                        .offset(x = 0.dp, y = (220).dp)
-                ) {
-                    Text(
-                        text = "Clicca qui per inserire un\nnuovo progetto",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.freccia_info3),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(120.dp)
-                            .offset(x = 0.dp, y = 0.dp)
-                            .align(Alignment.BottomEnd)
-                    )
-                }
             }
         }
     }
