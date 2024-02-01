@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +30,9 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,6 +45,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -104,18 +110,32 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     contentDescription = null,
                     modifier = Modifier.size(85.dp)
                 )
+                if (projectList.isNullOrEmpty() || counterProgetti!! <= 0){
+                    Icon(
+                        painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(
+                            id = R.drawable.info
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable {
+                                clicked = !clicked
+                            }
+                    )
+                } else {
+                    Icon(
+                        painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(
+                            id = R.drawable.info
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable {
+                                /*TODO*/
+                            }
+                    )
+                }
 
-                Icon(
-                    painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(
-                        id = R.drawable.info
-                    ),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable {
-                            clicked = !clicked
-                        }
-                )
             }
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -153,68 +173,68 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                             var openOptions by remember {
                                 mutableStateOf(false)
                             }
-                            if (vm.projectList.value!![i].name != "") {
-
-                                Box(modifier = Modifier.fillMaxSize())
-                                {
-                                    Card(
-                                        shape = RoundedCornerShape(15.dp),
-                                        colors = CardDefaults.cardColors(
-                                            containerColor = MaterialTheme.colorScheme.primary,
-                                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                                        ),
-                                        border = BorderStroke(
-                                            5.dp,
-                                            MaterialTheme.colorScheme.primaryContainer
-                                        ),
-                                        modifier = Modifier
-                                            .clickable {
-                                                vm.setProjectToPrint(projectList!![i])
-                                                vm.setProjectToPrintCounter(i)
-                                                navController.navigate(Screens.SinglePageProject.name) {
-                                                    popUpTo(navController.graph.findStartDestination().id) {
-                                                        saveState = true
-                                                    }
-                                                    launchSingleTop = true
-                                                    restoreState = true
+                            if (vm.projectList.value!![i].name != "")
+                            {
+                                Card(
+                                    shape = RoundedCornerShape(15.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                                    ),
+                                    border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
+                                    modifier = Modifier
+                                        .clickable {
+                                            vm.setProjectToPrint(projectList!![i])
+                                            vm.setProjectToPrintCounter(i)
+                                            navController.navigate(Screens.SinglePageProject.name) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
                                                 }
+                                                launchSingleTop = true
+                                                restoreState = true
                                             }
+                                        }
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        //horizontalArrangement = Arrangement.SpaceBetween,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .height(60.dp)
+                                            .padding(12.dp)
                                     ) {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                        Text(
+                                            text = projectList!!.get(i).name,
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            textAlign = TextAlign.Start,
                                             modifier = Modifier
-                                                .fillMaxSize()
-                                                .padding(8.dp)
-                                        ) {
-                                            Text(
-                                                text = projectList!!.get(i).name,
-                                                style = MaterialTheme.typography.headlineMedium,
-                                                textAlign = TextAlign.Start,
-                                                modifier = Modifier.offset(x = 0.dp, y = 3.dp)
-                                            )
+                                                .weight(1f)
+                                                .offset(x = 0.dp, y = (-3).dp)
+                                        )
+                                        Box(){
                                             Icon(
                                                 Icons.Filled.MoreVert,
                                                 contentDescription = "More",
                                                 tint = MaterialTheme.colorScheme.onPrimary,
                                                 modifier = Modifier
-                                                    .size(35.dp)
+                                                    .size(30.dp)
                                                     .clickable {
                                                         openOptions = !openOptions
                                                     }
                                             )
-                                        }
-                                    }
-                                    if (openOptions) {
-                                        Spacer(modifier = Modifier.height(100.dp))
-                                        Box(
-                                            modifier = Modifier.align(Alignment.BottomEnd)
-                                        ) {
-                                            Column {
-                                                Text(
-                                                    text = "Modifica",
-                                                    modifier = Modifier.clickable {
-                                                        //MODIFICA SINGLE TASK
+                                            DropdownMenu(
+                                                expanded = openOptions,
+                                                onDismissRequest = { openOptions = false },
+                                                modifier = Modifier
+                                                    .align(Alignment.CenterEnd)
+                                                    .background(MaterialTheme.colorScheme.secondary)
+                                                    //.border(5.dp, MaterialTheme.colorScheme.primaryContainer)
+                                            )
+                                            {
+                                                DropdownMenuItem(
+                                                    modifier = Modifier.height(38.dp),
+                                                    onClick = {
+                                                        openOptions = false
                                                         vm.setProjectToModify(i)
                                                         vm.setProjectToModifyCount(i)
                                                         navController.navigate(Screens.ModifyProject.name) {
@@ -224,13 +244,26 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                             launchSingleTop = true
                                                             restoreState = true
                                                         }
-                                                    }
+                                                    },
+                                                    text = {
+                                                        Box(modifier = Modifier.fillMaxSize()){
+                                                            Text(
+                                                                text = "Modifica",
+                                                                textAlign = TextAlign.Center,
+                                                                style = MaterialTheme.typography.bodySmall,
+                                                                fontSize = 16.sp,
+                                                                modifier = Modifier.align(Alignment.Center)
+                                                            )
+                                                        }
+                                                    },
                                                 )
-                                                Text(
-                                                    text = "Elimina",
-                                                    modifier = Modifier.clickable {
-                                                        //ELIMINA SINGLE TASK
-                                                        //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                Divider(thickness = 3.dp, color = Color(0x1A001219))
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                DropdownMenuItem(
+                                                    modifier = Modifier.height(38.dp),
+                                                    onClick = {
+                                                        openOptions = false
                                                         DeleteSingleProject(vm, i)
                                                         navController.navigate(Screens.ProjectPage.name) {
                                                             popUpTo(navController.graph.findStartDestination().id) {
@@ -239,77 +272,83 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                             launchSingleTop = true
                                                             restoreState = true
                                                         }
-                                                    }
+                                                    },
+                                                    text = {
+                                                        Box(modifier = Modifier.fillMaxSize()){
+                                                            Text(
+                                                                text = "Elimina",
+                                                                textAlign = TextAlign.Center,
+                                                                style = MaterialTheme.typography.bodySmall,
+                                                                fontSize = 16.sp,
+                                                                modifier = Modifier.align(Alignment.Center)
+                                                            )
+                                                        }
+                                                   },
                                                 )
                                             }
-
                                         }
                                     }
-
-
                                 }
-
+                                Spacer(modifier = Modifier.height(16.dp))
                             }
                         }
                     }
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.plus),
-                        contentDescription = "Add",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .size(60.dp)
-                            //.align(Alignment.BottomCenter)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                            .border(
-                                width = 5.dp,
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = CircleShape
-                            )
-                            .padding(18.dp)
-                            .clickable {
-                                navController.navigate(Screens.NewProject.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
+                }
+                Icon(
+                    painter = painterResource(id = R.drawable.plus),
+                    contentDescription = "Add",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .size(60.dp)
+                        //.align(Alignment.BottomCenter)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = CircleShape
+                        )
+                        .border(
+                            width = 5.dp,
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = CircleShape
+                        )
+                        .padding(18.dp)
+                        .clickable {
+                            navController.navigate(Screens.NewProject.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
+                                launchSingleTop = true
+                                restoreState = true
                             }
+                        }
+                )
+            }
+        }
+        if (clicked) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .height(160.dp)
+                        .align(Alignment.Center)
+                        .offset(x = 0.dp, y = (220).dp)
+                ) {
+                    Text(
+                        text = "Clicca qui per inserire un\nnuovo progetto",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.freccia_info3),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(120.dp)
+                            .offset(x = 0.dp, y = 0.dp)
+                            .align(Alignment.BottomEnd)
                     )
                 }
             }
-            if (clicked) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Box(
-                        modifier = Modifier
-                            .height(160.dp)
-                            .align(Alignment.Center)
-                            .offset(x = 0.dp, y = (220).dp)
-                    ) {
-                        Text(
-                            text = "Clicca qui per inserire un\nnuovo progetto",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .align(Alignment.TopStart)
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.freccia_info3),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .width(120.dp)
-                                .offset(x = 0.dp, y = 0.dp)
-                                .align(Alignment.BottomEnd)
-                        )
-                    }
-                }
-            }
         }
-
     }
 }
