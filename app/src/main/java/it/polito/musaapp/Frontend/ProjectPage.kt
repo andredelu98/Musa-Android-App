@@ -2,7 +2,9 @@ package it.polito.musaapp.Frontend
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,12 +18,15 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,9 +40,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
@@ -49,6 +57,7 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun ProjectPage(navController: NavController, vm:MusaViewModel){
+    var clicked by remember { mutableStateOf(false) }
     val projectList by vm.projectList.observeAsState()
     var count=-1
     val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
@@ -76,93 +85,93 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
     }
     val counterProgettiCompletati by vm.counterProgettiCompletati.observeAsState()
 
-    Column(
-        modifier=Modifier.fillMaxSize()
-    ){
-        Text("I TUOI PROGETTI")
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 16.dp)
+            ) {
+                Box(modifier = Modifier.size(35.dp))
 
-        if(projectList.isNullOrEmpty()|| counterProgetti!! <=0){
-            Log.d("LISTAPROGETTI", "Non ci sono progetti")
-            Text("Non hai ancora inserito nessun progetto personale")
-        }
-        else{
-            Log.d("LISTAPROGETTI", projectList!!.size.toString())
-            //DISPLAY LISTA PROGETTI
-            Log.d("LISTAPROGETTI", projectList!!.get(0).name)
-           // Log.d("LISTAPROGETTI", projectList!!.get(1).name)
+                Image(
+                    painter = painterResource(id = R.drawable.loghetto),
+                    contentDescription = null,
+                    modifier = Modifier.size(85.dp)
+                )
 
-            for(i in 0..projectList!!.size-1){
-              //  Spacer(modifier = Modifier.height(16.dp))
-                var openOptions by remember{
-                    mutableStateOf(false)
-                }
-                if(vm.projectList.value!![i].name!="") {
-
-                    Card(
-                        shape = RoundedCornerShape(15.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                        border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
-                        modifier = Modifier.clickable {
-                            vm.setProjectToPrint(projectList!![i])
-                            vm.setProjectToPrintCounter(i)
-                            navController.navigate(Screens.SinglePageProject.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+                Icon(
+                    painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(
+                        id = R.drawable.info
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            clicked = !clicked
                         }
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 12.dp, vertical = 8.dp)
-                                .height(90.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Text(
-                                    text = projectList!!.get(i).name,
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .offset(x = 0.dp, y = 3.dp)
-                                        .weight(3f)
-                                )
-                                Icon(
-                                    Icons.Filled.MoreVert,
-                                    contentDescription = "More",
-                                    tint = MaterialTheme.colorScheme.onPrimary,
-                                    modifier = Modifier
-                                        .size(44.dp)
-                                        .clickable {
-                                            openOptions = !openOptions
-                                        }
-                                        .weight(1f)
-                                )
+                )
+            }
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 24.dp)
+            )
+            {
+                Text(
+                    text = "I TUOI PROGETTI",
+                    style = MaterialTheme.typography.headlineMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
+                if (projectList.isNullOrEmpty() || counterProgetti!! <= 0) {
+                    Text(
+                        text = "Non hai ancora inserito dei\nprogetti personali",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Center,
+                    )
+                } else {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(500.dp)
+                            .padding(top = 8.dp, start = 36.dp, end = 36.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        for (i in 0..projectList!!.size - 1) {
+                            //  Spacer(modifier = Modifier.height(16.dp))
+                            var openOptions by remember {
+                                mutableStateOf(false)
                             }
-                            if (openOptions) {
-                                Spacer(modifier = Modifier.height(100.dp))
-                                Box(
-                                    modifier = Modifier.align(Alignment.BottomEnd)
-                                ) {
-                                    Column {
-                                        Text(
-                                            text = "Modifica",
-                                            modifier = Modifier.clickable {
-                                                //MODIFICA SINGLE TASK
-                                                vm.setProjectToModify(i)
-                                                vm.setProjectToModifyCount(i)
-                                                navController.navigate(Screens.ModifyProject.name) {
+                            if (vm.projectList.value!![i].name != "") {
+
+                                Box(modifier = Modifier.fillMaxSize())
+                                {
+                                    Card(
+                                        shape = RoundedCornerShape(15.dp),
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = MaterialTheme.colorScheme.primary,
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                        ),
+                                        border = BorderStroke(
+                                            5.dp,
+                                            MaterialTheme.colorScheme.primaryContainer
+                                        ),
+                                        modifier = Modifier
+                                            .clickable {
+                                                vm.setProjectToPrint(projectList!![i])
+                                                vm.setProjectToPrintCounter(i)
+                                                navController.navigate(Screens.SinglePageProject.name) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
                                                     }
@@ -170,54 +179,137 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                     restoreState = true
                                                 }
                                             }
-                                        )
-                                        Text(
-                                            text = "Elimina",
-                                            modifier = Modifier.clickable {
-                                                //ELIMINA SINGLE TASK
-                                                //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
-                                                DeleteSingleProject(vm, i)
-                                                navController.navigate(Screens.ProjectPage.name) {
-                                                    popUpTo(navController.graph.findStartDestination().id) {
-                                                        saveState = true
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(8.dp)
+                                        ) {
+                                            Text(
+                                                text = projectList!!.get(i).name,
+                                                style = MaterialTheme.typography.headlineMedium,
+                                                textAlign = TextAlign.Start,
+                                                modifier = Modifier.offset(x = 0.dp, y = 3.dp)
+                                            )
+                                            Icon(
+                                                Icons.Filled.MoreVert,
+                                                contentDescription = "More",
+                                                tint = MaterialTheme.colorScheme.onPrimary,
+                                                modifier = Modifier
+                                                    .size(35.dp)
+                                                    .clickable {
+                                                        openOptions = !openOptions
                                                     }
-                                                    launchSingleTop = true
-                                                    restoreState = true
-                                                }
+                                            )
+                                        }
+                                    }
+                                    if (openOptions) {
+                                        Spacer(modifier = Modifier.height(100.dp))
+                                        Box(
+                                            modifier = Modifier.align(Alignment.BottomEnd)
+                                        ) {
+                                            Column {
+                                                Text(
+                                                    text = "Modifica",
+                                                    modifier = Modifier.clickable {
+                                                        //MODIFICA SINGLE TASK
+                                                        vm.setProjectToModify(i)
+                                                        vm.setProjectToModifyCount(i)
+                                                        navController.navigate(Screens.ModifyProject.name) {
+                                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                                saveState = true
+                                                            }
+                                                            launchSingleTop = true
+                                                            restoreState = true
+                                                        }
+                                                    }
+                                                )
+                                                Text(
+                                                    text = "Elimina",
+                                                    modifier = Modifier.clickable {
+                                                        //ELIMINA SINGLE TASK
+                                                        //Firebase.database.getReference("Progetti").child("CounterProgetti").setValue(vm.projectList.value!!.size-1)
+                                                        DeleteSingleProject(vm, i)
+                                                        navController.navigate(Screens.ProjectPage.name) {
+                                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                                saveState = true
+                                                            }
+                                                            launchSingleTop = true
+                                                            restoreState = true
+                                                        }
+                                                    }
+                                                )
                                             }
-                                        )
+
+                                        }
                                     }
 
+
+                                }
+
+                            }
+                        }
+                    }
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.plus),
+                        contentDescription = "Add",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .size(60.dp)
+                            //.align(Alignment.BottomCenter)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                            .border(
+                                width = 5.dp,
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = CircleShape
+                            )
+                            .padding(18.dp)
+                            .clickable {
+                                navController.navigate(Screens.NewProject.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
                             }
-
-                        }
+                    )
+                }
+            }
+            if (clicked) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .height(160.dp)
+                            .align(Alignment.Center)
+                            .offset(x = 0.dp, y = (220).dp)
+                    ) {
+                        Text(
+                            text = "Clicca qui per inserire un\nnuovo progetto",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.freccia_info3),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(120.dp)
+                                .offset(x = 0.dp, y = 0.dp)
+                                .align(Alignment.BottomEnd)
+                        )
                     }
                 }
-
             }
-
         }
 
-        Icon(
-            Icons.Filled.Add,
-            contentDescription = "Add",
-            tint= MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier
-                .size(44.dp)
-                .align(Alignment.CenterHorizontally)
-                .clickable {
-
-                    navController.navigate(Screens.NewProject.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-        )
-
     }
-
 }
