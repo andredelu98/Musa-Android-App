@@ -48,6 +48,7 @@ import com.google.firebase.database.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.RefreshSavedReference
 import it.polito.musaapp.Backend.RemoveImageInSaved
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
@@ -56,6 +57,7 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun SavedReference(navController: NavController, vm:MusaViewModel) {
+    RefreshSavedReference(vm)
     //val storageRef = FirebaseStorage.getInstance().getReference("ReferenceTask1Arte")
     val list by vm.savedRef.observeAsState()
 
@@ -127,6 +129,7 @@ fun ImageWithHeartSaved(imageUrl: String, vm: MusaViewModel) {
     var isLiked by remember { mutableStateOf(true) }
 
     if(!isLiked){
+        Log.d("REFERENCE", "sono in not liked ref salvate")
         RemoveImageInSaved(imageUrl, vm)
     }
 

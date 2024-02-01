@@ -469,6 +469,9 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
         if(monthDays>=today.dayOfMonth+dayDistance){
             //SIAMO ANCORA NEL MESE CORRENTE
             Log.d("DATATROVATA", "il giorno è  ${today.dayOfMonth} +$dayDistance")
+            if(dayDistance<0){
+                dayDistance=0
+            }
             newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
         }
         else {

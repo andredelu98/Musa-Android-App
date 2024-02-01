@@ -252,21 +252,26 @@ class MusaViewModel : ViewModel() {
     }
 
     fun getRefToRemove(s: String): Int{
-        var l = mutableListOf<String>()
-        l= _savedRef.value as MutableList<String>
-        for(i in 0.. l.size-1){
-            if(l[i].equals(s)){
-              //  Log.d("SALVATIREMOVE",i.toString())
-               return i
+        var l = mutableListOf<SingleReference>()
+        var valToReturn= -1
+        l=_savedRefDB.value as MutableList<SingleReference>
+        Log.d("SALVATIREMOVE", "${_savedRefDB.value!!.count()}")
+        for(i in 0.. _referenceDBCounter.value!!-1){
+            if(_savedRefDB.value!![i].url.equals(s)){
+                Log.d("SALVATIREMOVE", "${_savedRefDB.value!![i].key} da rimuovere")
+                l.removeAt(i)
+                valToReturn=_savedRefDB.value!![i].key
             }
         }
-      return -1
-
+        _savedRefDB.value=l
+        return valToReturn
     }
 
     fun deleteAllReference(){
         val l = mutableListOf<String>()
+        val l2= mutableListOf<SingleReference>()
         _savedRef.value=l
+        _savedRefDB.value=l2
     }
 
     private var _referenceCounter=MutableLiveData<Int>()
@@ -274,5 +279,28 @@ class MusaViewModel : ViewModel() {
 
     fun setReferenceCounter(i:Int){
         _referenceCounter.value=i
+    }
+
+    private var _savedRefDB= MutableLiveData<List<SingleReference>>()
+    var savedRefDB: LiveData<List<SingleReference>> = _savedRefDB
+    fun addRefToSaveDB(key: Int, s: String) {
+        //_savedRef.value?.toString()?.let { Log.d("SALVATI", it) }
+        var l= mutableListOf<SingleReference>()
+        if(_savedRefDB.value.isNullOrEmpty())
+            l.add(SingleReference(key,s))
+        else{
+            l= _savedRefDB.value as MutableList<SingleReference>
+            l.add(SingleReference(key,s))
+        }
+        _savedRefDB.value = l
+        // _savedRef.value?.toString()?.let { Log.d("SALVATIFINEADD", it) }
+        //Log.d("LISTAPROGETTI", _projectList.value.toString())
+    }
+
+    private var _referenceDBCounter=MutableLiveData<Int>()
+    var referenceDBCounter: LiveData<Int> = _referenceDBCounter
+
+    fun setReferenceDBCounter(i:Int){
+        _referenceDBCounter.value=i
     }
 }
