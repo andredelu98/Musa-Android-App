@@ -46,7 +46,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
+import it.polito.musaapp.Backend.InsertImageInSaved
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.RemoveImageInSaved
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
@@ -187,26 +189,3 @@ fun ImageWithHeart(imageUrl: String, vm: MusaViewModel, b: Boolean) {
 }
 
 
-fun InsertImageInSaved(s: String, vm: MusaViewModel){
-    if(vm.savedRef.value.isNullOrEmpty()){
-
-        vm.addRefToSave(s)
-        Log.d("SALVATI", "${vm.savedRef.value!!.size}, $s" )
-        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.savedRef.value!!.size}")
-            .setValue(s)
-    }
-    else if(!vm.savedRef.value!!.contains(s)){
-        Log.d("SALVATI", "${vm.savedRef.value!!.size}, $s" )
-        vm.addRefToSave(s)
-        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.savedRef.value!!.size}")
-            .setValue(s)
-    }
-
-}
-
-fun RemoveImageInSaved(s: String, vm: MusaViewModel){
-    Log.d("SALVATIREM", "${vm.getRefToRemove(s)}, $s" )
-    if(vm.getRefToRemove(s)!=-1)
-        Firebase.database.getReference("RefereceSalvate").child("Ref${vm.getRefToRemove(s)}").removeValue()
-    vm.removeRefToSave(s)
-}

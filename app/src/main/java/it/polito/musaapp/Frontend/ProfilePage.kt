@@ -301,9 +301,10 @@ fun DeleteProfile(vm: MusaViewModel){
     Firebase.database.getReference("Progetti").child("ListaProgetti").removeValue()
     Firebase.database.getReference("Progetti").child("CounterProgettiCompletati").setValue(0)
     Firebase.database.getReference("Progetti").child("ListaProgettiCompletati").removeValue()
+    Firebase.database.getReference("ReferenceSalvate").removeValue()
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6){
         Firebase.database.getReference("ModuloEsercizi")
-            .child("GiorniLiberi").child(days[i]).setValue(false);
+            .child("GiorniLiberi").child(days[i]).setValue(false)
     }
 }

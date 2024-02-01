@@ -48,6 +48,7 @@ import com.google.firebase.database.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.RemoveImageInSaved
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 

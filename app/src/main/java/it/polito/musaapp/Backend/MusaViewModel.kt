@@ -242,7 +242,7 @@ class MusaViewModel : ViewModel() {
         var l = mutableListOf<String>()
        // _savedRef.value?.toString()?.let { Log.d("SALVATIREMOVE", it) }
         l= _savedRef.value as MutableList<String>
-        for(i in 0.. l.size-1){
+        for(i in 0.. _counterProgetti.value!!-1){
             if(l[i].equals(s)){
                l.removeAt(i)
             }
@@ -262,5 +262,17 @@ class MusaViewModel : ViewModel() {
         }
       return -1
 
+    }
+
+    fun deleteAllReference(){
+        val l = mutableListOf<String>()
+        _savedRef.value=l
+    }
+
+    private var _referenceCounter=MutableLiveData<Int>()
+    var referenceCounter: LiveData<Int> = _referenceCounter
+
+    fun setReferenceCounter(i:Int){
+        _referenceCounter.value=i
     }
 }

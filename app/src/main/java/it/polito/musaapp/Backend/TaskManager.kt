@@ -154,35 +154,37 @@ fun DeletePlanExercise(vm: MusaViewModel) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalculateDueDates(vm: MusaViewModel){
-    val today= LocalDate.now()
+fun CalculateDueDates(vm: MusaViewModel) {
+    val today = LocalDate.now()
     val daysEx by vm.daysEx.observeAsState()
     val weeksEx by vm.weeksEx.observeAsState()
     val daysList by vm.daysListEx.observeAsState()
-    val weekdays: Array<String> = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
-    var todayWeekday: Int= -1
-    var used=0
-    var used2=0
-    val monthDays=31
+    val weekdays: Array<String> =
+        arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+    var todayWeekday: Int = -1
+    var used = 0
+    var used2 = 0
+    val monthDays = 31
 
-    var counter=0
-    for(j in 0..6){
-        if(daysList!!.get(j)==true)
+    var counter = 0
+    for (j in 0..6) {
+        if (daysList!!.get(j) == true)
             counter++;
-        if(today.dayOfWeek.toString().equals(weekdays[j]))
-            todayWeekday=j
+        if (today.dayOfWeek.toString().equals(weekdays[j]))
+            todayWeekday = j
     }
-    /*
-    if(daysEx?.equals(counter) == true)
-        CalculateDateEqual(vm, todayWeekday)
 
+    if (daysEx?.equals(counter) == true)
+        CalculateDateEqual(vm, todayWeekday)
+}
+/*
     else if(daysEx!!<counter){
         CalculateDateDaysMinor(vm, todayWeekday)
     }
     else if(daysEx!!>counter){
         CalculateDateDaysMajor(vm, todayWeekday)
     }
-*/
+
     for(i in 0..daysEx!!)
     {
         var taskWeekday: Int = -1
@@ -257,7 +259,7 @@ fun CalculateDueDates(vm: MusaViewModel){
 }
 
 
-/*
+
 @Composable
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalculateDateDaysMajor(vm: MusaViewModel, todayWeekday: Int){
@@ -410,6 +412,8 @@ fun CalculateDateDaysMinor(vm: MusaViewModel, todayWeekday: Int){
     SaveInViewModel(vm)
 }
 */
+
+
 @Composable
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
@@ -423,9 +427,9 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
     var used2=0
 
 
-    val monthDays=31
+    val monthDays=29
 
-    for(i in 0..daysEx!!)
+    for(i in 0..daysEx!!-1)
     {
         var taskWeekday: Int = -1
         var dayDistance: Int = -1
@@ -464,6 +468,7 @@ fun CalculateDateEqual(vm: MusaViewModel, todayWeekday: Int){
 
         if(monthDays>=today.dayOfMonth+dayDistance){
             //SIAMO ANCORA NEL MESE CORRENTE
+            Log.d("DATATROVATA", "il giorno è  ${today.dayOfMonth} +$dayDistance")
             newDate=LocalDate.of(today.year, today.month, today.dayOfMonth+dayDistance)
         }
         else {
@@ -486,18 +491,19 @@ fun InsertDate(vm: MusaViewModel, d: LocalDate, task: Int){
     Firebase.database.getReference("ModuloEsercizi").child("Scadenze").child("Task${task+1}").setValue(d.toString())
 }
 
-fun SaveInViewModel(vm: MusaViewModel){
+fun SaveInViewModel(vm: MusaViewModel) {
     //INSERIMENTO DATE SCADENZA IN VM
-    val s :MutableList<String> = mutableListOf();
-    val myRef= Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
+    val s: MutableList<String> = mutableListOf();
+    val myRef = Firebase.database.getReference("ModuloEsercizi").child("Scadenze")
     myRef.get().addOnSuccessListener {
-      //  Log.d("DATATASKLIST", "  task list${it.value}")
-        for(i in it.children) {
-         //   Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
+        //  Log.d("DATATASKLIST", "  task list${it.value}")
+        for (i in it.children) {
+            //   Log.d("DATATASKILIST", " singoli task ${i.value.toString()}, number task ${s.count()+1}")
             s.add(i.value!!.toString())
         }
         vm.createDueDateArray(s)
     }.addOnFailureListener {
         Log.d("DATADATATROVATA", "Error", it);
     }
+
 }

@@ -42,6 +42,7 @@ import com.google.firebase.database.database
 import it.polito.musaapp.Backend.GetProjectsFromDb
 import it.polito.musaapp.Backend.GetTask
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.RefreshSavedReference
 import it.polito.musaapp.Backend.RefreshVariablesTask
 import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.Screens
@@ -100,6 +101,7 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
     myRef.get().addOnSuccessListener {
       //  Log.d("FORM", "valori ${it.value}");
             if (it.value == true) {
+                RefreshSavedReference(vm)
                 if(taskInserito){
                     RefreshVariablesTask(vm)
 
