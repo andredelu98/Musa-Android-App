@@ -117,6 +117,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
+                            vm.setPreviousScreen(Screens.ProjectPage)
                             navController.navigate(Screens.StoricoProgetti.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true

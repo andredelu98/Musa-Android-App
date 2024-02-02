@@ -122,6 +122,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .fillMaxWidth()
                 .clickable {
                     if (taskInserito){
+                        vm.setPreviousScreen(Screens.ProfilePage)
                         navController.navigate(Screens.ModifyPlanExercise.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -217,6 +218,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .height(75.dp)
                 .fillMaxWidth()
                 .clickable {
+                    vm.setPreviousScreen(Screens.ProfilePage)
                     navController.navigate(Screens.StoricoProgetti.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true

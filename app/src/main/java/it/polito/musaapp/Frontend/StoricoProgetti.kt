@@ -47,6 +47,7 @@ import it.polito.musaapp.Screens
 @Composable
 fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
     val projectList by vm.projectListCompleted.observeAsState()
+    val previousScreen by vm.previousScreen.observeAsState()
 
     var countCompletati=-1
     val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
@@ -75,7 +76,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
                 modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(Screens.ProfilePage.name) {
+                    navController.navigate(previousScreen!!.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

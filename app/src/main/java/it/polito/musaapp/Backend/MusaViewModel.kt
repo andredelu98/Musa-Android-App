@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Screens
 
 class MusaViewModel : ViewModel() {
 
@@ -19,6 +20,12 @@ class MusaViewModel : ViewModel() {
 
     fun setRegistered(value: Boolean){
         _registered.value=value
+    }
+
+    private var _previousScreen = MutableLiveData<Screens>(null)
+    var previousScreen: LiveData<Screens> = _previousScreen
+    fun setPreviousScreen(value: Screens){
+        _previousScreen.value = value
     }
 
     //VARIABILI PROFILO DELLA PERSONA
