@@ -133,6 +133,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                         .align(Alignment.Center)
                                         .clickable {
                                             openOptions = false
+                                            vm.setfromProjectList(false)
                                             vm.projectToPrintCounter.value?.let {
                                                 vm.setProjectToModify(it)
                                                 vm.setProjectToModifyCount(it)

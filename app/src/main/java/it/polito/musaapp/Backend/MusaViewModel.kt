@@ -28,6 +28,13 @@ class MusaViewModel : ViewModel() {
         _previousScreen.value = value
     }
 
+    private var _fromProjectList= MutableLiveData<Boolean>(false)
+    var fromProjectList: LiveData<Boolean> = _fromProjectList
+
+    fun setfromProjectList(value: Boolean){
+        _fromProjectList.value=value
+    }
+
     //VARIABILI PROFILO DELLA PERSONA
     private var _category = MutableLiveData<String>("")
     var category: LiveData<String> = _category

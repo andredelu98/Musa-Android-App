@@ -2,11 +2,14 @@ package it.polito.musaapp.Frontend
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,8 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -30,11 +35,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -44,6 +51,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -51,6 +59,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.CreateNewProject
+import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.ModifySingleProject
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.SingleProject
@@ -62,6 +71,7 @@ import it.polito.musaapp.Screens
 @Composable
 fun ModifyProject(navController: NavController, vm:MusaViewModel){
     val context= LocalContext.current
+    val fromProjectList by vm.fromProjectList.observeAsState()
     var i by remember{
         mutableStateOf(0)
     }
@@ -76,15 +86,68 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
     var filledCategory by remember {
         mutableStateOf(vm.projectToModify.value!!.category)
     }
-    Box(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier= Modifier
             .fillMaxSize()
-            .padding(top = 120.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
     ){
+        if(vm.fromProjectList.value == true){
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 16.dp)
+                    .alpha(0.3f)
+            ) {
+                Box(modifier = Modifier.size(35.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.loghetto),
+                    contentDescription = null,
+                    modifier = Modifier.size(85.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.archivio),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {}
+                )
+            }
+        }else{
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 16.dp)
+                    .alpha(0.3f)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.back_arrow),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(35.dp)
+                        .clickable {}
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.loghetto),
+                    contentDescription = null,
+                    modifier = Modifier.size(85.dp)
+                )
+                Icon(
+                    Icons.Filled.MoreVert,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable { }
+                )
+            }
+        }
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 10.dp)
+                .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(20.dp)
@@ -99,12 +162,11 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier= Modifier
                     .fillMaxSize()
-                    .padding(top = 15.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = 25.dp, bottom = 10.dp, start = 25.dp, end = 25.dp)
                     .background(
                         MaterialTheme.colorScheme.primary
                     )
             ){
-                Spacer(modifier = Modifier.height(8.dp))
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Close",
@@ -113,24 +175,32 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                         .size(44.dp)
                         .align(Alignment.End)
                         .clickable {
-
-                            navController.navigate(Screens.ProfilePage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            if(vm.fromProjectList.value == true){
+                                navController.navigate(Screens.ProjectPage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            }else{
+                                navController.navigate(Screens.SinglePageProject.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         }
                 )
-
                 Text(
                     text= "Modifica progetto personale",
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = filledName,
@@ -153,18 +223,18 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                         .fillMaxWidth(),
 
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary,
+                        selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                         textColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
 
                 filledCategory= CategoryDropdownProjectsModify(vm)
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
                 OutlinedTextField(
                     value = filledDescription,
@@ -184,25 +254,24 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                             MaterialTheme.colorScheme.primaryContainer,
                             RoundedCornerShape(15.dp)
                         )
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .height(165.dp),
 
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary,
+                        selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                         textColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-
-
-
+                Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
-                        .width(160.dp),
+                        .width(150.dp),
                     onClick = {
                         ModifySingleProject(filledName, if(filledCategory=="") vm.projectToModify.value!!.category else filledCategory, filledDescription, vm, vm.projectToModifyCount.value!!)
                         navController.navigate(Screens.ProjectPage.name) {
@@ -257,7 +326,7 @@ fun CategoryDropdownProjectsModify(vm: MusaViewModel) : String{
             placeholder =
             { Text(text = vm.projectToModify.value!!.category,
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF775c15)
+                color = MaterialTheme.colorScheme.onPrimary
             ) },
             trailingIcon = {
                 Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
@@ -266,7 +335,7 @@ fun CategoryDropdownProjectsModify(vm: MusaViewModel) : String{
                         .size(20.dp))
             },
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.secondary,
                 textColor = MaterialTheme.colorScheme.onPrimary,
                 focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
                 unfocusedTrailingIconColor = Color(0xFF775c15)

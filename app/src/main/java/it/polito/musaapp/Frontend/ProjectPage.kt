@@ -98,7 +98,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize().padding(8.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -234,6 +234,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
+                                                        vm.setfromProjectList(true)
                                                         vm.setProjectToModify(i)
                                                         vm.setProjectToModifyCount(i)
                                                         navController.navigate(Screens.ModifyProject.name) {
