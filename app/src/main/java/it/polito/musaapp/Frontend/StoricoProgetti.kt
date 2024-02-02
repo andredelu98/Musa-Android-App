@@ -102,8 +102,9 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
             Log.d("LISTAPROGETTI", projectList!!.get(0).name)
             // Log.d("LISTAPROGETTI", projectList!!.get(1).name)
 
-            for(i in 0..projectList!!.size-1){
+            for(i in 0..vm.counterProgettiCompletati.value!!-1){
                 //  Spacer(modifier = Modifier.height(16.dp))
+                Log.d("LISTAPROGETTI", projectList!!.get(i).name)
                 var openOptions by remember{
                     mutableStateOf(false)
                 }

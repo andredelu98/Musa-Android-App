@@ -69,7 +69,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
     val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
     if(count==-1){
         myRef.get().addOnSuccessListener {
-            Log.d("PROGETTODB", "valori ${it.value}");
+            //Log.d("PROGETTODB", "valori ${it.value}");
             count = it.value.toString().toInt();
             vm.setCounterProgetti(count)
         }.addOnFailureListener {
@@ -82,14 +82,18 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
     val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
     if(countCompletati==-1){
         myRef2.get().addOnSuccessListener {
-            Log.d("PROJECTCOMPLETED", "valori ${it.value}");
+            //Log.d("PROJECTCOMPLETED", "valori ${it.value}");
             countCompletati = it.value.toString().toInt();
             vm.setCounterProgettiCompletati(countCompletati)
         }.addOnFailureListener {
             Log.d("PROJECTCOMPLETED", "Error", it);
         }
     }
+
     val counterProgettiCompletati by vm.counterProgettiCompletati.observeAsState()
+
+
+    val counterProgettiEliminati by vm.counterProgettiEliminati.observeAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -143,7 +147,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                if (projectList.isNullOrEmpty() || counterProgetti!! <= 0) {
+                if (projectList.isNullOrEmpty() || counterProgetti!! <= 0 || counterProgetti!! - counterProgettiCompletati!! - counterProgettiEliminati!! ==0) {
                     Text(
                         text = "Non hai ancora inserito dei\nprogetti personali",
                         style = MaterialTheme.typography.headlineSmall,

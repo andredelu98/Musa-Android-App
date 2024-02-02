@@ -162,6 +162,9 @@ class MusaViewModel : ViewModel() {
     fun CleanProjectList(){
         _projectList.value=null
     }
+    fun CleanProjectListCompleted(){
+        _projectListCompleted.value=null
+    }
 
     private var _counterProgetti=MutableLiveData<Int>()
     var counterProgetti: LiveData<Int> = _counterProgetti
@@ -174,6 +177,13 @@ class MusaViewModel : ViewModel() {
 
     fun setCounterProgettiCompletati(i : Int){
         _counterProgettiCompletati.value= i
+    }
+
+    private var _counterProgettiEliminati=MutableLiveData<Int>()
+    var counterProgettiEliminati: LiveData<Int> = _counterProgettiEliminati
+
+    fun setCounterProgettiEliminati(i : Int){
+        _counterProgettiEliminati.value= i
     }
 
     private var _projectToPrint=MutableLiveData<SingleProject>()

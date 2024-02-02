@@ -1,5 +1,6 @@
 package it.polito.musaapp
 
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -7,22 +8,33 @@ import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Backend.AppNavigation
+import it.polito.musaapp.Backend.GetCompletedProjectsFromDb
+import it.polito.musaapp.Backend.GetProjectsFromDb
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.getCounterProgettiEliminati
 import it.polito.musaapp.Frontend.DeleteProfile
+import it.polito.musaapp.Frontend.GetCounterProgetti
 import it.polito.musaapp.ui.theme.MusaAppTheme
 
 class MainActivity : ComponentActivity() {
     val vm by viewModels<MusaViewModel>()
     private var isImmersiveModeEnabled = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MusaAppTheme {
+                GetProjectsFromDb(vm = vm)
+                GetCompletedProjectsFromDb(vm = vm)
+                getCounterProgettiEliminati(vm)
                 AppNavigation(vm, applicationContext)
             }
         }
