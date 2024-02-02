@@ -169,7 +169,7 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                                     )
                                 }
                                 val truncatedText = if (vm.TaskList.value!!.get(i).length > 35) {
-                                    "${vm.TaskList.value!!.get(i).take(42)}..."
+                                    "${vm.TaskList.value!!.get(i).take(45)}..."
                                 } else {
                                     vm.TaskList.value!!.get(i)
                                 }

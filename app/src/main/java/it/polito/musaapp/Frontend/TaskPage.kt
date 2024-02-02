@@ -145,7 +145,8 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.pencil),
                 contentDescription = null,
                 modifier = Modifier.size(40.dp).clickable {
-                    navController.navigate(Screens.ModifyExercise.name) {
+                    vm.setPreviousScreen(Screens.TaskPage)
+                    navController.navigate(Screens.ModifyPlanExercise.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

@@ -80,18 +80,18 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                 .fillMaxWidth()
                 .padding(horizontal = 22.dp, vertical = 16.dp)
         ){
-            Box(modifier = Modifier.size(45.dp))
+            Box(modifier = Modifier.size(35.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
                 contentDescription = null,
-                modifier = Modifier.size(85.dp)
+                modifier = Modifier.size(85.dp).alpha(0.3f)
             )
 
             Icon(
                 painter = painterResource(id = R.drawable.info),
                 contentDescription = null,
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier.size(40.dp).alpha(0.3f)
             )
         }
         Box( //box effettivo
@@ -112,7 +112,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier= Modifier
                     .fillMaxSize()
-                    .padding(top = 15.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = 25.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
                     .background(
                         MaterialTheme.colorScheme.primary
                     )

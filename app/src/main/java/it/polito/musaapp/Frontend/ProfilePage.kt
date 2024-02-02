@@ -160,7 +160,6 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
 
         Row(
             modifier = Modifier
-                .alpha(0.3f)
                 .height(75.dp)
                 .fillMaxWidth()
                 .clickable {
@@ -214,7 +213,6 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
 
         Row(
             modifier = Modifier
-                .alpha(0.3f)
                 .height(75.dp)
                 .fillMaxWidth()
                 .clickable {

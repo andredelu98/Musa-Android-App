@@ -2,11 +2,14 @@ package it.polito.musaapp.Frontend
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
@@ -35,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -74,15 +79,37 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
     var filledCategory by remember {
         mutableStateOf("")
     }
-    Box(
-        modifier= Modifier
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
             .fillMaxSize()
-            .padding(top = 120.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
     ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp, vertical = 16.dp)
+        ){
+            Box(modifier = Modifier.size(35.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.loghetto),
+                contentDescription = null,
+                modifier = Modifier.size(85.dp).alpha(0.3f)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.archivio),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp).alpha(0.3f)
+            )
+        }
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 10.dp)
+                .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(20.dp)
@@ -97,12 +124,11 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier= Modifier
                     .fillMaxSize()
-                    .padding(top = 15.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = 25.dp, bottom = 10.dp, start = 25.dp, end = 25.dp)
                     .background(
                         MaterialTheme.colorScheme.primary
                     )
             ){
-                Spacer(modifier = Modifier.height(8.dp))
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Close",
@@ -111,7 +137,6 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                         .size(44.dp)
                         .align(Alignment.End)
                         .clickable {
-
                             navController.navigate(Screens.ProjectPage.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
@@ -121,14 +146,13 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                             }
                         }
                 )
-
                 Text(
                     text= "Nuovo progetto personale",
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
                     modifier= Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = filledName,
@@ -151,18 +175,18 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                         .fillMaxWidth(),
 
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        textColor = MaterialTheme.colorScheme.onPrimary
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        textColor = MaterialTheme.colorScheme.onPrimary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary,
+                        selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                     )
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
                 filledCategory=CategoryDropdownProjects(vm)
 
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
                 OutlinedTextField(
                     value = filledDescription,
@@ -182,25 +206,24 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                             MaterialTheme.colorScheme.primaryContainer,
                             RoundedCornerShape(15.dp)
                         )
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .height(165.dp),
 
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary,
+                        selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                         textColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-
-
-
+                Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
-                        .width(160.dp),
+                        .width(140.dp),
                     onClick = {
                         CreateNewProject(filledName, filledCategory, filledDescription, vm, vm.counterProgetti.value!!)
                         navController.navigate(Screens.ProjectPage.name) {
@@ -213,7 +236,7 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                     }
                 ){
                     Text(
-                        text= "AVVIA",
+                        text= "CREA",
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.background
                     )
@@ -222,6 +245,11 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
 
         }
     }
+
+
+
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -264,7 +292,7 @@ fun CategoryDropdownProjects(vm: MusaViewModel) : String{
                         .size(20.dp))
             },
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.secondary,
                 textColor = MaterialTheme.colorScheme.onPrimary,
                 focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimary,
                 unfocusedTrailingIconColor = Color(0xFF775c15)

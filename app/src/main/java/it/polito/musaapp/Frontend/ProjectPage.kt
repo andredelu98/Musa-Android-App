@@ -155,7 +155,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(500.dp)
+                            .height(480.dp)
                             .padding(top = 8.dp, start = 36.dp, end = 36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
@@ -214,7 +214,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                     }
                                             )
                                             DropdownMenu(
-                                                offset = DpOffset(0.dp, 8.dp),
+                                                offset = DpOffset(0.dp, (9).dp),
                                                 expanded = openOptions,
                                                 onDismissRequest = { openOptions = false },
                                                 modifier = Modifier
