@@ -160,7 +160,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(25.dp),
+                .padding(8.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

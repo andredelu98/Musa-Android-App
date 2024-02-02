@@ -98,7 +98,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(8.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
