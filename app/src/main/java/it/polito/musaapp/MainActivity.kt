@@ -12,14 +12,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
 import it.polito.musaapp.Backend.AppNavigation
 import it.polito.musaapp.Backend.GetProjectsFromDb
 import it.polito.musaapp.Backend.MusaViewModel
-import it.polito.musaapp.Backend.getCounterProgettiEliminati
-import it.polito.musaapp.Frontend.DeleteProfile
-import it.polito.musaapp.Frontend.GetCounterProgetti
 import it.polito.musaapp.ui.theme.MusaAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,8 +26,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MusaAppTheme {
-               // getCounterProgettiEliminati(vm)
-                //GetCompletedProjectsFromDb(vm = vm)
                 GetProjectsFromDb(vm = vm)
                 AppNavigation(vm, applicationContext)
             }

@@ -1,6 +1,5 @@
 package it.polito.musaapp.Frontend
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -283,6 +281,9 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                 //RIPRISTINA
                                 if(!restored){
                                     restored=true
+                                    vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!!-1)
+                                    Firebase.database.getReference("Progetti").child("ListaProgetti")
+                                        .child("CounterProgettiCompletati").setValue(vm.counterProgettiCompletati.value!!-1)
                                     vm.setStatus(vm.projectToPrintCounter.value!!, "creato")
                                     Firebase.database.getReference("Progetti").child("ListaProgetti")
                                         .child("Progetto${vm.projectToPrintCounter.value!!}").child("Stato")

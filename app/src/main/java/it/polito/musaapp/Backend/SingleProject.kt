@@ -1,7 +1,6 @@
 package it.polito.musaapp.Backend
 
 import android.util.Log
-import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -44,14 +43,11 @@ fun ModifySingleProject(name: String, category: String, description: String, vm:
 }
 
 fun DeleteSingleProject(vm:MusaViewModel, i: Int){
-    //Log.d("COUNTERPROGETTIDELETE", i.toString())
-   // vm.deleteProject(i)
     vm.setStatus(i, "eliminato")
     Firebase.database.getReference("Progetti").child("ListaProgetti")
         .child("Progetto${i}").child("Stato").setValue("eliminato")
-    //vm.setCounterProgettiEliminati(vm.counterProgettiEliminati.value!!+1)
-    //Firebase.database.getReference("Progetti").child("CounterProgettiEliminati").setValue(vm.counterProgettiEliminati.value)
 }
+
 
 @Composable
 fun GetProjectsFromDb(vm:MusaViewModel) {
@@ -143,22 +139,9 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
 
 }
 
-
-
-fun getCounterProgettiEliminati(vm:MusaViewModel){
-    val myRef = Firebase.database.getReference("Progetti").child("CounterProgettiEliminati")
-    myRef.get().addOnSuccessListener {
-        //Log.d("PROGETTODB", "valori ${it.value}");
-        vm.setCounterProgettiEliminati(it.value.toString().toInt())
-    }.addOnFailureListener {
-        Log.d("FORM", "Error", it);
-    }
-
-}
-
 fun ProjectCompleted(sp:SingleProject, vm:MusaViewModel, i: Int){
     Log.d("PROJECTCOMPLETED", "Sono in projectCompleted, $sp, $i, ${vm.counterProgettiCompletati.value!!}")
-  //  DeleteSingleProject(vm,i)
+   //DeleteSingleProject(vm,i)
    // vm.addProjectCompleted(s)
     val counterCompleted= vm.counterProgettiCompletati.value!!
     vm.setCounterProgettiCompletati(counterCompleted+1)
@@ -178,11 +161,3 @@ fun ProjectCompleted(sp:SingleProject, vm:MusaViewModel, i: Int){
         .child("Progetto${i}").child("Stato").setValue("completato")
 }
 
-fun DeleteSingleProjectCompleted(vm:MusaViewModel, i: Int){
-    // Log.d("COUNTERPROGETTI", i.toString())
-   // vm.deleteProjectCompleted(i)
-   // val counterCompleted= vm.counterProgettiCompletati.value!!
-  //  vm.setCounterProgettiCompletati(counterCompleted+1)
-    Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
-        .child("Progetto${i}").child("Stato").setValue("eliminatoDef")
-}
