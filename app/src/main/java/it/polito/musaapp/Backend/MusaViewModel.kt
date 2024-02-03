@@ -247,7 +247,7 @@ class MusaViewModel : ViewModel() {
     fun setStatus(i:Int, s:String){
         var l = mutableListOf<SingleProject>()
         l= _projectList.value as MutableList<SingleProject>
-        l[i].status="s"
+        l[i].status=s
         _projectList.value=l
     }
 

@@ -59,6 +59,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
     val projects by vm.projectList.observeAsState()
     var openOptions by remember { mutableStateOf(false) }
     var completed=false
+    var restored=false
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -242,33 +243,68 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                             modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
                         )
                     }
-                    Button(
-                        shape = MaterialTheme.shapes.large,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        modifier = Modifier.width(280.dp),
-                        onClick = {
-                            //COMPLETATO
-                            if(!completed){
-                                completed=true
-                                ProjectCompleted(vm.projectToPrint.value!!, vm, vm.projectToPrintCounter.value!!)
-                                navController.navigate(Screens.ProjectPage.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                    if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
+                        Button(
+                            shape = MaterialTheme.shapes.large,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            modifier = Modifier.width(280.dp),
+                            onClick = {
+                                //COMPLETATO
+                                if(!completed){
+                                    completed=true
+                                    ProjectCompleted(vm.projectToPrint.value!!, vm, vm.projectToPrintCounter.value!!)
+                                    navController.navigate(Screens.ProjectPage.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
                             }
+                        ){
+                            Text(
+                                text = "COMPLETATO",
+                                style = MaterialTheme.typography.headlineLarge,
+                                color = MaterialTheme.colorScheme.background,
+                            )
                         }
-                    ){
-                        Text(
-                            text = "COMPLETATO",
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = MaterialTheme.colorScheme.background,
-                        )
                     }
+                    else if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="completato"){
+                        Button(
+                            shape = MaterialTheme.shapes.large,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            modifier = Modifier.width(280.dp),
+                            onClick = {
+                                //RIPRISTINA
+                                if(!restored){
+                                    restored=true
+                                    vm.setStatus(vm.projectToPrintCounter.value!!, "creato")
+                                    Firebase.database.getReference("Progetti").child("ListaProgetti")
+                                        .child("Progetto${vm.projectToPrintCounter.value!!}").child("Stato")
+                                        .setValue("creato")
+                                    navController.navigate(Screens.ProjectPage.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                            }
+                        ){
+                            Text(
+                                text = "RIPRISTINA",
+                                style = MaterialTheme.typography.headlineLarge,
+                                color = MaterialTheme.colorScheme.background,
+                            )
+                        }
+                    }
+
                 }
             }
 

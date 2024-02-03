@@ -86,6 +86,19 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
     }
     val countProgetti by vm.counterProgetti.observeAsState()
 
+    var countCompletati=-1
+    val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+    if(countCompletati==-1){
+        myRef2.get().addOnSuccessListener {
+            Log.d("PROJECTCOMPLETED", "valori ${it.value}");
+            countCompletati = it.value.toString().toInt();
+            vm.setCounterProgettiCompletati(countCompletati)
+        }.addOnFailureListener {
+            Log.d("PROJECTCOMPLETED", "Error", it);
+        }
+    }
+
+
     if(countProgetti!=null&&!addingFinished){
         vm.CleanProjectList()
         for(i in 0..countProgetti!!-1){
@@ -256,12 +269,14 @@ fun getCounterProgettiEliminati(vm:MusaViewModel){
 
 }
 
-fun ProjectCompleted(s:SingleProject, vm:MusaViewModel, i: Int){
-    Log.d("PROJECTCOMPLETED", "Sono in projectCompleted, $s, $i, ${vm.counterProgettiCompletati.value!!}")
+fun ProjectCompleted(sp:SingleProject, vm:MusaViewModel, i: Int){
+    Log.d("PROJECTCOMPLETED", "Sono in projectCompleted, $sp, $i, ${vm.counterProgettiCompletati.value!!}")
   //  DeleteSingleProject(vm,i)
    // vm.addProjectCompleted(s)
     val counterCompleted= vm.counterProgettiCompletati.value!!
     vm.setCounterProgettiCompletati(counterCompleted+1)
+    val compl: String="completato"
+    vm.setStatus(i, compl)
     Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
         .setValue(counterCompleted+1)
    /* Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
@@ -271,9 +286,9 @@ fun ProjectCompleted(s:SingleProject, vm:MusaViewModel, i: Int){
     Firebase.database.getReference("Progetti").child("ListaProgettiCompletati")
         .child("Progetto${i}").child("Descrizione").setValue(s.description);*/
 
-    vm.setStatus(i, "completato")
+
     Firebase.database.getReference("Progetti").child("ListaProgetti")
-        .child("Progetto${i}").child("Stato").setValue("Completato")
+        .child("Progetto${i}").child("Stato").setValue("completato")
 }
 
 fun DeleteSingleProjectCompleted(vm:MusaViewModel, i: Int){
