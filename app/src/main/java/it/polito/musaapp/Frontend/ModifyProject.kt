@@ -209,7 +209,9 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                     },
                     shape = RoundedCornerShape(15.dp),
                     placeholder =
-                    { Text(text = filledName,
+                    {
+                        if(filledName=="")
+                        Text(text = "Nome progetto",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color(0xFF775c15)
                     )
@@ -243,7 +245,9 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                     },
                     shape = RoundedCornerShape(15.dp),
                     placeholder =
-                    { Text(text = filledDescription,
+                    {
+                        if(filledDescription=="")
+                        Text(text = "Descrizione",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color(0xFF775c15)
                     )
@@ -273,13 +277,30 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier
                         .width(150.dp),
                     onClick = {
-                        ModifySingleProject(filledName, if(filledCategory=="") vm.projectToModify.value!!.category else filledCategory, filledDescription, vm, vm.projectToModifyCount.value!!)
-                        navController.navigate(Screens.ProjectPage.name) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                        if(vm.fromProjectList.value == true){
+                            ModifySingleProject(filledName, if(filledCategory=="") vm.projectToModify.value!!.category else filledCategory, filledDescription, vm, vm.projectToModifyCount.value!!)
+                            navController.navigate(Screens.ProjectPage.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                                }
+                        }else {
+                            ModifySingleProject(
+                                filledName,
+                                if (filledCategory == "") vm.projectToModify.value!!.category else filledCategory,
+                                filledDescription,
+                                vm,
+                                vm.projectToModifyCount.value!!
+                            )
+                            navController.navigate(Screens.SinglePageProject.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
                     }
                 ){
@@ -302,7 +323,7 @@ fun CategoryDropdownProjectsModify(vm: MusaViewModel) : String{
     val categoryDisegno = arrayOf("Pittura", "Animazione", "Modellazione 3D")
     val categoryMusica = arrayOf("Canto", "Colonna sonora", "Sound design")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf("") }
+    var selectedText by remember { mutableStateOf(vm.projectToModify.value!!.category) }
     var categoryToUse =categoryMusica
 
     var textFiledSize by remember { mutableStateOf(Size.Zero) }
@@ -324,10 +345,14 @@ fun CategoryDropdownProjectsModify(vm: MusaViewModel) : String{
             onValueChange = { selectedText = it},
             readOnly = true,
             placeholder =
-            { Text(text = vm.projectToModify.value!!.category,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimary
-            ) },
+            {
+                if(selectedText=="")
+                Text(
+                    text = "Categoria",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color(0xFF775c15)
+                )
+            },
             trailingIcon = {
                 Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
