@@ -165,7 +165,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                             .padding(top = 8.dp, start = 36.dp, end = 36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        Log.d("LISTAPROGETTI", vm.counterProgetti.value!!.toString())
+                       // Log.d("LISTAPROGETTI", vm.counterProgetti.value!!.toString())
                         for (i in 0..vm.counterProgetti.value!!-1) {
                             //  Spacer(modifier = Modifier.height(16.dp))
                             var openOptions by remember {

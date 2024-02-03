@@ -56,7 +56,7 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
-    val project by vm.projectToPrint.observeAsState()
+    val projects by vm.projectList.observeAsState()
     var openOptions by remember { mutableStateOf(false) }
     var completed=false
     Column(
@@ -193,12 +193,12 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                 .padding(8.dp),
         ) {
             Text(
-                text = project!!.name.uppercase(),
+                text = projects?.get(vm.projectToPrintCounter.value!!)?.name!!.uppercase(),
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center
             )
             Text(
-                text = project!!.category,
+                text = projects?.get(vm.projectToPrintCounter.value!!)!!.category,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center
             )
@@ -209,7 +209,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                 modifier = Modifier.fillMaxSize()
             ){
                 Text(
-                    text = project!!.description,
+                    text = projects?.get(vm.projectToPrintCounter.value!!)!!.description,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 35.dp)
