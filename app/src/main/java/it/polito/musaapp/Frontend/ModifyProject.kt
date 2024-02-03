@@ -210,11 +210,12 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                     shape = RoundedCornerShape(15.dp),
                     placeholder =
                     {
-                        if(filledName=="")
-                        Text(text = "Nome progetto",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color(0xFF775c15)
-                    )
+                        if(filledName==""){
+                            Text(text = "Nome progetto",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color(0xFF775c15)
+                            )
+                        }
                     },
                     modifier = Modifier
                         .border(
@@ -246,11 +247,12 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                     shape = RoundedCornerShape(15.dp),
                     placeholder =
                     {
-                        if(filledDescription=="")
-                        Text(text = "Descrizione",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color(0xFF775c15)
-                    )
+                        if(filledDescription==""){
+                            Text(text = "Descrizione",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color(0xFF775c15)
+                            )
+                        }
                     },
                     modifier = Modifier
                         .border(
@@ -346,12 +348,13 @@ fun CategoryDropdownProjectsModify(vm: MusaViewModel) : String{
             readOnly = true,
             placeholder =
             {
-                if(selectedText=="")
-                Text(
-                    text = "Categoria",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color(0xFF775c15)
-                )
+                if(selectedText==""){
+                    Text(
+                        text = "Categoria",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color(0xFF775c15)
+                    )
+                }
             },
             trailingIcon = {
                 Icon(icon , "", tint = MaterialTheme.colorScheme.onPrimary,
@@ -407,5 +410,4 @@ fun CategoryDropdownProjectsModify(vm: MusaViewModel) : String{
     }
     return selectedText
 }
-
 
