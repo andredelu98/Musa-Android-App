@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.AppNavigation
-import it.polito.musaapp.Backend.GetCompletedProjectsFromDb
 import it.polito.musaapp.Backend.GetProjectsFromDb
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.getCounterProgettiEliminati
@@ -32,9 +31,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MusaAppTheme {
+               // getCounterProgettiEliminati(vm)
+                //GetCompletedProjectsFromDb(vm = vm)
                 GetProjectsFromDb(vm = vm)
-                GetCompletedProjectsFromDb(vm = vm)
-                getCounterProgettiEliminati(vm)
                 AppNavigation(vm, applicationContext)
             }
         }

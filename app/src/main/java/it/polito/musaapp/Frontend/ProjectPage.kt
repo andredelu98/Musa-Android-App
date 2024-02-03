@@ -76,7 +76,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
             Log.d("PROGETTODB", "Error", it);
         }
     }
-    val counterProgetti by vm.counterProgetti.observeAsState()
+
 
     var countCompletati=-1
     val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
@@ -90,6 +90,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
         }
     }
 
+    val counterProgetti by vm.counterProgetti.observeAsState()
     val counterProgettiCompletati by vm.counterProgettiCompletati.observeAsState()
 
 
@@ -147,7 +148,8 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                if (projectList.isNullOrEmpty() || counterProgetti!! <= 0 || counterProgetti!! - counterProgettiCompletati!! - counterProgettiEliminati!! ==0) {
+                if (projectList.isNullOrEmpty()
+                    || counterProgetti!! <= 0){
                     Text(
                         text = "Non hai ancora inserito dei\nprogetti personali",
                         style = MaterialTheme.typography.headlineSmall,
@@ -163,12 +165,14 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                             .padding(top = 8.dp, start = 36.dp, end = 36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        for (i in 0..projectList!!.size - 1) {
+                        Log.d("LISTAPROGETTI", vm.counterProgetti.value!!.toString())
+                        for (i in 0..vm.counterProgetti.value!!-1) {
                             //  Spacer(modifier = Modifier.height(16.dp))
                             var openOptions by remember {
                                 mutableStateOf(false)
                             }
-                            if (vm.projectList.value!![i].name != "")
+
+                            if (vm.projectList.value!![i].status == "creato")
                             {
                                 Card(
                                     shape = RoundedCornerShape(15.dp),
@@ -264,6 +268,9 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
+                                                        vm.setCounterProgettiEliminati(vm.counterProgettiEliminati.value!!+1)
+                                                        Firebase.database.getReference("Progetti").child("CounterProgettiEliminati")
+                                                            .setValue(vm.counterProgettiEliminati.value!!)
                                                         DeleteSingleProject(vm, i)
                                                         navController.navigate(Screens.ProjectPage.name) {
                                                             popUpTo(navController.graph.findStartDestination().id) {

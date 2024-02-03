@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.ProjectCompleted
@@ -157,6 +159,9 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                         modifier = Modifier.height(38.dp),
                         onClick = {
                             openOptions = false
+                            Firebase.database.getReference("Progetti").child("CounterProgettiEliminati")
+                                .setValue(vm.counterProgettiEliminati.value!!)
+                            vm.setCounterProgettiEliminati(vm.counterProgettiEliminati.value!!+1)
                             vm.projectToPrintCounter.value?.let { DeleteSingleProject(vm, it) }
                             navController.navigate(Screens.ProjectPage.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
