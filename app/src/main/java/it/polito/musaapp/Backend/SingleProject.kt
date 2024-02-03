@@ -55,7 +55,7 @@ fun DeleteSingleProject(vm:MusaViewModel, i: Int){
 
 @Composable
 fun GetProjectsFromDb(vm:MusaViewModel) {
-    vm.CleanProjectList()
+
     var count by remember {
         mutableIntStateOf(-1)
     }
@@ -72,6 +72,9 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
         mutableStateOf("")
     }
 
+    var addingFinished by remember {
+        mutableStateOf(false)
+    }
     val list = mutableListOf<String>("")
 
     val myRef = Firebase.database.getReference("Progetti")
@@ -83,8 +86,9 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
     }
     val countProgetti by vm.counterProgetti.observeAsState()
 
-    if(countProgetti!=null){
-        for(i in 0..countProgetti!! -1){
+    if(countProgetti!=null&&!addingFinished){
+        vm.CleanProjectList()
+        for(i in 0..countProgetti!!-1){
             myRef.child("ListaProgetti").child("Progetto$i").get().addOnSuccessListener {
                 //Log.d("PROGETTODB", "valori ${it.value}");
                 for (j in it.children) {
@@ -98,10 +102,14 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
                         status = j.value.toString()
                 }
 
-                if(!list.contains(nome)){
+                if(!list.contains(nome)&& !addingFinished){
                     list.add(nome)
                     vm.addNewProject(SingleProject(nome, categoria, descrizione, status))
                     Log.d("LISTA GETDB", "lista ${list}, numero di progetti aggiunti ${vm.projectList.value!!.count()!!}")
+                    if(vm.projectList.value!!.count() == countProgetti!!){
+                       addingFinished=true
+                       Log.d("LISTA GETDB FINALE", "listafin ${vm.projectList.value}, numero di progetti aggiunti ${vm.projectList.value!!.count()!!}")
+                    }
                 }
             }.addOnFailureListener {
                 Log.d("FORM", "Error", it);

@@ -147,7 +147,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-
+                Log.d("LISTA PROGETTI", "projectList ${projectList}, $counterProgetti")
                 if (projectList.isNullOrEmpty()
                     || counterProgetti!! <= 0){
                     Text(
