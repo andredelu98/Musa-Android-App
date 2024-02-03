@@ -90,7 +90,7 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
     val myRef2 = Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
     if(countCompletati==-1){
         myRef2.get().addOnSuccessListener {
-            Log.d("PROJECTCOMPLETED", "valori ${it.value}");
+            //Log.d("PROJECTCOMPLETED", "valori ${it.value}");
             countCompletati = it.value.toString().toInt();
             vm.setCounterProgettiCompletati(countCompletati)
         }.addOnFailureListener {
@@ -98,6 +98,17 @@ fun GetProjectsFromDb(vm:MusaViewModel) {
         }
     }
 
+    var countEliminati=-1
+    val myRef3 = Firebase.database.getReference("Progetti").child("CounterProgettiEliminati")
+    if(countEliminati==-1){
+        myRef3.get().addOnSuccessListener {
+            Log.d("PROJECTELIMINATI", "valori ${it.value}");
+            countEliminati= it.value.toString().toInt();
+            vm.setCounterProgettiEliminati(countEliminati)
+        }.addOnFailureListener {
+            Log.d("PROJECTCOMPLETED", "Error", it);
+        }
+    }
 
     if(countProgetti!=null&&!addingFinished){
         vm.CleanProjectList()
