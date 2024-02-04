@@ -145,8 +145,6 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                             .padding(top = 8.dp, start = 36.dp, end = 36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-
-
                         for (i in 0..vm.counterProgetti.value!!-1) {
                             //  Spacer(modifier = Modifier.height(16.dp))
                             var openOptions by remember {
@@ -249,11 +247,11 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
-                                                        vm.setCounterProgettiEliminati(vm.counterProgettiEliminati.value!!+1)
-                                                        Firebase.database.getReference("Progetti").child("CounterProgettiEliminati")
-                                                            .setValue(vm.counterProgettiEliminati.value!!)
+                                                        vm.setCounterProgettiCompletati(counterProgettiCompletati!! - 1)
+                                                        Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+                                                            .setValue(counterProgettiCompletati!!)
                                                         DeleteSingleProject(vm, i)
-                                                        navController.navigate(Screens.ProjectPage.name) {
+                                                        navController.navigate(Screens.StoricoProgetti.name) {
                                                             popUpTo(navController.graph.findStartDestination().id) {
                                                                 saveState = true
                                                             }

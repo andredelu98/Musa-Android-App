@@ -158,17 +158,29 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                         modifier = Modifier.height(38.dp),
                         onClick = {
                             openOptions = false
-                            Firebase.database.getReference("Progetti").child("CounterProgettiEliminati")
-                                .setValue(vm.counterProgettiEliminati.value!!)
-                            vm.setCounterProgettiEliminati(vm.counterProgettiEliminati.value!!+1)
-                            vm.projectToPrintCounter.value?.let { DeleteSingleProject(vm, it) }
-                            navController.navigate(Screens.ProjectPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
+                            if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
+                                navController.navigate(Screens.ProjectPage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
                             }
+                            else if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="completato"){
+                                vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
+                                Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+                                    .setValue(vm.counterProgettiCompletati.value!!)
+                                navController.navigate(Screens.StoricoProgetti.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+
                         },
                         text = {
                             Box(modifier = Modifier.fillMaxSize()) {
@@ -282,8 +294,8 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                 if(!restored){
                                     restored=true
                                     vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!!-1)
-                                    Firebase.database.getReference("Progetti").child("ListaProgetti")
-                                        .child("CounterProgettiCompletati").setValue(vm.counterProgettiCompletati.value!!-1)
+                                    Firebase.database.getReference("Progetti")
+                                        .child("CounterProgettiCompletati").setValue(vm.counterProgettiCompletati.value!!)
                                     vm.setStatus(vm.projectToPrintCounter.value!!, "creato")
                                     Firebase.database.getReference("Progetti").child("ListaProgetti")
                                         .child("Progetto${vm.projectToPrintCounter.value!!}").child("Stato")
