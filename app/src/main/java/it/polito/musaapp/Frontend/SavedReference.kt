@@ -115,7 +115,10 @@ fun SavedReference(navController: NavController, vm:MusaViewModel) {
             ) {
                 list?.forEachIndexed { index, imageUrl ->
                     item(index) {
-                        ImageWithHeartSaved(imageUrl = imageUrl, vm)
+                        if(!imageUrl.equals("RIMOSSO")){
+                            ImageWithHeartSaved(imageUrl = imageUrl, vm, navController)
+                        }
+
                     }
                 }
             }
@@ -125,12 +128,19 @@ fun SavedReference(navController: NavController, vm:MusaViewModel) {
 
 }
 @Composable
-fun ImageWithHeartSaved(imageUrl: String, vm: MusaViewModel) {
+fun ImageWithHeartSaved(imageUrl: String, vm: MusaViewModel, navController: NavController) {
     var isLiked by remember { mutableStateOf(true) }
 
     if(!isLiked){
         Log.d("REFERENCE", "sono in not liked ref salvate")
         RemoveImageInSaved(imageUrl, vm)
+        navController.navigate(Screens.SavedReference.name) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 
     Box(modifier = Modifier

@@ -129,6 +129,7 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             ) {
                 list?.forEachIndexed { index, imageUrl ->
                     item(index) {
+
                         if(vm.savedRef.value?.contains(imageUrl)==true){
                             ImageWithHeart(imageUrl = imageUrl, vm, true)
                         }

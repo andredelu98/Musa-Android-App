@@ -284,26 +284,34 @@ class MusaViewModel : ViewModel() {
         l= _savedRef.value as MutableList<String>
         for(i in 0.. _counterProgetti.value!!-1){
             if(l[i].equals(s)){
-               l.removeAt(i)
+               l.set(i, "RIMOSSO")
             }
         }
         _savedRef.value=l
+
+        var l2 = mutableListOf<SingleReference>()
+        l2=_savedRefDB.value as MutableList<SingleReference>
+        val c=getRefToRemove(s)
+        if(c!=-1){
+            l2?.get(c)?.url="RIMOSSO"
+        }
+        _savedRefDB.value=l2
        // _savedRef.value?.toString()?.let { Log.d("SALVATIREMOVEFINE", it) }
     }
 
     fun getRefToRemove(s: String): Int{
         var l = mutableListOf<SingleReference>()
-        var valToReturn= -1
+        var valToRemove=-1
+        var valToReturn=-1
         l=_savedRefDB.value as MutableList<SingleReference>
         Log.d("SALVATIREMOVE", "${_savedRefDB.value!!.count()}")
-        for(i in 0.. _referenceDBCounter.value!!-1){
+        for(i in 0.. _savedRefDB.value!!.count()-1){
             if(_savedRefDB.value!![i].url.equals(s)){
                 Log.d("SALVATIREMOVE", "${_savedRefDB.value!![i].key} da rimuovere")
-                l.removeAt(i)
                 valToReturn=_savedRefDB.value!![i].key
+                return valToReturn
             }
         }
-        _savedRefDB.value=l
         return valToReturn
     }
 
