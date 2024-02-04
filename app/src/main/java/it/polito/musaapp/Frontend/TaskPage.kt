@@ -202,8 +202,8 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxSize()
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxSize().padding(vertical = 40.dp)
             ) {
                 Text(
                     text = nextTask.toString(),

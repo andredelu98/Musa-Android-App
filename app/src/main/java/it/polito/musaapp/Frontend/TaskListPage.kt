@@ -96,19 +96,19 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                     }
                 )
             }
+            Text(
+                text = "I TUOI ESERCIZI",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(top = 8.dp, start = 36.dp, end = 36.dp)
+                    .padding(top = 26.dp, start = 36.dp, end = 36.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                Text(
-                    text = "I TUOI ESERCIZI",
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(20.dp))
+
                 if(taskList!!.count()>(vm.weeksEx.value!!*vm.daysEx.value!!)){
                     taskToDisplay=(vm.weeksEx.value!!*vm.daysEx.value!!)
                 }

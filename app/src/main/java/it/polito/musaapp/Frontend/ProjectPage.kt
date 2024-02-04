@@ -131,7 +131,8 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 24.dp)
+                    .padding(top = 8.dp, bottom = 24.dp)
+                    .verticalScroll(rememberScrollState())
             )
             {
                 Text(

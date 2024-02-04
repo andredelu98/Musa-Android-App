@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,11 +57,12 @@ import it.polito.musaapp.Screens
 
 @Composable
 
-fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
+fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
     val projectList by vm.projectList.observeAsState()
-    var count=-1
+    val previousScreen by vm.previousScreen.observeAsState()
+    var count = -1
     val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
-    if(count==-1){
+    if (count == -1) {
         myRef.get().addOnSuccessListener {
             //Log.d("PROGETTODB", "valori ${it.value}");
             count = it.value.toString().toInt();
@@ -88,22 +90,13 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                     .fillMaxWidth()
                     .padding(horizontal = 22.dp, vertical = 16.dp)
             ) {
-                Box(modifier = Modifier.size(35.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.loghetto),
-                    contentDescription = null,
-                    modifier = Modifier.size(85.dp)
-                )
-
                 Icon(
-                    painter = painterResource(id = R.drawable.archivio),
+                    painter = painterResource(id = R.drawable.back_arrow),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(35.dp)
                         .clickable {
-                            vm.setPreviousScreen(Screens.ProjectPage)
-                            navController.navigate(Screens.StoricoProgetti.name) {
+                            navController.navigate(previousScreen!!.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
@@ -112,54 +105,90 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                             }
                         }
                 )
+                Image(
+                    painter = painterResource(id = R.drawable.loghetto),
+                    contentDescription = null,
+                    modifier = Modifier.size(85.dp)
+                )
+
+                Box(modifier = Modifier.size(40.dp))
             }
+            Text(
+                text = "STORICO PROGETTI",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            )
             Column(
-                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = 24.dp)
             )
             {
-                Text(
-                    text = "STORICO PROGETTI",
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-               // Log.d("LISTA PROGETTI", "projectList ${projectList}, $counterProgetti")
+
+                // Log.d("LISTA PROGETTI", "projectList ${projectList}, $counterProgetti")
                 if (projectList.isNullOrEmpty()
-                    || counterProgettiCompletati!!<= 0){
-                    Text(
-                        text = "Non hai ancora completato \nnessun progetto personale",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Center,
-                    )
+                    || counterProgettiCompletati!! <= 0
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 40.dp)
+                    ){
+                        Box(modifier = Modifier.fillMaxWidth()){}
+                        Text(
+                            text = "Non hai ancora completato \nnessun progetto personale",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(32.dp)
+                        )
+                        Text(
+                            text="Vai alla sezione dei\ntuoi progetti",
+                            style = MaterialTheme.typography.headlineSmall,
+                            textDecoration = TextDecoration.Underline,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(Screens.ProjectPage.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                        )
+                    }
+
                 } else {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(480.dp)
-                            .padding(top = 8.dp, start = 36.dp, end = 36.dp)
+                            .padding(top = 26.dp, start = 36.dp, end = 36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        for (i in 0..vm.counterProgetti.value!!-1) {
+                        for (i in 0..vm.counterProgetti.value!! - 1) {
                             //  Spacer(modifier = Modifier.height(16.dp))
                             var openOptions by remember {
                                 mutableStateOf(false)
                             }
-                           // Log.d("LISTAPROGETTICOMPLETATI", vm.projectList.value!!.toString())
-                            if (vm.projectList.value!![i].status == "completato")
-                            {
+                            // Log.d("LISTAPROGETTICOMPLETATI", vm.projectList.value!!.toString())
+                            if (vm.projectList.value!![i].status == "completato") {
                                 Card(
                                     shape = RoundedCornerShape(15.dp),
                                     colors = CardDefaults.cardColors(
                                         containerColor = MaterialTheme.colorScheme.primary,
                                         contentColor = MaterialTheme.colorScheme.onPrimary,
                                     ),
-                                    border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
+                                    border = BorderStroke(
+                                        5.dp,
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    ),
                                     modifier = Modifier
                                         .clickable {
                                             vm.setProjectToPrint(projectList!![i])
@@ -189,7 +218,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                                                 .weight(1f)
                                                 .offset(x = 0.dp, y = (-3).dp)
                                         )
-                                        Box(){
+                                        Box() {
                                             Icon(
                                                 Icons.Filled.MoreVert,
                                                 contentDescription = "More",
@@ -229,7 +258,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                                                         }
                                                     },
                                                     text = {
-                                                        Box(modifier = Modifier.fillMaxSize()){
+                                                        Box(modifier = Modifier.fillMaxSize()) {
                                                             Text(
                                                                 text = "Modifica",
                                                                 textAlign = TextAlign.Center,
@@ -247,8 +276,11 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
-                                                        vm.setCounterProgettiCompletati(counterProgettiCompletati!! - 1)
-                                                        Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+                                                        vm.setCounterProgettiCompletati(
+                                                            counterProgettiCompletati!! - 1
+                                                        )
+                                                        Firebase.database.getReference("Progetti")
+                                                            .child("CounterProgettiCompletati")
                                                             .setValue(counterProgettiCompletati!!)
                                                         DeleteSingleProject(vm, i)
                                                         navController.navigate(Screens.StoricoProgetti.name) {
@@ -260,7 +292,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                                                         }
                                                     },
                                                     text = {
-                                                        Box(modifier = Modifier.fillMaxSize()){
+                                                        Box(modifier = Modifier.fillMaxSize()) {
                                                             Text(
                                                                 text = "Elimina",
                                                                 textAlign = TextAlign.Center,

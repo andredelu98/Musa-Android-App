@@ -52,7 +52,17 @@ fun ModifyExerciseEmpty(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp)
+                modifier = Modifier
+                    .size(35.dp)
+                    .clickable {
+                        navController.navigate(Screens.ProfilePage.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
             )
             Box(modifier = Modifier.size(35.dp))
 
@@ -62,13 +72,16 @@ fun ModifyExerciseEmpty(navController: NavController, vm: MusaViewModel){
             text = "Modifica piano di esercizi",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxSize().padding(bottom = 40.dp)
         ) {
+            Box(modifier = Modifier.fillMaxWidth()) {}
             Text(
                 text = "Non hai nessun piano attivo\nal momento",
                 style = MaterialTheme.typography.headlineSmall,
