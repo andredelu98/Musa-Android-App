@@ -104,7 +104,6 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
                 RefreshSavedReference(vm)
                 if(taskInserito){
                     RefreshVariablesTask(vm)
-
                     navController.navigate(Screens.TaskListPage.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true

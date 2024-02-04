@@ -52,7 +52,7 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TaskListPage(navController: NavController, vm:MusaViewModel){
-
+    RefreshVariablesTask(vm)
     GetTask(vm)
 
     val taskList by vm.TaskList.observeAsState()
