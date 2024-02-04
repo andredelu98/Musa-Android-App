@@ -158,7 +158,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                         modifier = Modifier.height(38.dp),
                         onClick = {
                             openOptions = false
-                            DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
+
                             if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
                                 navController.navigate(Screens.ProjectPage.name) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -180,7 +180,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                     restoreState = true
                                 }
                             }
-
+                            DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
                         },
                         text = {
                             Box(modifier = Modifier.fillMaxSize()) {

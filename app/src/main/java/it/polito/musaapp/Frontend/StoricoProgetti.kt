@@ -129,7 +129,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel){
                 )
                // Log.d("LISTA PROGETTI", "projectList ${projectList}, $counterProgetti")
                 if (projectList.isNullOrEmpty()
-                    || counterProgettiCompletati!! <= 0){
+                    || counterProgettiCompletati!!<= 0){
                     Text(
                         text = "Non hai ancora completato \nnessun progetto personale",
                         style = MaterialTheme.typography.headlineSmall,
