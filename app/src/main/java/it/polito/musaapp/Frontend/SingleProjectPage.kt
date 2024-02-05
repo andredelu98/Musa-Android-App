@@ -198,7 +198,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                             },
                         )
                     }
-                }
+                }else Box(modifier = Modifier.size(40.dp))
             }
 
         }
