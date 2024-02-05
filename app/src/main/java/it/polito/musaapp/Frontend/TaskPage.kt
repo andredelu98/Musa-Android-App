@@ -207,7 +207,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                         .size(26.dp)
                         .clickable {
                             //RIVEDERE CONDIZIONI FINE
-                            if (taskCounter!! < 6 && taskCounter!! < vm.weeksEx.value!! * vm.daysEx.value!!) {
+                            if (taskCounter!! < 7 && taskCounter!! < vm.weeksEx.value!! * vm.daysEx.value!!) {
                                 vm.setNextTask(taskCounter!!)
                                 vm.setTaskCounter(taskCounter!! + 1)
                             }
