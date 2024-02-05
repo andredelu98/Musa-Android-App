@@ -141,7 +141,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 25.dp)
-                .verticalScroll(rememberScrollState())
+                //.verticalScroll(rememberScrollState())
         ){
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -183,7 +183,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     textColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
                 text = "Mail:",
@@ -225,7 +225,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     textColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             //Text("Data di nascita")
             /* val datePicker =
                  MaterialDatePicker.Builder.datePicker()
@@ -246,7 +246,8 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             )
             Spacer(modifier = Modifier.height(8.dp))
             filledCategory=categoryDropdownModify(vm)
-            Spacer(modifier = Modifier.height(18.dp))
+
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
                 text = "Lo fai per?",
@@ -256,7 +257,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             )
             Spacer(modifier = Modifier.height(8.dp))
             filledProfession=professionDropdownModify(vm)
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
                 text = "Livello di esperienza:",
@@ -267,7 +268,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             Spacer(modifier = Modifier.height(8.dp))
             filledLevel=levelDropdownModify(vm)
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(22.dp))
 
             Button(
                 shape = MaterialTheme.shapes.large,
@@ -275,7 +276,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     containerColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 modifier = Modifier
-                    .width(190.dp),
+                    .width(180.dp),
                 onClick = {
                     if(filledName!=""){
                         Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
@@ -303,12 +304,12 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                 })
             {
                 Text(
-                    text= "MODIFICA",
+                    text= "SALVA",
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.background
                 )
             }
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(22.dp))
         }
     }
 

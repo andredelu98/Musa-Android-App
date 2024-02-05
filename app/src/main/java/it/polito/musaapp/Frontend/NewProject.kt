@@ -223,7 +223,7 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                         containerColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
-                        .width(140.dp),
+                        .width(150.dp),
                     onClick = {
                         CreateNewProject(filledName, filledCategory, filledDescription, vm, vm.counterProgetti.value!!)
                         navController.navigate(Screens.ProjectPage.name) {

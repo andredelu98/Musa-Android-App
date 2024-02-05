@@ -95,15 +95,17 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(Screens.ModifyPlanExercise.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                modifier = Modifier
+                    .size(35.dp)
+                    .clickable {
+                        navController.navigate(Screens.ModifyPlanExercise.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
             )
             Box(modifier = Modifier.size(35.dp))
 
@@ -113,63 +115,22 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
             text = "Modifica durata del piano",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)
         )
-        Box( //box effettivo
+
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .border(
-                    width = 10.dp,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = RoundedCornerShape(20.dp)
-                )
-        ) {
+                .height(560.dp)
+                .padding(top = 40.dp, bottom = 10.dp, start = 50.dp, end = 50.dp)
+        )
+        {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 15.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary
-                    )
-            )
-            {
-                Spacer(modifier = Modifier.height(8.dp))
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "Close",
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier
-                        .size(44.dp)
-                        .align(Alignment.End)
-                        .clickable {
-                            navController.navigate(Screens.ModifyPlanExercise.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                )
-                Text(
-                    text = "Programma quando vuoi ricevere gli esercizi",
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-                Divider(
-                    color = Color(0XFFD68D02),
-                    thickness = 4.dp,
-                    modifier = Modifier.width(200.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.height(140.dp)
+            ) {
                 Text(
                     text = "Quanti giorni a settimana?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -177,28 +138,38 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 SelettoreCountGiorniModify(vm)
-                Spacer(modifier = Modifier.height(8.dp))
+
                 Divider(
-                    color = Color(0XFFD68D02),
+                    color = Color(0x1A001219),
                     thickness = 4.dp,
                     modifier = Modifier.width(200.dp)
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.height(160.dp)
+            ) {
                 Text(
                     text = "Quali giorni preferisci?",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(12.dp))
                 SelettoreGiorniModify(vm)
-                Spacer(modifier = Modifier.height(20.dp))
                 Divider(
-                    color = Color(0XFFD68D02),
+                    color = Color(0x1A001219),
                     thickness = 4.dp,
                     modifier = Modifier.width(200.dp)
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+            }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.height(150.dp)
+            ) {
                 Text(
                     text = "Per quante settimane?",
                     style = MaterialTheme.typography.bodyMedium,
@@ -206,55 +177,57 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 SelettoreCountSettimaneModify(vm)
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+            }
 
-                Button(
-                    shape = MaterialTheme.shapes.large,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier
-                        .width(200.dp),
-                    onClick = {
-                        //RefreshVariablesTask()
+        }
 
-                        var i = 0
-                        for (j in 0..6) {
-                            if (daysL.get(j) == true)
-                                i++
-                        }
-                        if (dayPerWeek != i) {
-                            Toast.makeText(
-                                context,
-                                "Inserisci il numero corretto di giorni",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            SaveChanges(vm)
-                            Firebase.database.getReference("ModuloEsercizi").child("Inserito")
-                                .setValue(true);
-                            Firebase.database.getReference("ModuloEsercizi")
-                                .child("TaskCompletati").setValue(0);
-                            navController.navigate(Screens.TaskListPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                                setRoute(Screens.TaskListPage.name)
+            Button(
+                shape = MaterialTheme.shapes.large,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ),
+                modifier = Modifier
+                    .width(180.dp)
+                    .padding(top = 8.dp),
+                onClick = {
+                    //RefreshVariablesTask()
+
+                    var i = 0
+                    for (j in 0..6) {
+                        if (daysL.get(j) == true)
+                            i++
+                    }
+                    if (dayPerWeek != i) {
+                        Toast.makeText(
+                            context,
+                            "Inserisci il numero corretto di giorni",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        SaveChanges(vm)
+                        Firebase.database.getReference("ModuloEsercizi").child("Inserito")
+                            .setValue(true);
+                        Firebase.database.getReference("ModuloEsercizi")
+                            .child("TaskCompletati").setValue(0);
+                        navController.navigate(Screens.TaskListPage.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
                             }
+                            launchSingleTop = true
+                            restoreState = true
+                            setRoute(Screens.TaskListPage.name)
                         }
                     }
-                ) {
-                    Text(
-                        text = "MODIFICA",
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.background
-                    )
                 }
+            ) {
+                Text(
+                    text = "SALVA",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.background
+                )
             }
         }
-    }
 
 
 }
@@ -299,7 +272,10 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
                     count--;
                     changed=true
                 }
-            }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
         ){
             Icon(
                 painter = painterResource(id = R.drawable.frecciasx),
@@ -320,7 +296,10 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
                     count++;
                     changed =true
                 }
-            }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
         ){
             Icon(
                 painter = painterResource(id = R.drawable.frecciadx),
@@ -363,7 +342,10 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
                     count--;
                     changed=true
                 }
-            }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
         ){
             Icon(
                 painter = painterResource(id = R.drawable.frecciasx),
@@ -382,7 +364,10 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
             onClick = {
                 count++;
                 changed=true
-            }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
         ){
             Icon(
                 painter = painterResource(id = R.drawable.frecciadx),
