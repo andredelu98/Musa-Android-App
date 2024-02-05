@@ -74,6 +74,13 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
+    navController.addOnDestinationChangedListener { controller, _, _ ->
+        val currentDestination = controller.currentBackStackEntry?.destination
+        listOfNavItems.forEach { navItem ->
+            navItem.selected = currentDestination?.hierarchy?.any { it.route in navItem.allowedRoutes } == true
+        }
+    }
+
     Scaffold(
         bottomBar = {
             if (navBackStackEntry?.destination?.route != (Screens.WelcomePage.name)
@@ -94,7 +101,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                                 indicatorColor = MaterialTheme.colorScheme.onPrimary
                             ),
                             onClick = {
-                                listOfNavItems.forEach { it.selected = it == navItem }
+                                //listOfNavItems.forEach { it.selected = it == navItem }
                                 navController.navigate(navItem.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true

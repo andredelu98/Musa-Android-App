@@ -47,6 +47,7 @@ data class NavItem(
     val iconId_selected: Int,
     var selected: Boolean = false,
     var route: String,
+    val allowedRoutes: List<String>,
 )
 
 
@@ -57,13 +58,25 @@ var listOfNavItems = mutableListOf(
         iconId_unselected = R.drawable.progetti,
         iconId_selected = R.drawable.progetti_pieni,
         route = Screens.ProjectPage.name,
+        allowedRoutes = listOf(
+            Screens.ProjectPage.name,
+            Screens.SinglePageProject.name,
+            Screens.NewProject.name,
+            Screens.ModifyProject.name
+        )
     ),
     NavItem(
         label = "Home",
         iconId_unselected = R.drawable.home,
         iconId_selected = R.drawable.home_piena,
-        selected = true,
         route = Screens.HelpPage.name,
+        allowedRoutes = listOf(
+            Screens.HelpPage.name,
+            Screens.FormExercise.name,
+            Screens.TaskListPage.name,
+            Screens.TaskPage.name,
+            Screens.TaskReference.name,
+        )
     ),
 
     NavItem(
@@ -71,6 +84,15 @@ var listOfNavItems = mutableListOf(
         iconId_unselected = R.drawable.profilo,
         iconId_selected = R.drawable.profilo_pieno,
         route = Screens.ProfilePage.name,
+        allowedRoutes = listOf(
+            Screens.ProfilePage.name,
+            Screens.ModifyProfile.name,
+            Screens.ModifyExercise.name,
+            Screens.ModifyExerciseEmpty.name,
+            Screens.ModifyPlanExercise.name,
+            Screens.SavedReference.name,
+            Screens.StoricoProgetti.name,
+        )
     )
 )
 
