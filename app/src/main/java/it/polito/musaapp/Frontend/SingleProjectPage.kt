@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -93,109 +94,113 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                 modifier = Modifier.size(85.dp)
             )
 
-            Box() {
-                Icon(
-                    Icons.Filled.MoreVert,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable { openOptions = !openOptions }
-                )
-                DropdownMenu(
-                    offset = DpOffset(0.dp, (9).dp),
-                    expanded = openOptions,
-                    onDismissRequest = { openOptions = false },
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .background(MaterialTheme.colorScheme.secondary)
-                        .border(5.dp, MaterialTheme.colorScheme.primaryContainer)
-                )
-                {
-                    DropdownMenuItem(
-                        modifier = Modifier.height(38.dp),
-                        onClick = {
-                            openOptions = false
-                            navController.navigate(Screens.ModifyProject.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        text = {
-                            Box(modifier = Modifier.fillMaxSize()) {
-                                Text(
-                                    text = "Modifica",
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier
-                                        .align(Alignment.Center)
-                                        .clickable {
-                                            openOptions = false
-                                            vm.setfromProjectList(false)
-                                            vm.projectToPrintCounter.value?.let {
-                                                vm.setProjectToModify(it)
-                                                vm.setProjectToModifyCount(it)
-                                            }
-                                            navController.navigate(Screens.ModifyProject.name) {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        }
-                                )
-                            }
-                        },
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Divider(thickness = 3.dp, color = Color(0x1A001219))
-                    Spacer(modifier = Modifier.height(4.dp))
-                    DropdownMenuItem(
-                        modifier = Modifier.height(38.dp),
-                        onClick = {
-                            openOptions = false
 
-                            if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
-                                navController.navigate(Screens.ProjectPage.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                            else if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="completato"){
-                                vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
-                                Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
-                                    .setValue(vm.counterProgettiCompletati.value!!)
-                                navController.navigate(Screens.StoricoProgetti.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                            DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
-                        },
-                        text = {
-                            Box(modifier = Modifier.fillMaxSize()) {
-                                Text(
-                                    text = "Elimina",
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.align(Alignment.Center)
-                                )
-                            }
-                        },
+                Box() {
+                    if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
+                    Icon(
+                        Icons.Filled.MoreVert,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable { openOptions = !openOptions }
                     )
+                    DropdownMenu(
+                        offset = DpOffset(0.dp, (9).dp),
+                        expanded = openOptions,
+                        onDismissRequest = { openOptions = false },
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .background(MaterialTheme.colorScheme.secondary)
+                            .border(5.dp, MaterialTheme.colorScheme.primaryContainer)
+                    )
+                    {
+                        DropdownMenuItem(
+                            modifier = Modifier.height(38.dp),
+                            onClick = {
+                                openOptions = false
+                                navController.navigate(Screens.ModifyProject.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            text = {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    Text(
+                                        text = "Modifica",
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontSize = 16.sp,
+                                        modifier = Modifier
+                                            .align(Alignment.Center)
+                                            .clickable {
+                                                openOptions = false
+                                                vm.setfromProjectList(false)
+                                                vm.projectToPrintCounter.value?.let {
+                                                    vm.setProjectToModify(it)
+                                                    vm.setProjectToModifyCount(it)
+                                                }
+                                                navController.navigate(Screens.ModifyProject.name) {
+                                                    popUpTo(navController.graph.findStartDestination().id) {
+                                                        saveState = true
+                                                    }
+                                                    launchSingleTop = true
+                                                    restoreState = true
+                                                }
+                                            }
+                                    )
+                                }
+                            },
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Divider(thickness = 3.dp, color = Color(0x1A001219))
+                        Spacer(modifier = Modifier.height(4.dp))
+                        DropdownMenuItem(
+                            modifier = Modifier.height(38.dp),
+                            onClick = {
+                                openOptions = false
+
+                                if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
+                                    navController.navigate(Screens.ProjectPage.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                                else if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="completato"){
+                                    vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
+                                    Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+                                        .setValue(vm.counterProgettiCompletati.value!!)
+                                    navController.navigate(Screens.StoricoProgetti.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                                DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
+                            },
+                            text = {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    Text(
+                                        text = "Elimina",
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                }
+                            },
+                        )
+                    }
                 }
             }
+
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -232,26 +237,28 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                         .fillMaxWidth()
                         .height(150.dp)
                 ){
-                    Button (
-                        shape = MaterialTheme.shapes.large,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                        ),
-                        modifier = Modifier
-                            .height(IntrinsicSize.Min)
-                            .border(
-                                5.dp,
-                                MaterialTheme.colorScheme.primaryContainer,
-                                MaterialTheme.shapes.large
-                            )
-                        ,
-                        onClick = {/*TODO*/} //VEDI REFERENCE
-                    )
-                    {
-                        Text(text = "Vedi Reference",
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
+                    if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato") {
+                        Button(
+                            shape = MaterialTheme.shapes.large,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            modifier = Modifier
+                                .height(IntrinsicSize.Min)
+                                .border(
+                                    5.dp,
+                                    MaterialTheme.colorScheme.primaryContainer,
+                                    MaterialTheme.shapes.large
+                                ),
+                            onClick = {/*TODO*/ } //VEDI REFERENCE
                         )
+                        {
+                            Text(
+                                text = "Vedi Reference",
+                                style = MaterialTheme.typography.headlineSmall,
+                                modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
+                            )
+                        }
                     }
                     if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
                         Button(
@@ -316,6 +323,26 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                 color = MaterialTheme.colorScheme.background,
                             )
                         }
+
+                        Text(
+                            text="Elimina definitivamente",
+                            style = MaterialTheme.typography.headlineSmall,
+                            textDecoration = TextDecoration.Underline,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .clickable {
+                                    vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
+                                    Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+                                        .setValue(vm.counterProgettiCompletati.value!!)
+                                    navController.navigate(Screens.StoricoProgetti.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                        )
                     }
 
                 }

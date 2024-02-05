@@ -246,21 +246,26 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
-                                                        vm.setfromProjectList(true)
-                                                        vm.setProjectToModify(i)
-                                                        vm.setProjectToModifyCount(i)
-                                                        navController.navigate(Screens.ModifyProject.name) {
-                                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                                saveState = true
-                                                            }
-                                                            launchSingleTop = true
-                                                            restoreState = true
+                                                            vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!!-1)
+                                                            Firebase.database.getReference("Progetti")
+                                                                .child("CounterProgettiCompletati").setValue(vm.counterProgettiCompletati.value!!)
+                                                            vm.setStatus(vm.projectToPrintCounter.value!!, "creato")
+                                                            Firebase.database.getReference("Progetti").child("ListaProgetti")
+                                                                .child("Progetto${vm.projectToPrintCounter.value!!}").child("Stato")
+                                                                .setValue("creato")
+                                                            navController.navigate(Screens.ProjectPage.name) {
+                                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                                    saveState = true
+                                                                }
+                                                                launchSingleTop = true
+                                                                restoreState = true
+
                                                         }
                                                     },
                                                     text = {
                                                         Box(modifier = Modifier.fillMaxSize()) {
                                                             Text(
-                                                                text = "Modifica",
+                                                                text = "Ripristina",
                                                                 textAlign = TextAlign.Center,
                                                                 style = MaterialTheme.typography.bodySmall,
                                                                 fontSize = 16.sp,
