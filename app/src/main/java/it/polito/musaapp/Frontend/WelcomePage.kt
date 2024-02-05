@@ -101,6 +101,7 @@ fun MoveToRightPage(navController: NavController, vm: MusaViewModel) {
     myRef.get().addOnSuccessListener {
       //  Log.d("FORM", "valori ${it.value}");
             if (it.value == true) {
+                RefreshProfile(vm)
                 RefreshSavedReference(vm)
                 if(taskInserito){
                     RefreshVariablesTask(vm)

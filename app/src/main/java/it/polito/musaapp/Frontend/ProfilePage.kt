@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeletePlanExercise
 import it.polito.musaapp.Backend.MusaViewModel
@@ -310,5 +311,24 @@ fun DeleteProfile(vm: MusaViewModel){
     for (i in 0..6){
         Firebase.database.getReference("ModuloEsercizi")
             .child("GiorniLiberi").child(days[i]).setValue(false)
+    }
+}
+
+fun RefreshProfile(vm:MusaViewModel){
+    val myRef= FirebaseDatabase.getInstance().getReference("ModuloStart")
+    //Log.d("REFERENCE", "Task${vm.taskCounter.value}")
+    myRef.get().addOnSuccessListener {
+        // Log.d("REFERENCE", "${it.value}")
+        for(i in it.children){
+            when(i.key.toString()){
+                "Categoria" -> vm.setCategory(i.value.toString())
+                "Livello" -> vm.setLevel(i.value.toString())
+                "Mail" -> vm.setMail(i.value.toString())
+                "Nome"-> vm.setName(i.value.toString())
+                "Professione" -> vm.setProfessione(i.value.toString())
+            }
+        }
+    }.addOnFailureListener {
+        Log.d("PROFILEREFRESH", "Error", it);
     }
 }
