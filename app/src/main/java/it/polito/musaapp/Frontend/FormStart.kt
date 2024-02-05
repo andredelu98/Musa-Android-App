@@ -283,7 +283,7 @@ fun CategoryDropdown(vm: MusaViewModel){
                         Firebase.database.getReference("ModuloStart").child("Categoria").setValue(selectedText);
                         vm.setCategory(selectedText)
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                      //  Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < category.size - 1){
@@ -373,7 +373,7 @@ fun ProfessionDropdown(vm: MusaViewModel){
                         Firebase.database.getReference("ModuloStart").child("Professione").setValue(selectedText);
                         vm.setProfessione(selectedText)
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < profession.size - 1){
@@ -453,7 +453,7 @@ fun LevelDropdown(vm: MusaViewModel){
                         Firebase.database.getReference("ModuloStart").child("Livello").setValue(selectedText);
                         vm.setLevel(selectedText)
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < levels.size - 1){
