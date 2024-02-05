@@ -399,6 +399,7 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
         mutableStateListOf<Boolean>()
     }
     val daysSel by vm.daysListEx.observeAsState()
+
     var changed by remember {
         mutableStateOf(false)
     }
@@ -415,6 +416,22 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
     }*/
     //vm.setDaysListEx(selected)
 
+    var isDayClicked : MutableList<Boolean> = mutableListOf()
+    for (i in 0..6) {
+        //Log.d("ISDAY", daysSel!!.get(i).toString())
+
+        if (daysSel!!.get(i)) {
+            isDayClicked.add(true)
+            selected[i] = true
+            daysL[i] = true
+        } else {
+            isDayClicked.add(false)
+            selected[i] = false
+            daysL[i] = false
+        }
+    }
+   // Log.d("MODIFICAPIANOESERCIZI", "$daysSel")
+
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
@@ -426,17 +443,6 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
     ) {
         for (i in 0..6) {
             //Log.d("ISDAY", daysSel!!.get(i).toString())
-            var isDayClicked by remember{ mutableStateOf(false) }
-            if(daysSel!!.get(i)){
-                isDayClicked=true
-                selected[i]=true
-                daysL[i]=true
-            }
-            else{
-                isDayClicked=false
-                selected[i]=false
-                daysL[i]=false
-            }
 
             //Log.d("ISDAY", isDayClicked.toString())
             Text(
@@ -445,8 +451,8 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
                 fontSize = 30.sp,
                 modifier = Modifier
                     .clickable {
-                        isDayClicked = !isDayClicked
-                        if (isDayClicked) {
+                        isDayClicked[i] = !isDayClicked[i]
+                        if (isDayClicked[i]) {
                             daysL[i]=true
                             //Firebase.database.getReference("ModuloEsercizi")
                             //  .child("GiorniLiberi").child(daysDb[i]).setValue(true);
@@ -458,7 +464,7 @@ fun SelettoreGiorniModify(vm: MusaViewModel) {
                             selected[i]=false
                         }
                     },
-                color = if (isDayClicked) MaterialTheme.colorScheme.background else Color(0x80EE9B00)
+                color = if (isDayClicked[i]) MaterialTheme.colorScheme.background else Color(0x80EE9B00)
             )
         }
     }

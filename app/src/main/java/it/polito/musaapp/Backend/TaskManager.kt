@@ -25,6 +25,7 @@ var Mail: String=""
 
 
 fun RefreshVariablesTask(vm: MusaViewModel){
+    val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     val myRefStart= Firebase.database.getReference("ModuloStart")
     myRefStart.child("Categoria").get().addOnSuccessListener {
        // Log.d("TASKMANAGER", "Categoria ${it.value}");
@@ -72,13 +73,15 @@ fun RefreshVariablesTask(vm: MusaViewModel){
         Log.d("TASKMANAGER", "Error", it);
     }
     myRef.child("GiorniLiberi").get().addOnSuccessListener {
-       // Log.d("TASKMANAGER", "GiorniLiberi ${it.value}");
-        for ((j, i) in it.children.withIndex()) {
-            if(it.value==true){
-                WorkingDays[j]=true
+
+        for (i in it.children) {
+            for(k in 0..6){
+                if(daysDb[k]==i.key)
+                    WorkingDays[k]=i.value.toString().toBoolean()
             }
         }
         vm.setDaysListEx(WorkingDays.toMutableList())
+       // Log.d("MODIFICAINSERIMENTOGIORNI", "GiorniLiberi ${vm.daysListEx.value}");
     }.addOnFailureListener {
         Log.d("TASKMANAGER", "Error", it);
     }
