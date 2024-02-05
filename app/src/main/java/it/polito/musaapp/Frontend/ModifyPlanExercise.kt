@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -123,7 +124,7 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
                 modifier = Modifier
                     .height(80.dp)
                     .fillMaxWidth()
-                    .clickable {
+                    /*.clickable {
                         navController.navigate(Screens.ModifyExercise.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -131,7 +132,8 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
                             launchSingleTop = true
                             restoreState = true
                         }
-                    },
+                    }*/
+                    .alpha(0.3f),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             )

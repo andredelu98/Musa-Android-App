@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,6 +44,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import it.polito.musaapp.Backend.DeletePlanExercise
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
@@ -239,38 +241,33 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 modifier = Modifier.size(30.dp)
             )
         }
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Divider(thickness = 3.dp, color = Color(0x1A001219))
-
-        Row(
+        Button(
+            shape = MaterialTheme.shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
             modifier = Modifier
-                .height(75.dp)
-                .fillMaxWidth()
-                .clickable {
-                    DeleteProfile(vm)
-                    navController.navigate(Screens.FormStart.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
+                .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
+            ,
+            onClick={
+                DeleteProfile(vm)
+                navController.navigate(Screens.FormStart.name) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
                     }
-                },
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
-            Text(
-                text = "Elimina account" ,
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.frecciadx),
-                contentDescription = "",
-                modifier = Modifier.size(30.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        ){ Text(
+            text = "Elimina account",
+            style = MaterialTheme.typography.headlineSmall,
+            fontSize = 20.sp,
+            modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
+        )}
+
         /*
         Button(
             shape = MaterialTheme.shapes.large,
