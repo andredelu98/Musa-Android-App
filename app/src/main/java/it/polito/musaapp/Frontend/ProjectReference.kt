@@ -94,7 +94,7 @@ fun ProjectReference(navController: NavController, vm:MusaViewModel) {
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
                 modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(Screens.TaskPage.name) {
+                    navController.navigate(Screens.SinglePageProject.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
