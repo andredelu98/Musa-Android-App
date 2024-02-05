@@ -161,10 +161,13 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     imeAction = ImeAction.Done
                 ),
                 placeholder =
-                { Text(text = vm.name.value.toString(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
+                {
+                    if (filledName == ""){
+                        Text(text = "Nome utente",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color(0xFF775c15)
+                        )
+                    }
                 },
                 modifier = Modifier
                     .border(
@@ -203,10 +206,14 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     imeAction = ImeAction.Done
                 ),
                 placeholder =
-                {  Text(text = vm.mail.value.toString(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
+                {
+                    if(filledMail == ""){
+                        Text(
+                            text = "Email",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color(0xFF775c15)
+                        )
+                    }
                 },
                 modifier = Modifier
                     .border(
