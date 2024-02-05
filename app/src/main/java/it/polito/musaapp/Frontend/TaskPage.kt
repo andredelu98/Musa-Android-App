@@ -1,5 +1,6 @@
 package it.polito.musaapp.Frontend
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -100,6 +103,7 @@ fun TaskPage(navController: NavController, vm:MusaViewModel){
     }
 }*/
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun TaskPage(navController: NavController, vm: MusaViewModel){
     GetReferenceTask(vm)
@@ -124,15 +128,17 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(Screens.TaskListPage.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                modifier = Modifier
+                    .size(35.dp)
+                    .clickable {
+                        navController.navigate(Screens.TaskListPage.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
             )
 
             Image(
@@ -144,17 +150,25 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.pencil),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp).clickable {
-                    vm.setPreviousScreen(Screens.TaskPage)
-                    navController.navigate(Screens.ModifyPlanExercise.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable {
+                        vm.setPreviousScreen(Screens.TaskPage)
+                        navController.navigate(Screens.ModifyPlanExercise.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
             )
+        }
+        var colorArrowSx = remember {
+            mutableStateOf(Color.Black)
+        }
+        var colorArrowDx = remember {
+            mutableStateOf(Color.Black)
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -170,12 +184,15 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 Icon(
                     painter = painterResource(id = R.drawable.frecciasx),
                     contentDescription = null,
-                    modifier = Modifier.size(26.dp).clickable {
-                        if(taskCounter!=1&&taskCounter!!>taskCompleted!!+1){
-                            vm.setTaskCounter(taskCounter!!-1)
-                            vm.setNextTask(taskCounter!!-1)
-                        }
-                    }
+                    modifier = Modifier
+                        .size(26.dp)
+                        .clickable {
+                            if (taskCounter != 1 && taskCounter!! > taskCompleted!! + 1) {
+                                vm.setTaskCounter(taskCounter!! - 1)
+                                vm.setNextTask(taskCounter!! - 1)
+                            }
+                        },
+                    tint=if(taskCounter != 1 && taskCounter!! > taskCompleted!! + 1) Color.Black else Color.Gray
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
@@ -186,13 +203,16 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 Icon(
                     painter = painterResource(id = R.drawable.frecciadx),
                     contentDescription = null,
-                    modifier = Modifier.size(26.dp).clickable {
-                        //RIVEDERE CONDIZIONI FINE
-                        if(taskCounter!!< 6 && taskCounter!! < vm.weeksEx.value!!*vm.daysEx.value!!){
-                            vm.setNextTask(taskCounter!!)
-                            vm.setTaskCounter(taskCounter!!+1)
-                        }
-                    }
+                    modifier = Modifier
+                        .size(26.dp)
+                        .clickable {
+                            //RIVEDERE CONDIZIONI FINE
+                            if (taskCounter!! < 6 && taskCounter!! < vm.weeksEx.value!! * vm.daysEx.value!!) {
+                                vm.setNextTask(taskCounter!!)
+                                vm.setTaskCounter(taskCounter!! + 1)
+                            }
+                        },
+                    tint=if(taskCounter!! < 6 && taskCounter!! < vm.weeksEx.value!! * vm.daysEx.value!!) Color.Black else Color.Gray
                 )
             }
             Text(
@@ -203,7 +223,9 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxSize().padding(vertical = 40.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 40.dp)
             ) {
                 Text(
                     text = nextTask.toString(),
@@ -214,7 +236,9 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth().height(230.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(230.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.refresh),
@@ -229,7 +253,11 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                         modifier = Modifier
                             //.width(140.dp)
                             .height(IntrinsicSize.Min)
-                            .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
+                            .border(
+                                5.dp,
+                                MaterialTheme.colorScheme.primaryContainer,
+                                MaterialTheme.shapes.large
+                            )
                         ,
                         onClick = {
                             navController.navigate(Screens.TaskReference.name) {
