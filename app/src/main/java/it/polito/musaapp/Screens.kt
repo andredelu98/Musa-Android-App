@@ -21,5 +21,6 @@ enum class Screens {
     SinglePageProject,
     ModifyProject,
     StoricoProgetti,
-    SavedReference
+    SavedReference,
+    ProjectReference
 }

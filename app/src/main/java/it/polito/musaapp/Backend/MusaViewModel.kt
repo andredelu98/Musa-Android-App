@@ -126,6 +126,11 @@ class MusaViewModel : ViewModel() {
         _referenceListUrl.value=s
     }
 
+    private var _referenceListUrlProject = MutableLiveData<List<String>>()
+    var referenceListUrlProject: LiveData<List<String>> = _referenceListUrlProject
+    fun setReferenceListUrlProject(s: MutableList<String>){
+        _referenceListUrlProject.value=s
+    }
 
 
     private var _taskDueDate = MutableLiveData<List<String>>()

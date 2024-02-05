@@ -57,14 +57,14 @@ fun GetReferenceTask(vm: MusaViewModel){
     val listUrl: MutableList<String> = mutableListOf()
     val myRef= FirebaseDatabase.getInstance().getReference("Reference").child(vm.category.value!!)
         .child(vm.level.value!!).child("Task${vm.taskCounter.value}")
-    Log.d("REFERENCE", "Task${vm.taskCounter.value}")
+    //Log.d("REFERENCE", "Task${vm.taskCounter.value}")
     myRef.get().addOnSuccessListener {
-        Log.d("REFERENCE", "${it.value}")
+       // Log.d("REFERENCE", "${it.value}")
         for(i in it.children){
-            Log.d("Single REFERENCE", "${i.value!!}")
+          //  Log.d("Single REFERENCE", "${i.value!!}")
             listUrl.add(i.value!!.toString())
         }
-        Log.d("REFERENCE1", "$listUrl")
+       // Log.d("REFERENCE1", "$listUrl")
         vm.setReferenceListUrl(listUrl)
     }.addOnFailureListener {
         Log.d("TASKMANAGER", "Error", it);

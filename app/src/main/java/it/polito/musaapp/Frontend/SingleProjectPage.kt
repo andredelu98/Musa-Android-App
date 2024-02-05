@@ -55,6 +55,7 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
+    GetReferenceProject(vm)
     val projects by vm.projectList.observeAsState()
     var openOptions by remember { mutableStateOf(false) }
     var completed=false
@@ -250,7 +251,15 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                     MaterialTheme.colorScheme.primaryContainer,
                                     MaterialTheme.shapes.large
                                 ),
-                            onClick = {/*TODO*/ } //VEDI REFERENCE
+                            onClick = {
+                                navController.navigate(Screens.ProjectReference.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
                         )
                         {
                             Text(

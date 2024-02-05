@@ -54,6 +54,7 @@ import it.polito.musaapp.Frontend.ModifyProject
 import it.polito.musaapp.Frontend.NewProject
 import it.polito.musaapp.Frontend.ProfilePage
 import it.polito.musaapp.Frontend.ProjectPage
+import it.polito.musaapp.Frontend.ProjectReference
 import it.polito.musaapp.Frontend.SavedReference
 import it.polito.musaapp.Frontend.SingleProjectPage
 import it.polito.musaapp.Frontend.StoricoProgetti
@@ -223,6 +224,9 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
             }
             composable(route=Screens.SavedReference.name){
                 SavedReference(navController = navController, vm)
+            }
+            composable(route=Screens.ProjectReference.name){
+                ProjectReference(navController = navController, vm)
             }
         }
     }

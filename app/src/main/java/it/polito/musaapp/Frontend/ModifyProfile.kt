@@ -389,7 +389,7 @@ fun categoryDropdownModify(vm: MusaViewModel) : String{
                     onClick = {
                         selectedText = item
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < category.size - 1){
@@ -468,7 +468,7 @@ fun levelDropdownModify(vm: MusaViewModel) : String{
                     onClick = {
                         selectedText = item
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < levels.size - 1){
@@ -547,7 +547,7 @@ fun professionDropdownModify(vm: MusaViewModel) : String{
                     onClick = {
                         selectedText = item
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < profession.size - 1){

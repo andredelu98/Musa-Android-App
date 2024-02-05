@@ -57,7 +57,7 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
 
     val taskList by vm.TaskList.observeAsState()
     var taskToDisplay: Int =0
-    Log.d("TASKLIST", taskList.toString())
+    //Log.d("TASKLIST", taskList.toString())
     if(taskList!=null) {
         CalculateDueDates(vm)
 
