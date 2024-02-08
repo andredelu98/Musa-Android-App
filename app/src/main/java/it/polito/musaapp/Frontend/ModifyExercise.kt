@@ -338,10 +338,10 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
 
         Button(
             onClick = {
-                if(count>0){
+               /* if(count>0){
                     count--;
                     changed=true
-                }
+                }*/
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.background
@@ -362,8 +362,8 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
 
         Button(
             onClick = {
-                count++;
-                changed=true
+               // count++;
+               // changed=true
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.background

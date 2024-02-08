@@ -115,6 +115,7 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                 else{
                     taskToDisplay=taskList!!.count()
                 }
+                Log.d("TASKTODISPLAY", taskToDisplay.toString())
                 for (i in vm.taskCompleted.value!! until taskToDisplay) {
                     //vm.setNextTask(i)
                     //vm.setTaskCounter(i)

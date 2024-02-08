@@ -79,10 +79,10 @@ import java.util.Locale.Category
 @Composable
 fun ModifyProfile(navController: NavController, vm: MusaViewModel){
     var filledName by remember {
-        mutableStateOf("")
+        mutableStateOf(vm.name.value.toString())
     }
     var filledMail by remember {
-        mutableStateOf("")
+        mutableStateOf(vm.mail.value.toString())
     }
 
     var filledCategory by remember {

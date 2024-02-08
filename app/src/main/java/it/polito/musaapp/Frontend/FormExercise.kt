@@ -286,7 +286,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
 @Composable
 fun SelettoreCountSettimane(vm: MusaViewModel){
     var count by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(1)
     }
     /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
      myRef.get().addOnSuccessListener {
@@ -305,15 +305,16 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
 
         Button(
             onClick = {
-                if(count>0){
+                /*if(count>0){
                     count--;
-                }
+                }*/
             }
         ){
             Icon(
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
+                tint= Color.Gray
             )
         }
         Text(
@@ -323,13 +324,14 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
         )
         Button(
             onClick = {
-                count++;
+            //count++;
             }
         ){
             Icon(
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
+                tint= Color.Gray
             )
         }
     }
