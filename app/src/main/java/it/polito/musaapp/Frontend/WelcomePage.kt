@@ -57,6 +57,7 @@ fun WelcomePage(navController: NavController, vm: MusaViewModel){
             .fillMaxHeight()
     )
     {
+        vm.setPopUpOpened(false)
         Text("Siamo felici di vederti qui!")
         Indicator()
         Text("Attendi, stiamo lavorando per te...")

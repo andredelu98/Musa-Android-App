@@ -57,6 +57,7 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun ProjectPage(navController: NavController, vm:MusaViewModel){
+
     val projectList by vm.projectList.observeAsState()
     var count=-1
     val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")

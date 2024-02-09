@@ -356,4 +356,14 @@ class MusaViewModel : ViewModel() {
     fun setReferenceDBCounter(i:Int){
         _referenceDBCounter.value=i
     }
+
+
+    private var _popUpOpened= MutableLiveData<Boolean>()
+    var popUpOpened: LiveData<Boolean> = _popUpOpened
+
+    fun setPopUpOpened(b: Boolean){
+        _popUpOpened.value=b
+    }
 }
+
+

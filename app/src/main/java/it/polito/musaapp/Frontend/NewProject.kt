@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,6 +58,7 @@ import com.google.firebase.database.MutableData
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.CreateNewProject
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
@@ -64,6 +66,7 @@ import it.polito.musaapp.Screens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProject(navController: NavController, vm:MusaViewModel){
+
     val context= LocalContext.current
     var i by remember{
         mutableStateOf(0)
@@ -78,6 +81,23 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
 
     var filledCategory by remember {
         mutableStateOf("")
+    }
+
+    val popUpOpened by vm.popUpOpened.observeAsState()
+
+    Log.d("POPUP", popUpOpened.toString())
+    if(popUpOpened == true){
+        Log.d("POPUPCHECKCALLED", popUpOpened.toString())
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler uscire dall'inserimento del progetto?",
+            paragraph = "Se procedi i tuoi inserimenti verranno perduti",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.ProjectPage,
+            navigationCancel = Screens.NewProject,
+            navController = navController,
+            vm= vm
+        )
     }
 
     Column(
@@ -97,13 +117,17 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
                 contentDescription = null,
-                modifier = Modifier.size(85.dp).alpha(0.3f)
+                modifier = Modifier
+                    .size(85.dp)
+                    .alpha(0.3f)
             )
 
             Icon(
                 painter = painterResource(id = R.drawable.archivio),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp).alpha(0.3f)
+                modifier = Modifier
+                    .size(40.dp)
+                    .alpha(0.3f)
             )
         }
         Box( //box effettivo
@@ -137,13 +161,16 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                         .size(44.dp)
                         .align(Alignment.End)
                         .clickable {
-                            navController.navigate(Screens.ProjectPage.name) {
+                            Log.d("POPUPCHANGEB", popUpOpened.toString())
+                            vm.setPopUpOpened(true)
+                            Log.d("POPUPCHANGEB", popUpOpened.toString())
+                            /*   navController.navigate(Screens.ProjectPage.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                                 launchSingleTop = true
                                 restoreState = true
-                            }
+                            }*/
                         }
                 )
                 Text(
@@ -216,6 +243,9 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                         textColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
+                var intentionsChecked by remember {
+                    mutableStateOf(false)
+                }
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     shape = MaterialTheme.shapes.large,
@@ -225,6 +255,7 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier
                         .width(150.dp),
                     onClick = {
+
                         CreateNewProject(filledName, filledCategory, filledDescription, vm, vm.counterProgetti.value!!)
                         navController.navigate(Screens.ProjectPage.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
