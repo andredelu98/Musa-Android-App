@@ -66,7 +66,6 @@ import it.polito.musaapp.Screens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProject(navController: NavController, vm:MusaViewModel){
-
     val context= LocalContext.current
     var i by remember{
         mutableStateOf(0)
@@ -85,18 +84,19 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
 
     val popUpOpened by vm.popUpOpened.observeAsState()
 
-    Log.d("POPUP", popUpOpened.toString())
+    //Log.d("POPUP", popUpOpened.toString())
     if(popUpOpened == true){
-        Log.d("POPUPCHECKCALLED", popUpOpened.toString())
+       // Log.d("POPUPCHECKCALLED", popUpOpened.toString())
         PopUpCheckIntentions(
             question = "Sei sicuro di voler uscire dall'inserimento del progetto?",
             paragraph = "Se procedi i tuoi inserimenti verranno perduti",
             buttonConfirm = "Si",
             buttonCancel = "No",
             navigationConfirm = Screens.ProjectPage,
-            navigationCancel = Screens.NewProject,
+            navigationCancel= Screens.NewProject,
             navController = navController,
-            vm= vm
+            vm= vm,
+            numberToDelete= 0
         )
     }
 

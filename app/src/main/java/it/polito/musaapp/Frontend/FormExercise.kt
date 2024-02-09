@@ -59,6 +59,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.CalculateDueDates
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
@@ -68,6 +69,24 @@ import it.polito.musaapp.Screens
 @Composable
 fun FormExercise(navController: NavController, vm: MusaViewModel){
     val context = LocalContext.current
+
+    val popUpOpened by vm.popUpOpened.observeAsState()
+
+    //Log.d("POPUP", popUpOpened.toString())
+    if(popUpOpened == true){
+        // Log.d("POPUPCHECKCALLED", popUpOpened.toString())
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler uscire dall'inserimento del piano di esercizi?",
+            paragraph = "Se procedi i tuoi inserimenti verranno perduti",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.HelpPage,
+            navigationCancel = Screens.FormExercise,
+            navController = navController,
+            vm= vm,
+            numberToDelete= 0
+        )
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier= Modifier
@@ -85,13 +104,17 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
                 contentDescription = null,
-                modifier = Modifier.size(85.dp).alpha(0.3f)
+                modifier = Modifier
+                    .size(85.dp)
+                    .alpha(0.3f)
             )
 
             Icon(
                 painter = painterResource(id = R.drawable.info),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp).alpha(0.3f)
+                modifier = Modifier
+                    .size(40.dp)
+                    .alpha(0.3f)
             )
         }
         Box( //box effettivo
@@ -126,13 +149,14 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                         .size(44.dp)
                         .align(Alignment.End)
                         .clickable {
-                            navController.navigate(Screens.HelpPage.name) {
+                            vm.setPopUpOpened(true)
+                            /* navController.navigate(Screens.HelpPage.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                                 launchSingleTop = true
                                 restoreState = true
-                            }
+                            }*/
                         }
                 )
                 Text(
@@ -194,28 +218,29 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                     modifier = Modifier
                         .width(160.dp),
                     onClick = {
-                        var i =0
-                        for(j in 0..6){
-                            if(vm.daysListEx.value!!.get(j)==true)
-                                i++
-                        }
-                        if(vm.daysEx.value!=i){
-                            Toast.makeText(context, "Inserisci il numero corretto di giorni", Toast.LENGTH_SHORT).show()
-                        }
-                        else{
-                            Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
-                            Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
-                            navController.navigate(Screens.TaskListPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                                setRoute(Screens.TaskListPage.name)
+                        if(popUpOpened==false){
+                            var i =0
+                            for(j in 0..6){
+                                if(vm.daysListEx.value!!.get(j)==true)
+                                    i++
+                            }
+                            if(vm.daysEx.value!=i){
+                                Toast.makeText(context, "Inserisci il numero corretto di giorni", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
+                                Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
+                                navController.navigate(Screens.TaskListPage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                    setRoute(Screens.TaskListPage.name)
 
+                                }
                             }
                         }
-
                     }
                 ){
                     Text(
@@ -235,6 +260,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
     var count by remember {
         mutableIntStateOf(0)
     }
+    val popUpOpened by vm.popUpOpened.observeAsState()
     /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
      myRef.get().addOnSuccessListener {
          Log.d("FORM", "valori ${it.value}");
@@ -251,7 +277,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
         verticalAlignment = Alignment.CenterVertically){
         Button(
             onClick = {
-                if(count>0){
+                if(count>0&&popUpOpened==false){
                     count--;
                 }
             }
@@ -269,7 +295,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
         )
         Button(
             onClick = {
-                if(count<7){
+                if(count<7&&popUpOpened==false){
                     count++;
                 }
             }
@@ -285,9 +311,10 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
 
 @Composable
 fun SelettoreCountSettimane(vm: MusaViewModel){
-    var count by remember {
+    val count by remember {
         mutableIntStateOf(1)
     }
+
     /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
      myRef.get().addOnSuccessListener {
          Log.d("FORM", "valori ${it.value}");
@@ -343,6 +370,7 @@ fun SelettoreGiorni(vm:MusaViewModel) {
     val selected = remember {
         mutableStateListOf<Boolean>()
     }
+    val popUpOpened by vm.popUpOpened.observeAsState()
     val days: Array<String> = arrayOf("L", "M", "M", "G", "V", "S", "D")
     val daysDb: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     val daysList by vm.daysListEx.observeAsState()
@@ -397,22 +425,24 @@ fun SelettoreGiorni(vm:MusaViewModel) {
                 fontSize = 30.sp,
                 modifier = Modifier
                     .clickable {
-                    isDayClicked = !isDayClicked
-                        if (isDayClicked) {
-                        Firebase.database
-                            .getReference("ModuloEsercizi")
-                            .child("GiorniLiberi")
-                            .child(daysDb[i])
-                            .setValue(true);
-                        selected[i] = true
-                    } else {
-                        Firebase.database
-                            .getReference("ModuloEsercizi")
-                            .child("GiorniLiberi")
-                            .child(daysDb[i])
-                            .setValue(false);
-                        selected[i] = false
-                    }
+                        if(popUpOpened==false){
+                            isDayClicked = !isDayClicked
+                            if (isDayClicked) {
+                                Firebase.database
+                                    .getReference("ModuloEsercizi")
+                                    .child("GiorniLiberi")
+                                    .child(daysDb[i])
+                                    .setValue(true);
+                                selected[i] = true
+                            } else {
+                                Firebase.database
+                                    .getReference("ModuloEsercizi")
+                                    .child("GiorniLiberi")
+                                    .child(daysDb[i])
+                                    .setValue(false);
+                                selected[i] = false
+                            }
+                        }
                 },
                 color = if (isDayClicked) MaterialTheme.colorScheme.background else Color(0x80EE9B00)
             )

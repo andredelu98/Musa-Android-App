@@ -29,8 +29,9 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: String, buttonCancel: String,
-                         navigationConfirm: Screens, navigationCancel: Screens,
-                         navController:NavController, vm: MusaViewModel){
+                         navigationConfirm: Screens, navigationCancel:Screens,
+                         navController:NavController, vm: MusaViewModel,
+                         numberToDelete: Int){
 
 
     val opened by vm.popUpOpened.observeAsState()
@@ -72,17 +73,16 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                 Row(){
                     Button(
                         onClick = {
-                            /*  when(navigationCancel){
-                                  Screens.NewProject ->
+                              when(navigationCancel){
+                                  Screens.ProjectPage -> {
+                                      DeleteSingleProject(vm, numberToDelete)
+                                      NavigateConfirmed(navController, navigationConfirm)
+                                  }
 
-                              }*/
-                            navController.navigate(navigationConfirm.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+                                  else -> NavigateConfirmed(navController, navigationConfirm)
+                              }
+
+                            vm.setPopUpOpened(false)
                         }
                     )
                     {
@@ -92,7 +92,9 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                     }
                     Button(
                         onClick = {
-                          vm.setPopUpOpened(false)
+                            //Log.d("POPUPCLOSINGB", opened.toString())
+                            vm.setPopUpOpened(false)
+                            //Log.d("POPUPCLOSINGA", opened.toString())
                         }
                     )
                     {
@@ -107,3 +109,12 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
 }
 
 
+fun NavigateConfirmed(navController:NavController, navigationConfirm: Screens){
+    navController.navigate(navigationConfirm.name) {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+}
