@@ -1,5 +1,7 @@
 package it.polito.musaapp
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
@@ -21,9 +23,20 @@ class MainActivity : ComponentActivity() {
     val vm by viewModels<MusaViewModel>()
     private var isImmersiveModeEnabled = false
 
+    private val prefs: SharedPreferences by lazy {
+        getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val isFirstRun = prefs.getBoolean("isFirstRun", true)
+        if (isFirstRun) {
+            vm.setTutorial(true)
+            prefs.edit().putBoolean("isFirstRun", false).apply()
+        }
+
         setContent {
             MusaAppTheme {
                 GetProjectsFromDb(vm = vm)

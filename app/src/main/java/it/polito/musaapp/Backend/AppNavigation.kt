@@ -8,10 +8,13 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -74,6 +78,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val tutorialActive by vm.tutorialActive.observeAsState()
 
     navController.addOnDestinationChangedListener { controller, _, _ ->
         val currentDestination = controller.currentBackStackEntry?.destination
@@ -86,63 +91,71 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
         bottomBar = {
             if (navBackStackEntry?.destination?.route != (Screens.WelcomePage.name)
                 && navBackStackEntry?.destination?.route != (Screens.FormStart.name)){
-                NavigationBar(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-                        .clip(shape = RoundedCornerShape(15.dp, 20.dp, 0.dp, 0.dp)),
-                    containerColor = MaterialTheme.colorScheme.onPrimary               //COLORE NON MOSTRA QUESTO
-                ) {
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry?.destination
+                Box {
+                    NavigationBar(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .clip(shape = RoundedCornerShape(15.dp, 20.dp, 0.dp, 0.dp)),
+                        containerColor = MaterialTheme.colorScheme.onPrimary               //COLORE NON MOSTRA QUESTO
+                    ) {
+                        val navBackStackEntry by navController.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry?.destination
 
-                    listOfNavItems.forEach { navItem ->
-                        NavigationBarItem(
-                            selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
-                            colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            onClick = {
-                                //listOfNavItems.forEach { it.selected = it == navItem }
-                                navController.navigate(navItem.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                        listOfNavItems.forEach { navItem ->
+                            NavigationBarItem(
+                                selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
+                                colors = NavigationBarItemDefaults.colors(
+                                    indicatorColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                enabled = tutorialActive != true,
+                                onClick = {
+                                    //listOfNavItems.forEach { it.selected = it == navItem }
+                                    navController.navigate(navItem.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxHeight()
-                                        .padding(0.dp, 5.dp),
-                                    verticalArrangement = Arrangement.SpaceEvenly,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = if (navItem.selected) navItem.iconId_selected else navItem.iconId_unselected),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(40.dp) // Puoi regolare la dimensione secondo le tue esigenze
-                                    )
-                                    Text(
-                                        text = navItem.label,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.background
-                                    )
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .alpha(1f)
-                        )
-
+                                },
+                                icon = {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .padding(0.dp, 5.dp),
+                                        verticalArrangement = Arrangement.SpaceEvenly,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Image(
+                                            painter = painterResource(id = if (navItem.selected) navItem.iconId_selected else navItem.iconId_unselected),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(40.dp) // Puoi regolare la dimensione secondo le tue esigenze
+                                        )
+                                        Text(
+                                            text = navItem.label,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.background
+                                        )
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .alpha(1f)
+                            )
+                        }
                     }
+                    Box(
+                        modifier = Modifier
+                            .height(80.dp)
+                            .fillMaxWidth()
+                            .background(if (tutorialActive == true) Color.Black.copy(alpha = 0.7f) else Color.Transparent)
+                    )
                 }
             }
         }
     ) {
 
-        paddingValues ->
+            paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.WelcomePage.name,

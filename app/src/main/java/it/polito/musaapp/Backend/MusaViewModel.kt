@@ -22,6 +22,13 @@ class MusaViewModel : ViewModel() {
         _registered.value=value
     }
 
+    private var _tutorialActive= MutableLiveData<Boolean>(false)
+    var tutorialActive: LiveData<Boolean> = _tutorialActive
+
+    fun setTutorial(value: Boolean){
+        _tutorialActive.value=value
+    }
+
     private var _previousScreen = MutableLiveData<Screens>(null)
     var previousScreen: LiveData<Screens> = _previousScreen
     fun setPreviousScreen(value: Screens){

@@ -2,6 +2,7 @@ package it.polito.musaapp.Frontend
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.preference.PreferenceManager
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -25,18 +26,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -53,9 +59,25 @@ import it.polito.musaapp.Screens
 
 
 @Composable
-fun HelpPage(navController: NavController, musaViewModel: MusaViewModel,
-             applicationContext: Context){
-    //Text("HelpPage")
+fun HelpPage(navController: NavController, musaViewModel: MusaViewModel, applicationContext: Context){
+
+    /*
+    val sharedPreferences = remember {
+        applicationContext.getSharedPreferences("com.your.app.name", Context.MODE_PRIVATE)
+    }
+
+    var isFirstOpen by remember(sharedPreferences) {
+        mutableStateOf(sharedPreferences.getBoolean("first_open", true))
+    }
+
+    if (isFirstOpen) {
+        // Set tutorialActive to true for the first time
+        musaViewModel.setTutorial(true)
+
+        // Update SharedPreferences to mark app as not first open
+        sharedPreferences.edit().putBoolean("first_open", false).apply()
+    }*/
+
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false);
     PageContent(musaViewModel, navController)
 }
@@ -63,15 +85,27 @@ fun HelpPage(navController: NavController, musaViewModel: MusaViewModel,
 @SuppressLint("UnrememberedMutableState", "SuspiciousIndentation")
 @Composable
 fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
-    var clicked by remember { mutableStateOf(false) }
+    val tutorialActive by musaViewModel.tutorialActive.observeAsState()
+    var tutorialStep by remember { mutableStateOf(0) }
 
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(enabled = tutorialActive != false) {
+                if (tutorialActive == true && tutorialStep >= 0) {
+                    tutorialStep++
+                    if (tutorialStep >= 2) {
+                        musaViewModel.setTutorial(false)
+                        tutorialStep = 0
+                    }
+                }
 
+            }
+    ){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
         ){
             var isPulsating by remember { mutableStateOf(true) }
 
@@ -89,6 +123,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(if (tutorialActive == true) Color.Black.copy(alpha = 0.7f) else Color.Transparent)
                     .padding(horizontal = 22.dp, vertical = 16.dp)
             ){
                 Box(modifier = Modifier.size(35.dp))
@@ -100,12 +135,12 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                 )
 
                 Icon(
-                    painter = if (clicked) painterResource(id = R.drawable.info_pieno) else painterResource(id = R.drawable.info),
+                    painter = if (tutorialActive == true) painterResource(id = R.drawable.info_pieno) else painterResource(id = R.drawable.info),
                     contentDescription = null,
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
-                            clicked = !clicked
+                            musaViewModel.setTutorial(true)
                         }
                 )
             }
@@ -113,15 +148,17 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(if (tutorialActive == true) Color.Black.copy(alpha = 0.7f) else Color.Transparent)
                     .padding(top = 25.dp, bottom = 40.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly)
             {
+
                 Box(modifier = Modifier
                     .size(310.dp)
                     .graphicsLayer(
-                        scaleX = if (isPulsating) scale else 1.0f,
-                        scaleY = if (isPulsating) scale else 1.0f
+                        scaleX = if (isPulsating && tutorialActive == false) scale else 1.0f,
+                        scaleY = if (isPulsating && tutorialActive == false) scale else 1.0f
                     )
                     .clip(CircleShape)
                     .background(
@@ -130,7 +167,12 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     )
                     .border(
                         width = 10.dp,
-                        color = MaterialTheme.colorScheme.primaryContainer,
+                        color = if (tutorialActive == true && tutorialStep == 0) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else if (tutorialActive == true && tutorialStep != 0) {
+                            Color(0xFF3d1f01)
+                        } else MaterialTheme.colorScheme.primaryContainer,
+
                         shape = CircleShape
                     ),
                     contentAlignment = Alignment.Center
@@ -146,11 +188,12 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                                 restoreState = true
                             }
                         },
+                        enabled = tutorialActive != true,
                         modifier = Modifier
                             .size(310.dp)  // Imposta un valore fisso per larghezza e altezza
                             .graphicsLayer(
-                                scaleX = if (isPulsating) scale else 1.0f,
-                                scaleY = if (isPulsating) scale else 1.0f
+                                scaleX = if (isPulsating && tutorialActive == false) scale else 1.0f,
+                                scaleY = if (isPulsating && tutorialActive == false) scale else 1.0f
                             )
                             .clip(CircleShape)
                             .background(
@@ -164,22 +207,45 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                             )
 
                     ){
-                        Box(modifier = Modifier.padding(bottom = 20.dp)){
-                            Text(
-                                text= "Aiuto!",
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                        }
+                        Text(
+                            modifier = Modifier.offset(y = (-10).dp),
+                            text= "Aiuto!",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+
                     }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                if (tutorialActive == true && tutorialStep == 0) {
+                                    Color.Transparent
+                                } else if (tutorialActive == true && tutorialStep != 0) {
+                                    Color.Black.copy(alpha = 0.7f)
+                                } else Color.Transparent
+                            )
+                    )
                 }
+
                 Text(
                     text="Crea un nuovo progetto personale",
                     style = MaterialTheme.typography.headlineSmall,
                     textDecoration = TextDecoration.Underline,
                     textAlign = TextAlign.Center,
+                    color = if (tutorialActive == true && tutorialStep == 1) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else if (tutorialActive == true && tutorialStep != 1) {
+                        Color(0xFF00090d)
+                    } else MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
-                        .padding(horizontal = 50.dp)
-                        .clickable {
+                        .padding(horizontal = 60.dp)
+                        .background(
+                            color = if (tutorialActive == true && tutorialStep == 1) MaterialTheme.colorScheme.background else Color.Transparent,
+                            shape = RoundedCornerShape(50.dp)
+                        )
+                        .offset(y = (-5).dp)
+                        .clickable(enabled = tutorialActive != true) {
+                            if(tutorialActive == false){}
                             navController.navigate(Screens.ProjectPage.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
@@ -191,56 +257,70 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                 )
             }
         }
-        //CASELLE INFO AGGIUNTIVE
-        if (clicked)
-        Box(modifier = Modifier.fillMaxSize()){
-            Box(modifier = Modifier
-                .height(160.dp)
-                .padding(horizontal = 22.dp)
-                .align(Alignment.TopEnd)
-                .offset(y = (118).dp)
-            ){
-                Text(
-                    text = "Clicca qui per avere degli\nesercizi per attivare la tua\ncreatività",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.End,
+        //BOX MESSAGGIO 1
+        if (tutorialActive==true && tutorialStep==0)
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
                     modifier = Modifier
+                        .height(160.dp)
+                        .padding(horizontal = 22.dp)
                         .align(Alignment.TopEnd)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.freccia_info1),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(120.dp)
-                        .offset(x = 0.dp, y = (-15).dp)
-                        .align(Alignment.BottomStart)
-                )
+                        .offset(y = (118).dp)
+                ) {
+                    Text(
+                        text = "Clicca qui per programmare un piano\ndi esercizi per mantenere vivo\nil tuo flusso creativo",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 19.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.freccia_info1),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .width(110.dp)
+                            .offset(x = (-50).dp, y = (0).dp)
+                            .align(Alignment.BottomEnd)
+                    )
+                }
             }
-            Box(modifier = Modifier
-                .height(130.dp)
-                .padding(horizontal = 22.dp)
-                .align(Alignment.BottomStart)
-                .offset(y = (-15).dp)
-            ){
-                Text(
-                    text = "Clicca qui per inserire un\ntuo nuovo progetto",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.freccia_info2),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(120.dp)
-                        .offset(x = (-60).dp, y = (12).dp)
-                        .align(Alignment.TopEnd)
-                )
+
+        //BOX MESSAGGIO 2
+        if (tutorialActive==true && tutorialStep==1)
+            Box(modifier = Modifier.fillMaxSize()){
+                Box(modifier = Modifier
+                    .height(160.dp)
+                    .padding(horizontal = 10.dp)
+                    .align(Alignment.CenterStart)
+                    .offset(x = 20.dp, y = (120).dp)
+                ){
+                    Text(
+                        text = "Clicca qui per inserire un progetto\npersonale e ricevere stimoli creativi\nsu misura per il tuo lavoro",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 19.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.freccia_info1),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .offset(x = (40).dp, y = (-5).dp)
+                            .graphicsLayer(scaleX = -1f)
+                            .rotate(-15f)
+                            .align(Alignment.BottomStart)
+                    )
+                }
             }
-        }
+
+
     }
 
 }
