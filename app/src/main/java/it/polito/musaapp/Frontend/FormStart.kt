@@ -185,7 +185,8 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     if(filledName==""||
                         filledMail==""||
                         vm.category.value==""||
-                        vm.level.value==""
+                        vm.level.value==""||
+                        vm.professione.value==""
                     ){
                         Toast.makeText(context, "Inserisci tutti i dati per continuare", Toast.LENGTH_SHORT).show()
                     }
