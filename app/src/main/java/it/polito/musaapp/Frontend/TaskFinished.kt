@@ -26,6 +26,10 @@ fun TaskFinished(navController: NavController, viewModel: MusaViewModel){
         modifier = Modifier.fillMaxSize()
     ) {
         Text("Congratulazioni, hai finito il tuo piano di esercizi!")
+
+
+
+
         LaunchedEffect(Unit) {
             // Aggiorna il messaggio dopo un ritardo di 2 secondi (puoi personalizzare il ritardo)
             delay(2000)
