@@ -48,6 +48,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.Backend.ProjectCompleted
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
@@ -60,6 +61,22 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
     var openOptions by remember { mutableStateOf(false) }
     var completed=false
     var restored=false
+
+    val opened by vm.popUpOpened.observeAsState()
+
+    if(opened==true){
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler eliminare il tuo progetto?",
+            paragraph = "",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.HelpPage,
+            navigationCancel = Screens.SinglePageProject,
+            navController = navController,
+            vm= vm,
+            numberToDelete= 0
+        )
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -162,8 +179,8 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                             modifier = Modifier.height(38.dp),
                             onClick = {
                                 openOptions = false
-
-                                if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
+                                vm.setPopUpOpened(true)
+                               /* if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
                                     navController.navigate(Screens.ProjectPage.name) {
                                         popUpTo(navController.graph.findStartDestination().id) {
                                             saveState = true
@@ -184,7 +201,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                         restoreState = true
                                     }
                                 }
-                                DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
+                                DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)*/
                             },
                             text = {
                                 Box(modifier = Modifier.fillMaxSize()) {
@@ -263,7 +280,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                         )
                         {
                             Text(
-                                text = "Vedi Reference",
+                                text = "Vedi References",
                                 style = MaterialTheme.typography.headlineSmall,
                                 modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
                             )

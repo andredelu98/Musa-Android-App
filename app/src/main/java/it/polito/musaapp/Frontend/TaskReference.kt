@@ -22,8 +22,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,10 +35,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -90,15 +95,17 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(Screens.TaskPage.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                modifier = Modifier
+                    .size(35.dp)
+                    .clickable {
+                        navController.navigate(Screens.TaskPage.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
             )
             Image(
                 painter = painterResource(id = R.drawable.loghetto),
@@ -110,7 +117,9 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize().padding(top = 8.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 8.dp)
         )
         {
             Row {
@@ -122,21 +131,26 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
 
             /*TODO() Aggiungere dropdown per filtrare le reference?*/
             Spacer(modifier = Modifier.height(12.dp))
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
-            ) {
-                list?.forEachIndexed { index, imageUrl ->
-                    item(index) {
+            if(list?.isEmpty() == true){
+                IndicatorReference()
+            }
+            else{
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                ) {
+                    list?.forEachIndexed { index, imageUrl ->
+                        item(index) {
 
-                        if(vm.savedRef.value?.contains(imageUrl)==true){
-                            ImageWithHeart(imageUrl = imageUrl, vm, true)
-                        }
-                        else{
-                            ImageWithHeart(imageUrl = imageUrl, vm, false)
-                        }
+                            if(vm.savedRef.value?.contains(imageUrl)==true){
+                                ImageWithHeart(imageUrl = imageUrl, vm, true)
+                            }
+                            else{
+                                ImageWithHeart(imageUrl = imageUrl, vm, false)
+                            }
 
+                        }
                     }
                 }
             }
@@ -145,6 +159,25 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
 
 
 }
+
+@Composable
+fun IndicatorReference(
+    size: Dp = 75.dp, // indicator size
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth //width of cicle and ar lines
+) {
+    CircularProgressIndicator(
+        modifier = Modifier.drawBehind {
+            drawCircle(
+                Color(0xFFEE9B00),
+                radius = 10f,
+                style = Stroke(strokeWidth.toPx())
+            )
+        },
+        color = Color(0xFFCA6702),
+        strokeWidth = strokeWidth
+    )
+}
+
 @Composable
 fun ImageWithHeart(imageUrl: String, vm: MusaViewModel, b: Boolean) {
     var isLiked by remember { mutableStateOf(b) }

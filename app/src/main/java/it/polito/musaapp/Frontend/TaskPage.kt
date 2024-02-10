@@ -47,61 +47,6 @@ import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
-/*TASK PAGE BACKUP
-@Composable
-fun TaskPage(navController: NavController, vm:MusaViewModel){
-    var TaskCounter by remember {
-        mutableStateOf(0)
-    }
-    var TaskCounterToPrint by remember {
-        mutableStateOf(0)
-    }
-    GetTask(TaskCounter, vm)
-    Column {
-        Row(){
-           //ICONE CALENDARIO E MODIFICA
-        }
-        Text(
-            "Task ${TaskCounterToPrint+1}/ ${vm.weeksEx.value!!*vm.daysEx.value!!}"
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        vm.setNextTask(TaskCounter)
-        Text(vm.nextTask.value!!)
-        Spacer(modifier = Modifier.height(18.dp))
-        Button(
-            onClick={
-
-                TaskCounter++;
-                TaskCounterToPrint++;
-                if(TaskCounterToPrint>=6){
-                    navController.navigate(Screens.TaskFinished.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-                if(TaskCounter>=vm.TaskList.value!!.size){
-                    TaskCounter=0
-                }
-                vm.setNextTask(TaskCounter)
-                if(TaskCounterToPrint>=(vm.weeksEx.value!!*vm.daysEx.value!!)) {
-                    navController.navigate(Screens.HelpPage.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            }
-        )
-        {
-            Text(text = "TaskCompletato")
-        }
-    }
-}*/
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -110,8 +55,9 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
     val taskCounter by vm.taskCounter.observeAsState()
     val taskCompleted by vm.taskCompleted.observeAsState()
     val nextTask by vm.nextTask.observeAsState()
-    Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
+    //Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
     //Log.d ("TASKPAGE", " $taskCounter, next $nextTask" )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -243,7 +189,10 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                     Icon(
                         painter = painterResource(id = R.drawable.refresh),
                         contentDescription = null,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp).clickable {
+
+                            vm.setTaskRefreshed(vm.taskRefreshed.value!!+1)
+                        }
                     )
                     Button (
                         shape = MaterialTheme.shapes.large,
@@ -270,7 +219,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                         }
                     )
                     {
-                        Text(text = "Vedi Reference",
+                        Text(text = "Vedi References",
                             style = MaterialTheme.typography.headlineSmall,
                             modifier = Modifier.offset(x = 0.dp, y = (-2).dp)
                             )
@@ -333,36 +282,6 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                                     vm.setTaskCounter(vm.taskCompleted.value!!+1)
                                 }
                         )
-                        /*Button(
-                            shape = MaterialTheme.shapes.large,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            //modifier = Modifier
-                                //.width(300.dp),
-                            onClick={
-                                vm.setNextTask(vm.taskCompleted.value!!)
-                                vm.setTaskCounter(vm.taskCompleted.value!!+1)
-                            }
-                            /* else if() {
-                                 navController.navigate(Screens.TaskFinished.name) {
-                                     popUpTo(navController.graph.findStartDestination().id) {
-                                         saveState = true
-                                     }
-                                     launchSingleTop = true
-                                     restoreState = true
-                                 }
-                             }*/
-                        )
-                        {
-                            Text(
-                                text = "ESERCIZIO CORRENTE",
-                                style = MaterialTheme.typography.headlineLarge,
-                                color = MaterialTheme.colorScheme.background
-                                )
-                        }
-                         */
-
                     }
                 }
             }

@@ -108,20 +108,26 @@ fun SavedReference(navController: NavController, vm:MusaViewModel) {
 
             /*TODO() Aggiungere dropdown per filtrare le reference?*/
             Spacer(modifier = Modifier.height(12.dp))
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
-            ) {
-                list?.forEachIndexed { index, imageUrl ->
-                    item(index) {
-                        if(!imageUrl.equals("RIMOSSO")){
-                            ImageWithHeartSaved(imageUrl = imageUrl, vm, navController)
-                        }
+            if(list?.isEmpty() == true){
+                IndicatorReference()
+            }
+            else{
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                ) {
+                    list?.forEachIndexed { index, imageUrl ->
+                        item(index) {
+                            if(!imageUrl.equals("RIMOSSO")){
+                                ImageWithHeartSaved(imageUrl = imageUrl, vm, navController)
+                            }
 
+                        }
                     }
                 }
             }
+
         }
     }
 
@@ -132,7 +138,7 @@ fun ImageWithHeartSaved(imageUrl: String, vm: MusaViewModel, navController: NavC
     var isLiked by remember { mutableStateOf(true) }
 
     if(!isLiked){
-        Log.d("REFERENCE", "sono in not liked ref salvate")
+        //Log.d("REFERENCE", "sono in not liked ref salvate")
         RemoveImageInSaved(imageUrl, vm)
         navController.navigate(Screens.SavedReference.name) {
             popUpTo(navController.graph.findStartDestination().id) {

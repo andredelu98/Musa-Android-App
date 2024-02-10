@@ -62,6 +62,7 @@ import it.polito.musaapp.Backend.CreateNewProject
 import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.ModifySingleProject
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.Backend.SingleProject
 import it.polito.musaapp.Backend.setRoute
 import it.polito.musaapp.R
@@ -72,6 +73,24 @@ import it.polito.musaapp.Screens
 fun ModifyProject(navController: NavController, vm:MusaViewModel){
     val context= LocalContext.current
     val fromProjectList by vm.fromProjectList.observeAsState()
+    val popUpOpened by vm.popUpOpened.observeAsState()
+
+    //Log.d("POPUP", popUpOpened.toString())
+    if(popUpOpened == true){
+        // Log.d("POPUPCHECKCALLED", popUpOpened.toString())
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler uscire dall'inserimento del progetto?",
+            paragraph = "Se procedi i tuoi inserimenti verranno perduti",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.ProjectPage,
+            navigationCancel= Screens.NewProject,
+            navController = navController,
+            vm= vm,
+            numberToDelete= if (vm.fromProjectList.value == true) 1 else 0
+        )
+    }
+
     var i by remember{
         mutableStateOf(0)
     }
@@ -175,7 +194,8 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                         .size(44.dp)
                         .align(Alignment.End)
                         .clickable {
-                            if(vm.fromProjectList.value == true){
+                            vm.setPopUpOpened(true)
+                           /* if(vm.fromProjectList.value == true){
                                 navController.navigate(Screens.ProjectPage.name) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
@@ -191,7 +211,7 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                                     launchSingleTop = true
                                     restoreState = true
                                 }
-                            }
+                            }*/
                         }
                 )
                 Text(

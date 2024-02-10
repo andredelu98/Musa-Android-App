@@ -1,5 +1,6 @@
 package it.polito.musaapp.Frontend
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -34,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,9 +54,11 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun ProjectPage(navController: NavController, vm:MusaViewModel){
 
@@ -90,6 +94,24 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
 
     val counterProgettiEliminati by vm.counterProgettiEliminati.observeAsState()
 
+    val opened by vm.popUpOpened.observeAsState()
+    val numberToDelete by vm.projectToDelete.observeAsState()
+
+   // Log.d("DELETEPOPUP", "opened: $opened")
+    if(opened==true && numberToDelete!=-1){
+       // Log.d("DELETEPOPUP", "chiamata popup")
+         PopUpCheckIntentions(
+            question = "Sei sicuro di voler eliminare il tuo progetto?",
+            paragraph = "",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.ProjectPage,
+            navigationCancel = Screens.ProjectPage,
+            navController = navController,
+            vm= vm,
+            numberToDelete= numberToDelete!!
+        )
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -163,6 +185,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                        // Log.d("LISTAPROGETTI", vm.counterProgetti.value!!.toString())
                         for (i in 0..vm.counterProgetti.value!!-1) {
                             //  Spacer(modifier = Modifier.height(16.dp))
+                            vm.setProjectToDelete(i)
                             var openOptions by remember {
                                 mutableStateOf(false)
                             }
@@ -263,6 +286,9 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
+                                                        vm.setPopUpOpened(true)
+
+                                                        /*
                                                         DeleteSingleProject(vm, i)
                                                         navController.navigate(Screens.ProjectPage.name) {
                                                             popUpTo(navController.graph.findStartDestination().id) {
@@ -270,7 +296,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
                                                             }
                                                             launchSingleTop = true
                                                             restoreState = true
-                                                        }
+                                                        }*/
                                                     },
                                                     text = {
                                                         Box(modifier = Modifier.fillMaxSize()){

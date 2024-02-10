@@ -87,6 +87,13 @@ fun RefreshVariablesTask(vm: MusaViewModel){
     }
     //Log.d("TASKMANAGER", "WorkingDays $WorkingDays");
 
+    myRef.child("TaskRefreshed").get().addOnSuccessListener {
+        //Log.d("TASKMANAGER", "Settimane ${it.value}");
+       vm.setTaskRefreshed(it.value.toString().toInt())
+    }.addOnFailureListener {
+        Log.d("TASKMANAGER", "Error", it);
+    }
+
     val myRefTaskIns= Firebase.database.getReference("ModuloEsercizi")
     myRefTaskIns.child("TaskCompletati").get().addOnSuccessListener {
         //  Log.d("TASKMANAGER", "Giorni ${it.value}")
@@ -140,8 +147,9 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni").setValue(0)
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false)
     Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0)
+    Firebase.database.getReference("ModuloEsercizi").child("TaskRefreshed").setValue(0)
     Firebase.database.getReference("ModuloEsercizi").child("NumeroSettimane").setValue(0)
-   // Firebase.database.getReference("ModuloEsercizi").child("Scadenze").removeValue()
+    //Firebase.database.getReference("ModuloEsercizi").child("Scadenze").removeValue()
     val days: Array<String> = arrayOf("Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom")
     for (i in 0..6) {
         Firebase.database.getReference("ModuloEsercizi")
@@ -150,6 +158,7 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     vm.setWeeksEx(0)
     vm.setWeeksEx(0)
     vm.setTaskCompleted(0)
+    vm.setTaskRefreshed(0)
     vm.resetTaskList()
     vm.setDaysListEx(mutableListOf(false, false, false, false, false, false, false))
 }

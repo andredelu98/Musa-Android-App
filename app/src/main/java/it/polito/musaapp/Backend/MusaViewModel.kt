@@ -113,10 +113,17 @@ class MusaViewModel : ViewModel() {
     private var _taskCounter= MutableLiveData<Int>(0)
     var taskCounter: LiveData<Int> = _taskCounter
     fun setTaskCounter(i :Int){
-
         _taskCounter.value=i
-        Log.d("NEXTTASK",_taskCounter.value.toString())
+        //Log.d("NEXTTASK",_taskCounter.value.toString())
     }
+
+    private var _taskRefreshed= MutableLiveData<Int>(0)
+    var taskRefreshed: LiveData<Int> = _taskRefreshed
+    fun setTaskRefreshed(i :Int){
+        _taskRefreshed.value=i
+        //Log.d("NEXTTASK",_taskCounter.value.toString())
+    }
+
     private var _taskList = MutableLiveData<List<String>>()
     var TaskList: LiveData<List<String>> = _taskList
     fun setTaskList(s: MutableList<String>){
@@ -256,6 +263,12 @@ class MusaViewModel : ViewModel() {
     }
 
 
+    private var _projectToDelete=MutableLiveData<Int>(-1)
+    var projectToDelete: LiveData<Int> = _projectToDelete
+
+    fun setProjectToDelete(i : Int){
+        _projectToDelete.value= i
+    }
     fun setStatus(i:Int, s:String){
         var l = mutableListOf<SingleProject>()
         l= _projectList.value as MutableList<SingleProject>

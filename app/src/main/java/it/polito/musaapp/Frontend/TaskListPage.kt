@@ -207,10 +207,5 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                 }
             }
         }
-
-
-
-
-
     }
 }

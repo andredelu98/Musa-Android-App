@@ -25,6 +25,8 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import it.polito.musaapp.Frontend.DeleteProfile
 import it.polito.musaapp.Screens
 
@@ -51,7 +53,7 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shape = RoundedCornerShape(20.dp)
                 )
-                .zIndex(10f)
+                .zIndex(100f)
 
         ){
             Column(
@@ -76,6 +78,7 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                         onClick = {
                               when(navigationCancel){
                                   Screens.ProjectPage -> {
+                                      Log.d("DELETEPOPUP", "$numberToDelete")
                                       DeleteSingleProject(vm, numberToDelete)
                                       NavigateConfirmed(navController, navigationConfirm)
                                   }
@@ -87,6 +90,50 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                                       DeleteProfile(vm)
                                       NavigateConfirmed(navController, navigationConfirm)
                                   }
+                                  Screens.SinglePageProject -> {
+                                      if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="creato"){
+                                          navController.navigate(Screens.ProjectPage.name) {
+                                              popUpTo(navController.graph.findStartDestination().id) {
+                                                  saveState = true
+                                              }
+                                              launchSingleTop = true
+                                              restoreState = true
+                                          }
+                                      }
+                                      else if(vm.projectList.value!![vm.projectToPrintCounter.value!!].status=="completato"){
+                                          vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
+                                          Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
+                                              .setValue(vm.counterProgettiCompletati.value!!)
+                                          navController.navigate(Screens.StoricoProgetti.name) {
+                                              popUpTo(navController.graph.findStartDestination().id) {
+                                                  saveState = true
+                                              }
+                                              launchSingleTop = true
+                                              restoreState = true
+                                          }
+                                      }
+                                      DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
+                                  }
+                                  Screens.ModifyProject -> {
+                                      if(numberToDelete == 1){
+                                          navController.navigate(Screens.ProjectPage.name) {
+                                              popUpTo(navController.graph.findStartDestination().id) {
+                                                  saveState = true
+                                              }
+                                              launchSingleTop = true
+                                              restoreState = true
+                                          }
+                                      }else{
+                                          navController.navigate(Screens.SinglePageProject.name) {
+                                              popUpTo(navController.graph.findStartDestination().id) {
+                                                  saveState = true
+                                              }
+                                              launchSingleTop = true
+                                              restoreState = true
+                                          }
+                                      }
+                                  }
+
 
                                   else -> NavigateConfirmed(navController, navigationConfirm)
                               }

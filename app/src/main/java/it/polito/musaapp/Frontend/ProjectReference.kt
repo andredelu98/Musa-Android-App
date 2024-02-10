@@ -125,24 +125,30 @@ fun ProjectReference(navController: NavController, vm:MusaViewModel) {
 
             /*TODO() Aggiungere dropdown per filtrare le reference?*/
             Spacer(modifier = Modifier.height(12.dp))
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
-            ) {
-                list?.forEachIndexed { index, imageUrl ->
-                    item(index) {
+            if(list?.isEmpty() == true){
+                IndicatorReference()
+            }
+            else{
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                ) {
+                    list?.forEachIndexed { index, imageUrl ->
+                        item(index) {
 
-                        if(vm.savedRef.value?.contains(imageUrl)==true){
-                            ImageWithHeart(imageUrl = imageUrl, vm, true)
-                        }
-                        else{
-                            ImageWithHeart(imageUrl = imageUrl, vm, false)
-                        }
+                            if(vm.savedRef.value?.contains(imageUrl)==true){
+                                ImageWithHeart(imageUrl = imageUrl, vm, true)
+                            }
+                            else{
+                                ImageWithHeart(imageUrl = imageUrl, vm, false)
+                            }
 
+                        }
                     }
                 }
             }
+
         }
     }
 

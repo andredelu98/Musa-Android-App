@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -100,12 +101,15 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             OutlinedTextField(
                 value = filledName,
                 onValueChange = {
-                    filledName = it
+                    if(filledName.length<=10)
+                        filledName = it
+                    else
+                        Toast.makeText(context, "Inserisci un nome di massimo 20 caratteri", Toast.LENGTH_SHORT).show()
                 },
                 shape = RoundedCornerShape(15.dp),
-                keyboardOptions = KeyboardOptions.Default.copy(
+                /*keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done
-                ),
+                ),*/
                 placeholder =
                 { Text(text = "Nome utente",
                     style = MaterialTheme.typography.bodyLarge,
