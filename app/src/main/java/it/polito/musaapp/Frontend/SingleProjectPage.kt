@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -68,8 +69,8 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
         PopUpCheckIntentions(
             question = "Sei sicuro di voler eliminare il tuo progetto?",
             paragraph = "",
-            buttonConfirm = "Si",
-            buttonCancel = "No",
+            buttonConfirm = "SI",
+            buttonCancel = "NO",
             navigationConfirm = Screens.HelpPage,
             navigationCancel = Screens.SinglePageProject,
             navController = navController,
@@ -81,6 +82,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
+            .alpha(if(opened == true) 0.3f else 1f)
             .background(MaterialTheme.colorScheme.background)
     ) {
         Row(

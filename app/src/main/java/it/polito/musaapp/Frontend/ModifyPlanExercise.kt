@@ -53,8 +53,8 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
         PopUpCheckIntentions(
             question = "Sei sicuro di voler eliminare il tuo piano di esercizi?",
             paragraph = "",
-            buttonConfirm = "Si",
-            buttonCancel = "No",
+            buttonConfirm = "SI",
+            buttonCancel = "NO",
             navigationConfirm = Screens.HelpPage,
             navigationCancel = Screens.ModifyPlanExercise,
             navController = navController,
@@ -66,6 +66,7 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
+            .alpha(if(opened == true) 0.3f else 1f)
             .background(MaterialTheme.colorScheme.background)
     ) {
         Row(

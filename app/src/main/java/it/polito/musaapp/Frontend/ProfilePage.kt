@@ -72,8 +72,8 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
         PopUpCheckIntentions(
             question = "Sei sicuro di voler eliminare il tuo profilo?",
             paragraph = "",
-            buttonConfirm = "Si",
-            buttonCancel = "No",
+            buttonConfirm = "SI",
+            buttonCancel = "NO",
             navigationConfirm = Screens.FormStart,
             navigationCancel = Screens.ProfilePage,
             navController = navController,
@@ -84,6 +84,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
     Column (
         modifier= Modifier
             .fillMaxSize()
+            .alpha(if(opened == true) 0.3f else 1f)
             .padding(horizontal = 25.dp, vertical = 60.dp)
     ){
         if(vm.registered.value==true){

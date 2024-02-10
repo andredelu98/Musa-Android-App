@@ -76,10 +76,10 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
     if(popUpOpened == true){
         // Log.d("POPUPCHECKCALLED", popUpOpened.toString())
         PopUpCheckIntentions(
-            question = "Sei sicuro di voler uscire dall'inserimento del piano di esercizi?",
-            paragraph = "Se procedi i tuoi inserimenti verranno perduti",
-            buttonConfirm = "Si",
-            buttonCancel = "No",
+            question = "Sei sicuro di voler uscire?",
+            paragraph = "Se procedi i dati inseriti\nverranno persi",
+            buttonConfirm = "SI",
+            buttonCancel = "NO",
             navigationConfirm = Screens.HelpPage,
             navigationCancel = Screens.FormExercise,
             navController = navController,
@@ -120,6 +120,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
+                .alpha(if(popUpOpened == true) 0.3f else 1f)
                 .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
@@ -135,7 +136,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier= Modifier
                     .fillMaxSize()
-                    .padding(top = 25.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = 20.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
                     .background(
                         MaterialTheme.colorScheme.primary
                     )

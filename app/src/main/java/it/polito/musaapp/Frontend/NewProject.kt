@@ -88,10 +88,10 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
     if(popUpOpened == true){
        // Log.d("POPUPCHECKCALLED", popUpOpened.toString())
         PopUpCheckIntentions(
-            question = "Sei sicuro di voler uscire dall'inserimento del progetto?",
-            paragraph = "Se procedi i tuoi inserimenti verranno perduti",
-            buttonConfirm = "Si",
-            buttonCancel = "No",
+            question = "Sei sicuro di voler uscire?",
+            paragraph = "Se procedi i dati inseriti\nverranno persi",
+            buttonConfirm = "SI",
+            buttonCancel = "NO",
             navigationConfirm = Screens.ProjectPage,
             navigationCancel= Screens.NewProject,
             navController = navController,
@@ -133,6 +133,7 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
+                .alpha(if(popUpOpened == true) 0.3f else 1f)
                 .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
