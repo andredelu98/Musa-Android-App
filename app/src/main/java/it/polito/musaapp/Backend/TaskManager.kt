@@ -122,6 +122,7 @@ fun GetTask(vm: MusaViewModel){
     val categoryObs by vm.category.observeAsState()
     val levelObs by vm.level.observeAsState()
     val list: MutableList<String> = mutableListOf();
+    val listRefreshed: MutableMap<Int, String> =  mutableMapOf()
    // Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value}");
 
     if(!categoryObs.isNullOrEmpty() &&!levelObs.isNullOrEmpty()){
@@ -136,7 +137,25 @@ fun GetTask(vm: MusaViewModel){
         }.addOnFailureListener {
             Log.d("TASKMANAGER", "Error", it);
         }
+
+        myRef.child("TaskRefreshed${vm.level.value!!}").get().addOnSuccessListener {
+            //  Log.d("TASKMANAGER", "  task list${it.value}")
+            for(i in it.children) {
+                //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
+                listRefreshed.put(i.key.toString().get(5).toString().toInt(), i.value!!.toString())
+            }
+            for (i in 0.. list.count()){
+                if(listRefreshed.containsKey(i)){
+                    list[i]= listRefreshed.get(i).toString()
+                }
+            }
+            vm.setTaskList(list)
+            // vm.setTaskList(list)
+        }.addOnFailureListener {
+            Log.d("TASKMANAGER", "Error", it);
+        }
     }
+
 }
 
 fun DeletePlanExercise(vm: MusaViewModel) {

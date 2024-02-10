@@ -134,6 +134,11 @@ class MusaViewModel : ViewModel() {
         _taskList.value= emptyList()
     }
 
+    fun changeTaskListRefresh(i: Int, newTaskInt: Int){
+        _taskList.value?.get(newTaskInt)?.let { _taskList.value?.toMutableList()?.set(i, it) }
+       // _taskList.value?.get(newTaskInt)?.let { ModifyDbRefresh(i, it, this) }
+    }
+
     private var _referenceListUrl = MutableLiveData<List<String>>()
     var referenceListUrl: LiveData<List<String>> = _referenceListUrl
     fun setReferenceListUrl(s: MutableList<String>){
@@ -329,10 +334,10 @@ class MusaViewModel : ViewModel() {
         var valToRemove=-1
         var valToReturn=-1
         l=_savedRefDB.value as MutableList<SingleReference>
-        Log.d("SALVATIREMOVE", "${_savedRefDB.value!!.count()}")
+        //Log.d("SALVATIREMOVE", "${_savedRefDB.value!!.count()}")
         for(i in 0.. _savedRefDB.value!!.count()-1){
             if(_savedRefDB.value!![i].url.equals(s)){
-                Log.d("SALVATIREMOVE", "${_savedRefDB.value!![i].key} da rimuovere")
+               // Log.d("SALVATIREMOVE", "${_savedRefDB.value!![i].key} da rimuovere")
                 valToReturn=_savedRefDB.value!![i].key
                 return valToReturn
             }

@@ -110,12 +110,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                     }
             )
         }
-        var colorArrowSx = remember {
-            mutableStateOf(Color.Black)
-        }
-        var colorArrowDx = remember {
-            mutableStateOf(Color.Black)
-        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -190,8 +185,15 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                         painter = painterResource(id = R.drawable.refresh),
                         contentDescription = null,
                         modifier = Modifier.size(32.dp).clickable {
-
+                            vm.changeTaskListRefresh(taskCounter!!, vm.weeksEx.value!! * vm.daysEx.value!!+vm.taskRefreshed.value!!)
                             vm.setTaskRefreshed(vm.taskRefreshed.value!!+1)
+                            navController.navigate(Screens.TaskPage.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     )
                     Button (
