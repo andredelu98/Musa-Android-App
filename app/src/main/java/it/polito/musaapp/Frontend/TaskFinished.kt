@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -25,18 +26,22 @@ fun TaskFinished(navController: NavController, viewModel: MusaViewModel){
         modifier = Modifier.fillMaxSize()
     ) {
         Text("Congratulazioni, hai finito il tuo piano di esercizi!")
-        DeletePlanExercise(viewModel)
-        setRoute(Screens.HelpPage.name)
-        Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati")
-            .setValue(0);
-        navController.navigate(Screens.HelpPage.name) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
+        LaunchedEffect(Unit) {
+            // Aggiorna il messaggio dopo un ritardo di 2 secondi (puoi personalizzare il ritardo)
+            delay(2000)
+            DeletePlanExercise(viewModel)
+            setRoute(Screens.HelpPage.name)
+            Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati")
+                .setValue(0);
+            navController.navigate(Screens.HelpPage.name) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
             }
-            launchSingleTop = true
-            restoreState = true
         }
-
     }
 }
+
 
