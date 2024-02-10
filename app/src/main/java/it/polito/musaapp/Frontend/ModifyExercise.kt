@@ -350,7 +350,8 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
+                tint= Color(0x1A001219)
             )
         }
 
@@ -372,7 +373,8 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
+                tint= Color(0x1A001219)
             )
         }
     }

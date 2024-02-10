@@ -341,7 +341,7 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint= Color.Gray
+                tint= Color(0XFFD68D02)
             )
         }
         Text(
@@ -358,7 +358,7 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint= Color.Gray
+                tint= Color(0XFFD68D02)
             )
         }
     }

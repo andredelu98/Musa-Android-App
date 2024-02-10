@@ -209,7 +209,7 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                     ){
                         Text(
                             modifier = Modifier.offset(y = (-10).dp),
-                            text= "Aiuto!",
+                            text= "Inizia",
                             style = MaterialTheme.typography.titleLarge
                         )
 

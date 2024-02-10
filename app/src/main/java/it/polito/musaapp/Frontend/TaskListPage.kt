@@ -122,10 +122,21 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                     Card(
                         shape = RoundedCornerShape(15.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
+                            containerColor =
+                                if(i<2){
+                                    MaterialTheme.colorScheme.primary
+                                }else if(i in 2..3){
+                                     MaterialTheme.colorScheme.secondary
+                                 }else MaterialTheme.colorScheme.tertiary,
                             contentColor= MaterialTheme.colorScheme.onPrimary,
                         ),
-                        border = BorderStroke(5.dp, MaterialTheme.colorScheme.primaryContainer),
+                        border = BorderStroke(5.dp,
+                            if(i<2){
+                                MaterialTheme.colorScheme.primaryContainer
+                            }else if(i in 2..3){
+                                MaterialTheme.colorScheme.secondaryContainer
+                            }else MaterialTheme.colorScheme.tertiaryContainer
+                        ),
                         modifier = Modifier.clickable {
                             // Log.d("I_TASK", "${i+1}.toString()")
                             vm.setTaskCounter(i+1)
@@ -155,7 +166,11 @@ fun TaskListPage(navController: NavController, vm:MusaViewModel){
                                     modifier = Modifier
                                         .size(50.dp)
                                         .background(
-                                            color = MaterialTheme.colorScheme.primaryContainer,
+                                            color = if(i<2){
+                                                MaterialTheme.colorScheme.primaryContainer
+                                            }else if(i in 2..3){
+                                                MaterialTheme.colorScheme.secondaryContainer
+                                            }else MaterialTheme.colorScheme.tertiaryContainer,
                                             shape = CircleShape
                                         ),
                                     contentAlignment = Alignment.Center
