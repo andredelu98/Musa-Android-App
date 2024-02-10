@@ -25,6 +25,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import it.polito.musaapp.Frontend.DeleteProfile
 import it.polito.musaapp.Screens
 
 @Composable
@@ -76,6 +77,14 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                               when(navigationCancel){
                                   Screens.ProjectPage -> {
                                       DeleteSingleProject(vm, numberToDelete)
+                                      NavigateConfirmed(navController, navigationConfirm)
+                                  }
+                                  Screens.ModifyPlanExercise->{
+                                      DeletePlanExercise(vm)
+                                      NavigateConfirmed(navController, navigationConfirm)
+                                  }
+                                  Screens.ProfilePage -> {
+                                      DeleteProfile(vm)
                                       NavigateConfirmed(navController, navigationConfirm)
                                   }
 

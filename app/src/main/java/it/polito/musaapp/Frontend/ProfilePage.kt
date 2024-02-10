@@ -47,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeletePlanExercise
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
@@ -66,6 +67,20 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
         Log.d("FORM", "Error", it);
     }
 
+    val opened by vm.popUpOpened.observeAsState()
+    if (opened==true){
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler eliminare il tuo profilo?",
+            paragraph = "",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.FormStart,
+            navigationCancel = Screens.ProfilePage,
+            navController = navController,
+            vm = vm,
+            numberToDelete = 0
+        )
+    }
     Column (
         modifier= Modifier
             .fillMaxSize()
@@ -124,7 +139,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .height(75.dp)
                 .fillMaxWidth()
                 .clickable {
-                    if (taskInserito){
+                    if (taskInserito) {
                         vm.setPreviousScreen(Screens.ProfilePage)
                         navController.navigate(Screens.ModifyPlanExercise.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -133,7 +148,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                             launchSingleTop = true
                             restoreState = true
                         }
-                    }else{
+                    } else {
                         navController.navigate(Screens.ModifyExerciseEmpty.name) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -173,7 +188,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                         launchSingleTop = true
                         restoreState = true
                     }
-                           },
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         )
@@ -253,14 +268,15 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
                 .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
             ,
             onClick={
-                DeleteProfile(vm)
+                vm.setPopUpOpened(true)
+               /* DeleteProfile(vm)
                 navController.navigate(Screens.FormStart.name) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
                     launchSingleTop = true
                     restoreState = true
-                }
+                }*/
             }
         ){ Text(
             text = "Elimina account",

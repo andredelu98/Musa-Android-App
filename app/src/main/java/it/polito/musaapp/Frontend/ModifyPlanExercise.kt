@@ -39,6 +39,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeletePlanExercise
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
@@ -47,6 +48,20 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
 
     val previousScreen by vm.previousScreen.observeAsState()
 
+    val opened by vm.popUpOpened.observeAsState()
+    if (opened==true){
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler eliminare il tuo piano di esercizi?",
+            paragraph = "",
+            buttonConfirm = "Si",
+            buttonCancel = "No",
+            navigationConfirm = Screens.HelpPage,
+            navigationCancel = Screens.ModifyPlanExercise,
+            navController = navController,
+            vm = vm,
+            numberToDelete = 0
+        )
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -63,15 +78,17 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(35.dp).clickable {
-                    navController.navigate(previousScreen!!.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                modifier = Modifier
+                    .size(35.dp)
+                    .clickable {
+                        navController.navigate(previousScreen!!.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
             )
             Box(modifier = Modifier.size(35.dp))
 
@@ -161,14 +178,15 @@ fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
                     .border(5.dp, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)
                 ,
                 onClick={
-                    DeletePlanExercise(vm)
+                    vm.setPopUpOpened(true)
+                   /* DeletePlanExercise(vm)
                     navController.navigate(Screens.HelpPage.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
-                    }
+                    }*/
                 }
             ){ Text(
                 text = "Elimina piano di esercizi",
