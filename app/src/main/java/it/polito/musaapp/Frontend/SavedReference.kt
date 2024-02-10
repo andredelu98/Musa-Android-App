@@ -108,10 +108,10 @@ fun SavedReference(navController: NavController, vm:MusaViewModel) {
 
             /*TODO() Aggiungere dropdown per filtrare le reference?*/
             Spacer(modifier = Modifier.height(12.dp))
-            if(list?.isEmpty() == true){
+         /*   if(list.isNullOrEmpty()){
                 IndicatorReference()
             }
-            else{
+            else{*/
                 LazyVerticalStaggeredGrid(
                     columns = StaggeredGridCells.Fixed(2),
                     modifier = Modifier.fillMaxSize(),
@@ -126,7 +126,7 @@ fun SavedReference(navController: NavController, vm:MusaViewModel) {
                         }
                     }
                 }
-            }
+           // }
 
         }
     }
@@ -140,43 +140,45 @@ fun ImageWithHeartSaved(imageUrl: String, vm: MusaViewModel, navController: NavC
     if(!isLiked){
         //Log.d("REFERENCE", "sono in not liked ref salvate")
         RemoveImageInSaved(imageUrl, vm)
-        navController.navigate(Screens.SavedReference.name) {
+        /*navController.navigate(Screens.SavedReference.name) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
             launchSingleTop = true
             restoreState = true
+        }*/
+    }
+    else{
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+        )
+        {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(8.dp)
+                    .clickable {
+                        isLiked = !isLiked
+                    }
+                    .align(Alignment.TopEnd)
+            ) {
+                Icon(
+                    Icons.Filled.Favorite,
+                    contentDescription = null,
+                    tint = if (isLiked) Color.Red else MaterialTheme.colorScheme.background,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(8.dp)
-    )
-    {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .padding(8.dp)
-                .clickable {
-                    isLiked = !isLiked
-                }
-                .align(Alignment.TopEnd)
-        ) {
-            Icon(
-                Icons.Filled.Favorite,
-                contentDescription = null,
-                tint = if (isLiked) Color.Red else MaterialTheme.colorScheme.background,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-    }
 }
 
 

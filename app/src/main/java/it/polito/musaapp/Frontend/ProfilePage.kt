@@ -194,7 +194,7 @@ fun ProfilePage(navController: NavController, vm:MusaViewModel) {
         )
         {
             Text(
-                text = "Reference salvate" ,
+                text = "References salvate" ,
                 style = MaterialTheme.typography.bodyLarge
             )
             Icon(

@@ -62,10 +62,9 @@ fun InsertImageInSaved(s: String, vm: MusaViewModel){
 fun RemoveImageInSaved(s: String, vm: MusaViewModel){
     Log.d("SALVATIREM", "${vm.getRefToRemove(s)}, $s" )
     val rem= vm.getRefToRemove(s)
-    if(rem!=-1){
+    if(rem != -1){
         Log.d("SALVATIREM", "da rimuovere il count $rem, $s" )
         Firebase.database.getReference("ReferenceSalvate").child("$rem").setValue("RIMOSSO")
         vm.removeRefToSave(s)
     }
-
 }
