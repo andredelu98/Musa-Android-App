@@ -180,15 +180,22 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                 {
                     Button(
                         onClick = {
-                            navController.navigate(Screens.FormExercise.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            if (tutorialActive == true && tutorialStep >= 0) {
+                                tutorialStep++
+                                if (tutorialStep >= 2) {
+                                    musaViewModel.setTutorial(false)
+                                    tutorialStep = 0
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            }else{
+                                navController.navigate(Screens.FormExercise.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         },
-                        enabled = tutorialActive != true,
                         modifier = Modifier
                             .size(310.dp)  // Imposta un valore fisso per larghezza e altezza
                             .graphicsLayer(
@@ -244,14 +251,21 @@ fun PageContent(musaViewModel: MusaViewModel, navController: NavController){
                             shape = RoundedCornerShape(50.dp)
                         )
                         .offset(y = (-5).dp)
-                        .clickable(enabled = tutorialActive != true) {
-                            if(tutorialActive == false){}
-                            navController.navigate(Screens.ProjectPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                        .clickable{
+                            if (tutorialActive == true && tutorialStep >= 0) {
+                                tutorialStep++
+                                if (tutorialStep >= 2) {
+                                    musaViewModel.setTutorial(false)
+                                    tutorialStep = 0
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            } else{
+                                navController.navigate(Screens.ProjectPage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         },
                 )
