@@ -95,6 +95,9 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
         mutableStateOf("")
     }
     val context = LocalContext.current
+    var toastCalled by remember {
+        mutableStateOf(false)
+    }
     // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
     // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
     // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
@@ -152,7 +155,14 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
             OutlinedTextField(
                 value = filledName,
                 onValueChange = {
-                    filledName = it
+                    if(it.length<=15) {
+                        filledName = it
+                        toastCalled=false
+                    }
+                    else if(!toastCalled) {
+                        Toast.makeText(context, "Inserisci un nome di massimo 15 caratteri", Toast.LENGTH_SHORT).show()
+                        toastCalled=true
+                    }
                 },
                 shape = RoundedCornerShape(15.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(

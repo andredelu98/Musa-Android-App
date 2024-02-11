@@ -347,8 +347,8 @@ class MusaViewModel : ViewModel() {
         var l2 = mutableListOf<SingleReference>()
         l2=_savedRefDB.value as MutableList<SingleReference>
         val c=getRefToRemove(s)
-        if(c!=-1){
-            l2?.get(c)?.url="RIMOSSO"
+        if(c!=-1&&l2.count()>c){
+            l2.get(c).url = "RIMOSSO"
         }
         _savedRefDB.value=l2
        // _savedRef.value?.toString()?.let { Log.d("SALVATIREMOVEFINE", it) }

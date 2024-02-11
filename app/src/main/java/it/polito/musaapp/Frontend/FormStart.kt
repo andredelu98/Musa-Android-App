@@ -78,6 +78,9 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
     vm.setName(filledName)
     vm.setMail(filledMail)
 
+    var toastCalled by remember {
+        mutableStateOf(false)
+    }
 
     Box(modifier=Modifier.fillMaxSize()){
         Image(
@@ -101,10 +104,14 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             OutlinedTextField(
                 value = filledName,
                 onValueChange = {
-                    if(filledName.length<=10)
+                    if(it.length<=15) {
                         filledName = it
-                    else
-                        Toast.makeText(context, "Inserisci un nome di massimo 20 caratteri", Toast.LENGTH_SHORT).show()
+                        toastCalled=false
+                    }
+                    else if(!toastCalled) {
+                        Toast.makeText(context, "Inserisci un nome di massimo 15 caratteri", Toast.LENGTH_SHORT).show()
+                        toastCalled=true
+                    }
                 },
                 shape = RoundedCornerShape(15.dp),
                 /*keyboardOptions = KeyboardOptions.Default.copy(
@@ -117,7 +124,11 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                 )
                 },
                 modifier = Modifier
-                    .border(5.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+                    .border(
+                        5.dp,
+                        MaterialTheme.colorScheme.primaryContainer,
+                        RoundedCornerShape(15.dp)
+                    )
                     .fillMaxWidth(),
 
                 colors = TextFieldDefaults.outlinedTextFieldColors(
