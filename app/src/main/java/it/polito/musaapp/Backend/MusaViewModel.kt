@@ -132,6 +132,7 @@ class MusaViewModel : ViewModel() {
         if(_taskList.value!!.count()>newTaskInt){
             _taskList.value?.get(newTaskInt)?.let { _taskList.value?.toMutableList()?.set(i, it) }
             _taskList.value?.get(newTaskInt)?.let { ModifyDbRefresh(i, it, this) }
+            _taskListRefreshed.value!!.toMutableMap()[i] = _taskList.value!![newTaskInt]
         }
         else{
             var j= newTaskInt
@@ -139,8 +140,29 @@ class MusaViewModel : ViewModel() {
             _taskRefreshed.value=0
             _taskList.value?.get(j)?.let { _taskList.value?.toMutableList()?.set(i, it) }
             _taskList.value?.get(j)?.let { ModifyDbRefresh(i, it, this) }
+            _taskListRefreshed.value!!.toMutableMap()[i] = _taskList.value!![j]
         }
     }
+
+    private var _taskListRefreshed = MutableLiveData<Map<Int, String>>()
+    var TaskListRefreshed: LiveData<Map<Int,String>> = _taskListRefreshed
+    fun setTaskListRefreshed(s: MutableMap<Int, String>){
+        _taskListRefreshed.value=s
+    }
+
+    fun addTaskListRefreshed(i:Int, s:String){
+        if(_taskListRefreshed.value.isNullOrEmpty()){
+            val task : MutableMap<Int, String> = mutableMapOf()
+            task[i] = s
+            _taskListRefreshed.value=task
+        }
+        else{
+            if(!_taskListRefreshed.value!!.containsKey(i))
+                _taskListRefreshed.value!!.toMutableMap()[i] = s
+        }
+    }
+
+
 
     private var _referenceListUrl = MutableLiveData<List<String>>()
     var referenceListUrl: LiveData<List<String>> = _referenceListUrl

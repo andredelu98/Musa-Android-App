@@ -53,11 +53,16 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
     val taskCounter by vm.taskCounter.observeAsState()
     val taskCompleted by vm.taskCompleted.observeAsState()
     val nextTask by vm.nextTask.observeAsState()
+    val taskRefreshedList by vm.TaskListRefreshed.observeAsState()
+
     var refreshTask by remember {
     mutableStateOf(false)
     }
 
+    val listTask by vm.TaskList.observeAsState()
+
     if(refreshTask==true){
+        Log.d("TASKREFRESHED", "task refresh prima get $taskRefreshedList")
         GetTask(vm)
         refreshTask=false
     }
@@ -173,13 +178,15 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(vertical = 40.dp)
+
             ) {
-                Text(
-                    text = nextTask.toString(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 35.dp)
-                )
+                    Log.d("TASKREFRESHED", "refresh $refreshTask")
+                    Text(
+                        text = listTask!![taskCounter!!-1],
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 35.dp)
+                    )
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween,
@@ -198,9 +205,11 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                                     vm.weeksEx.value!! * vm.daysEx.value!! + vm.taskRefreshed.value!!
                                 )
                                 vm.setTaskRefreshed(vm.taskRefreshed.value!! + 1)
-                                Firebase.database.getReference("ModuloEsercizi")
-                                    .child("TaskRefreshed").setValue(vm.taskRefreshed.value)
-                                refreshTask=true
+                                Firebase.database
+                                    .getReference("ModuloEsercizi")
+                                    .child("TaskRefreshed")
+                                    .setValue(vm.taskRefreshed.value)
+                                refreshTask = true
                             }
                     )
                     Button (

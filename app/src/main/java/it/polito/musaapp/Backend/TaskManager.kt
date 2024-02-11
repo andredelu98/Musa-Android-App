@@ -135,13 +135,15 @@ fun GetTask(vm: MusaViewModel){
             Log.d("TASKMANAGER", "Error", it);
         }
 
-        Log.d("REFRESHTASK", "number of task ${vm.taskRefreshed.value}")
+       // Log.d("REFRESHTASK", "number of task ${vm.taskRefreshed.value}")
         myRef.child("TaskRefreshed${vm.level.value!!}").get().addOnSuccessListener {
             //  Log.d("TASKMANAGER", "  task list${it.value}")
             for(i in it.children) {
-                if(!listRefreshed.containsKey(i.key.toString()[4].toString().toInt()-1))
-                //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
+                if(!listRefreshed.containsKey(i.key.toString()[4].toString().toInt()-1)){
                     listRefreshed[i.key.toString()[4].toString().toInt()-1] = i.value!!.toString()
+                    vm.addTaskListRefreshed(i.key.toString()[4].toString().toInt()-1, i.value!!.toString() )
+                }
+                //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
             }
             for (i in 0.. list.count()){
                 if(listRefreshed.containsKey(i)){
