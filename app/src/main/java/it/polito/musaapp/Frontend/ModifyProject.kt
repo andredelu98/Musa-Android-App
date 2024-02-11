@@ -77,14 +77,13 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
 
     //Log.d("POPUP", popUpOpened.toString())
     if(popUpOpened == true){
-        // Log.d("POPUPCHECKCALLED", popUpOpened.toString())
         PopUpCheckIntentions(
             question = "Sei sicuro di voler uscire?",
             paragraph = "Se procedi le tue modifiche\nverranno perse",
             buttonConfirm = "SI",
             buttonCancel = "NO",
             navigationConfirm = Screens.ProjectPage,
-            navigationCancel= Screens.NewProject,
+            navigationCancel= Screens.ModifyProject,
             navController = navController,
             vm= vm,
             numberToDelete= if (vm.fromProjectList.value == true) 1 else 0

@@ -109,7 +109,7 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
 
                                 when(navigationCancel){
                                     Screens.ProjectPage -> {
-                                        Log.d("DELETEPOPUP", "$numberToDelete")
+                                        //Log.d("DELETEPOPUP", "$numberToDelete")
                                         DeleteSingleProject(vm, numberToDelete)
                                         NavigateConfirmed(navController, navigationConfirm)
                                     }
@@ -145,7 +145,9 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                                         }
                                         DeleteSingleProject(vm, vm.projectToPrintCounter.value!!)
                                     }
+
                                     Screens.ModifyProject -> {
+                                        Log.d("NUMBERDELETEMODIFY", "number $numberToDelete")
                                         if(numberToDelete == 1){
                                             navController.navigate(Screens.ProjectPage.name) {
                                                 popUpTo(navController.graph.findStartDestination().id) {
@@ -166,7 +168,8 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                                     }
                                     else -> NavigateConfirmed(navController, navigationConfirm)
                                 }
-                                if(navigationConfirm == Screens.HelpPage) setRoute(Screens.HelpPage.name)
+                                if(navigationConfirm == Screens.HelpPage)
+                                    setRoute(Screens.HelpPage.name)
                                 vm.setPopUpOpened(false)
                             }
                         )
