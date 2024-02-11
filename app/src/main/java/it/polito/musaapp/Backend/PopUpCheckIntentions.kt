@@ -106,6 +106,7 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                                 containerColor = MaterialTheme.colorScheme.onPrimary
                             ),
                             onClick = {
+
                                 when(navigationCancel){
                                     Screens.ProjectPage -> {
                                         Log.d("DELETEPOPUP", "$numberToDelete")
@@ -163,11 +164,9 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                                             }
                                         }
                                     }
-
-
                                     else -> NavigateConfirmed(navController, navigationConfirm)
                                 }
-
+                                if(navigationConfirm == Screens.HelpPage) setRoute(Screens.HelpPage.name)
                                 vm.setPopUpOpened(false)
                             }
                         )

@@ -61,23 +61,6 @@ import it.polito.musaapp.Screens
 @Composable
 fun HelpPage(navController: NavController, musaViewModel: MusaViewModel, applicationContext: Context){
 
-    /*
-    val sharedPreferences = remember {
-        applicationContext.getSharedPreferences("com.your.app.name", Context.MODE_PRIVATE)
-    }
-
-    var isFirstOpen by remember(sharedPreferences) {
-        mutableStateOf(sharedPreferences.getBoolean("first_open", true))
-    }
-
-    if (isFirstOpen) {
-        // Set tutorialActive to true for the first time
-        musaViewModel.setTutorial(true)
-
-        // Update SharedPreferences to mark app as not first open
-        sharedPreferences.edit().putBoolean("first_open", false).apply()
-    }*/
-
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false);
     PageContent(musaViewModel, navController)
 }
