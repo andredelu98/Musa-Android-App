@@ -259,7 +259,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
 @Composable
 fun SelettoreCountGiorni(vm: MusaViewModel){
     var count by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(1)
     }
     val popUpOpened by vm.popUpOpened.observeAsState()
     /* val myRef = Firebase.database.getReference("ModuloEsercizi").child("NumeroGiorni")
@@ -278,7 +278,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
         verticalAlignment = Alignment.CenterVertically){
         Button(
             onClick = {
-                if(count>0&&popUpOpened==false){
+                if(count>1&&popUpOpened==false){
                     count--;
                 }
             }
@@ -286,7 +286,8 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
+                tint = if(count>1&&popUpOpened==false){ Color.Black} else Color.Gray
             )
         }
         Text(
@@ -305,6 +306,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
+                tint=   if(count<7&&popUpOpened==false){ Color.Black} else Color.Gray
             )
         }
     }

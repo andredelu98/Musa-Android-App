@@ -185,7 +185,10 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                 OutlinedTextField(
                     value = filledName,
                     onValueChange = {
-                        filledName = it
+                        if(it.length<=20)
+                            filledName = it
+                        else
+                            Toast.makeText(context, "Inserisci un nome del progetto di massimo 20 caratteri", Toast.LENGTH_SHORT).show()
                     },
                     shape = RoundedCornerShape(15.dp),
                     placeholder =

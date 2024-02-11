@@ -95,9 +95,8 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
         mutableStateOf("")
     }
     val context = LocalContext.current
-    var toastCalled by remember {
-        mutableStateOf(false)
-    }
+    var toastCalled = false
+
     // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
     // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
     // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
