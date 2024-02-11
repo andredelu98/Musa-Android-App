@@ -134,6 +134,8 @@ class MusaViewModel : ViewModel() {
 
 
     fun changeTaskListRefresh(i: Int, newTaskInt: Int){
+        if(_taskListRefreshed.value.isNullOrEmpty())
+            _taskListRefreshed.value= mutableMapOf()
         if(_taskList.value!!.count()>newTaskInt){
             _taskList.value?.get(newTaskInt)?.let { _taskList.value?.toMutableList()?.set(i, it) }
             _taskList.value?.get(newTaskInt)?.let { ModifyDbRefresh(i, it, this) }
