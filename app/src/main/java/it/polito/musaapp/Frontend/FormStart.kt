@@ -135,7 +135,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
             OutlinedTextField(
                 value = filledMail,
                 onValueChange = {
-                    filledMail = it
+                        filledMail = it
                 },
                 shape = RoundedCornerShape(15.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -194,6 +194,8 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     ){
                         Toast.makeText(context, "Inserisci tutti i dati per continuare", Toast.LENGTH_SHORT).show()
                     }
+                    else if(!filledMail.contains(regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.+[A-Za-z0-9.-]+\$".toRegex()))
+                        Toast.makeText(context, "Inserisci un campo email valido!", Toast.LENGTH_SHORT).show()
                     else{
                         navController.navigate(Screens.HelpPage.name) {
                             popUpTo(navController.graph.findStartDestination().id) {

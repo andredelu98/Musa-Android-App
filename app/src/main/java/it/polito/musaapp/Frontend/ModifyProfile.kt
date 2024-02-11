@@ -71,8 +71,6 @@ import com.google.firebase.database.database
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
-import kotlinx.coroutines.selects.select
-import java.util.Locale.Category
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,7 +94,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
     var filledProfession by remember {
         mutableStateOf("")
     }
-
+    val context = LocalContext.current
     // Firebase.database.getReference("ModuloStart").child("Categoria").setValue("Disegno");
     // Firebase.database.getReference("ModuloStart").child("Livello").setValue("Principiante");
     // Firebase.database.getReference("ModuloStart").child("Professione").setValue("Studio");
@@ -289,25 +287,29 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                         Firebase.database.getReference("ModuloStart").child("Nome").setValue(filledName);
                         vm.setName(filledName)
                     }
-                    if(filledMail!=""){
+                    if(filledMail.contains(regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.+[A-Za-z0-9.-]+\$".toRegex())){
                         Firebase.database.getReference("ModuloStart").child("Mail").setValue(filledMail);
                         vm.setMail(filledMail)
-                    }
-                    Firebase.database.getReference("ModuloStart").child("Categoria").setValue(filledCategory);
-                    Firebase.database.getReference("ModuloStart").child("Livello").setValue(filledLevel);
-                    Firebase.database.getReference("ModuloStart").child("Professione").setValue(filledProfession);
-                    vm.setCategory(filledCategory)
-                    vm.setLevel(filledLevel)
-                    vm.setProfessione(filledProfession)
+                        Firebase.database.getReference("ModuloStart").child("Categoria").setValue(filledCategory);
+                        Firebase.database.getReference("ModuloStart").child("Livello").setValue(filledLevel);
+                        Firebase.database.getReference("ModuloStart").child("Professione").setValue(filledProfession);
+                        vm.setCategory(filledCategory)
+                        vm.setLevel(filledLevel)
+                        vm.setProfessione(filledProfession)
 
-                    navController.navigate(Screens.ProfilePage.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                        navController.navigate(Screens.ProfilePage.name) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                        Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
                     }
-                    Firebase.database.getReference("UtenteGiaRegistrato").setValue(true)
+                    else{
+                        Toast.makeText(context, "Inserisci un campo email valido!", Toast.LENGTH_SHORT).show()
+                    }
+
                 })
             {
                 Text(
