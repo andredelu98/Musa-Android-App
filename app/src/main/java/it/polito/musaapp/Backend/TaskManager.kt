@@ -315,4 +315,5 @@ fun RemoveDbRefresh(vm: MusaViewModel){
     Firebase.database.getReference("Esercizi")
         .child(vm.category.value!!).child("TaskRefreshed${vm.level.value!!}").removeValue()
     vm.setTaskRefreshed(0)
+    Firebase.database.getReference("ModuloEsercizi").child("TaskRefreshed").setValue(0)
 }
