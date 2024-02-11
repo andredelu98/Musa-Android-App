@@ -297,3 +297,10 @@ fun SaveInViewModel(vm: MusaViewModel) {
     }
 
 }
+
+
+fun ModifyDbRefresh(i: Int, s:String, vm: MusaViewModel){
+    Firebase.database.getReference("Esercizi")
+    .child(vm.category.value!!).child("TaskRefreshed${vm.level.value!!}")
+    .child("Task$i").setValue(s)
+}

@@ -55,6 +55,14 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
     val taskCounter by vm.taskCounter.observeAsState()
     val taskCompleted by vm.taskCompleted.observeAsState()
     val nextTask by vm.nextTask.observeAsState()
+    var refreshTask by remember {
+    mutableStateOf(false)
+    }
+
+    if(refreshTask==true){
+        GetTask(vm)
+        refreshTask=false
+    }
     //Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
     //Log.d ("TASKPAGE", " $taskCounter, next $nextTask" )
 
@@ -184,17 +192,16 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                     Icon(
                         painter = painterResource(id = R.drawable.refresh),
                         contentDescription = null,
-                        modifier = Modifier.size(32.dp).clickable {
-                            vm.changeTaskListRefresh(taskCounter!!, vm.weeksEx.value!! * vm.daysEx.value!!+vm.taskRefreshed.value!!)
-                            vm.setTaskRefreshed(vm.taskRefreshed.value!!+1)
-                            navController.navigate(Screens.TaskPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clickable {
+                                vm.changeTaskListRefresh(
+                                    taskCounter!!,
+                                    vm.weeksEx.value!! * vm.daysEx.value!! + vm.taskRefreshed.value!!
+                                )
+                                vm.setTaskRefreshed(vm.taskRefreshed.value!! + 1)
+                                refreshTask=true
                             }
-                        }
                     )
                     Button (
                         shape = MaterialTheme.shapes.large,

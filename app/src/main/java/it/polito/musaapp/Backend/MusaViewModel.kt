@@ -134,9 +134,19 @@ class MusaViewModel : ViewModel() {
         _taskList.value= emptyList()
     }
 
+
     fun changeTaskListRefresh(i: Int, newTaskInt: Int){
-        _taskList.value?.get(newTaskInt)?.let { _taskList.value?.toMutableList()?.set(i, it) }
-       // _taskList.value?.get(newTaskInt)?.let { ModifyDbRefresh(i, it, this) }
+        if(_taskList.value!!.count()>newTaskInt){
+            _taskList.value?.get(newTaskInt)?.let { _taskList.value?.toMutableList()?.set(i, it) }
+            _taskList.value?.get(newTaskInt)?.let { ModifyDbRefresh(i, it, this) }
+        }
+        else{
+            var j= newTaskInt
+            j = j - _taskRefreshed.value!!
+            _taskRefreshed.value=0
+            _taskList.value?.get(j)?.let { _taskList.value?.toMutableList()?.set(i, it) }
+            _taskList.value?.get(j)?.let { ModifyDbRefresh(i, it, this) }
+        }
     }
 
     private var _referenceListUrl = MutableLiveData<List<String>>()
