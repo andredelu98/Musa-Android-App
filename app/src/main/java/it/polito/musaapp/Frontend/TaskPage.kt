@@ -235,14 +235,7 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                             ),
                             modifier = Modifier.width(280.dp),
                             onClick={
-                                vm.setNextTask(vm.taskCounter.value!!)
-                                vm.setTaskCounter(vm.taskCounter.value!!+1)
-                                vm.setTaskCompleted(vm.taskCompleted.value!!+1)
-                                Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
-                                Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati")
-                                    .setValue(vm.taskCompleted.value!!);
-
-                                if(taskCounter!!>7 || vm.taskCounter.value!!-1>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
+                                if(taskCounter!!>=7 || vm.taskCounter.value!!>=(vm.weeksEx.value!!*vm.daysEx.value!!)){
                                     navController.navigate(Screens.TaskFinished.name) {
                                         popUpTo(navController.graph.findStartDestination().id) {
                                             saveState = true
@@ -251,6 +244,14 @@ fun TaskPage(navController: NavController, vm: MusaViewModel){
                                         restoreState = true
                                     }
                                 }
+                                vm.setNextTask(vm.taskCounter.value!!)
+                                vm.setTaskCounter(vm.taskCounter.value!!+1)
+                                vm.setTaskCompleted(vm.taskCompleted.value!!+1)
+                                Log.d("TASK COMPLETED", vm.taskCompleted.value.toString())
+                                Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati")
+                                    .setValue(vm.taskCompleted.value!!);
+
+
                                 /* else if() {
                                      navController.navigate(Screens.TaskFinished.name) {
                                          popUpTo(navController.graph.findStartDestination().id) {

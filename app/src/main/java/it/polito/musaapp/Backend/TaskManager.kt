@@ -87,12 +87,7 @@ fun RefreshVariablesTask(vm: MusaViewModel){
     }
     //Log.d("TASKMANAGER", "WorkingDays $WorkingDays");
 
-    myRef.child("TaskRefreshed").get().addOnSuccessListener {
-        //Log.d("TASKMANAGER", "Settimane ${it.value}");
-       vm.setTaskRefreshed(it.value.toString().toInt())
-    }.addOnFailureListener {
-        Log.d("TASKMANAGER", "Error", it);
-    }
+
 
     val myRefTaskIns= Firebase.database.getReference("ModuloEsercizi")
     myRefTaskIns.child("TaskCompletati").get().addOnSuccessListener {
@@ -126,14 +121,14 @@ fun GetTask(vm: MusaViewModel){
    // Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value}");
 
     if(!categoryObs.isNullOrEmpty() &&!levelObs.isNullOrEmpty()){
-        val myRef= Firebase.database.getReference("Esercizi").child(vm.category.value!!).child(vm.level.value!!)
-        myRef.get().addOnSuccessListener {
+        val myRef= Firebase.database.getReference("Esercizi").child(vm.category.value!!)
+        myRef.child(vm.level.value!!).get().addOnSuccessListener {
           //  Log.d("TASKMANAGER", "  task list${it.value}")
             for(i in it.children) {
               //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
                 list.add(i.value!!.toString())
             }
-            vm.setTaskList(list)
+            //vm.setTaskList(list)
         }.addOnFailureListener {
             Log.d("TASKMANAGER", "Error", it);
         }
@@ -142,11 +137,11 @@ fun GetTask(vm: MusaViewModel){
             //  Log.d("TASKMANAGER", "  task list${it.value}")
             for(i in it.children) {
                 //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
-                listRefreshed.put(i.key.toString().get(5).toString().toInt(), i.value!!.toString())
+                listRefreshed[i.key.toString()[4].toString().toInt()-1] = i.value!!.toString()
             }
             for (i in 0.. list.count()){
                 if(listRefreshed.containsKey(i)){
-                    list[i]= listRefreshed.get(i).toString()
+                    list[i]= listRefreshed[i].toString()
                 }
             }
             vm.setTaskList(list)
