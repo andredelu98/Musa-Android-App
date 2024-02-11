@@ -48,6 +48,7 @@ import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeletePlanExercise
 import it.polito.musaapp.Backend.MusaViewModel
 import it.polito.musaapp.Backend.PopUpCheckIntentions
+import it.polito.musaapp.Backend.RemoveDbRefresh
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
@@ -332,6 +333,7 @@ fun DeleteProfile(vm: MusaViewModel){
         Firebase.database.getReference("ModuloEsercizi")
             .child("GiorniLiberi").child(days[i]).setValue(false)
     }
+    RemoveDbRefresh(vm)
 }
 
 fun RefreshProfile(vm:MusaViewModel){

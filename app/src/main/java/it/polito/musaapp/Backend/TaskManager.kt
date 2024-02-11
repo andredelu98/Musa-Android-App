@@ -118,6 +118,7 @@ fun GetTask(vm: MusaViewModel){
     val levelObs by vm.level.observeAsState()
     val list: MutableList<String> = mutableListOf();
     val listRefreshed: MutableMap<Int, String> =  mutableMapOf()
+    vm.setTaskRefreshed(0)
    // Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value}");
 
     if(!categoryObs.isNullOrEmpty() &&!levelObs.isNullOrEmpty()){
@@ -138,6 +139,7 @@ fun GetTask(vm: MusaViewModel){
             for(i in it.children) {
                 //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
                 listRefreshed[i.key.toString()[4].toString().toInt()-1] = i.value!!.toString()
+                vm.setTaskRefreshed(vm.taskRefreshed.value!!+1)
             }
             for (i in 0.. list.count()){
                 if(listRefreshed.containsKey(i)){
@@ -171,6 +173,7 @@ fun DeletePlanExercise(vm: MusaViewModel) {
     vm.setTaskRefreshed(0)
     vm.resetTaskList()
     vm.setDaysListEx(mutableListOf(false, false, false, false, false, false, false))
+    RemoveDbRefresh(vm)
 }
 
 
@@ -303,4 +306,10 @@ fun ModifyDbRefresh(i: Int, s:String, vm: MusaViewModel){
     Firebase.database.getReference("Esercizi")
     .child(vm.category.value!!).child("TaskRefreshed${vm.level.value!!}")
     .child("Task$i").setValue(s)
+}
+
+fun RemoveDbRefresh(vm: MusaViewModel){
+    Firebase.database.getReference("Esercizi")
+        .child(vm.category.value!!).child("TaskRefreshed${vm.level.value!!}").removeValue()
+    vm.setTaskRefreshed(0)
 }
