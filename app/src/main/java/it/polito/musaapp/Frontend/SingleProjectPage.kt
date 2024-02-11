@@ -360,7 +360,9 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .clickable {
-                                    vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
+                                    vm.setPopUpOpened(true)
+                                }
+                                  /*  vm.setCounterProgettiCompletati(vm.counterProgettiCompletati.value!! - 1)
                                     Firebase.database.getReference("Progetti").child("CounterProgettiCompletati")
                                         .setValue(vm.counterProgettiCompletati.value!!)
                                     navController.navigate(Screens.StoricoProgetti.name) {
@@ -370,7 +372,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
                                         launchSingleTop = true
                                         restoreState = true
                                     }
-                                }
+                                }*/
                         )
                     }
 

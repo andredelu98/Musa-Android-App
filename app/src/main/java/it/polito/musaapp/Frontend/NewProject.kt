@@ -260,15 +260,20 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                     modifier = Modifier
                         .width(150.dp),
                     onClick = {
-
-                        CreateNewProject(filledName, filledCategory, filledDescription, vm, vm.counterProgetti.value!!)
-                        navController.navigate(Screens.ProjectPage.name) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                        if(filledName==""|| filledDescription==""||filledCategory==""){
+                            Toast.makeText(context, "Completa tutti i campi per proseguire", Toast.LENGTH_SHORT).show()
                         }
+                        else{
+                            CreateNewProject(filledName, filledCategory, filledDescription, vm, vm.counterProgetti.value!!)
+                            navController.navigate(Screens.ProjectPage.name) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+
                     }
                 ){
                     Text(
@@ -363,7 +368,7 @@ fun CategoryDropdownProjects(vm: MusaViewModel) : String{
                         selectedText = item
 
                         expanded = false
-                        Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                     }
                 )
                 if (index < categoryToUse.size - 1){
