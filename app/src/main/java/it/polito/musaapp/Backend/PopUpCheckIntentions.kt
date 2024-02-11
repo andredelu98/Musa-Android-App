@@ -166,6 +166,22 @@ fun PopUpCheckIntentions(question: String, paragraph: String, buttonConfirm: Str
                                             }
                                         }
                                     }
+                                    Screens.StoricoProgetti -> {
+                                        vm.setCounterProgettiCompletati(
+                                            vm.counterProgettiCompletati.value!! - 1
+                                        )
+                                        Firebase.database.getReference("Progetti")
+                                            .child("CounterProgettiCompletati")
+                                            .setValue(vm.counterProgettiCompletati.value!!)
+                                        DeleteSingleProject(vm, numberToDelete)
+                                        navController.navigate(Screens.StoricoProgetti.name) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
+                                    }
                                     else -> NavigateConfirmed(navController, navigationConfirm)
                                 }
                                 if(navigationConfirm == Screens.HelpPage)

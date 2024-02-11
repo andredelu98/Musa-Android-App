@@ -52,11 +52,11 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import it.polito.musaapp.Backend.DeleteSingleProject
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Backend.PopUpCheckIntentions
 import it.polito.musaapp.R
 import it.polito.musaapp.Screens
 
 @Composable
-
 fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
     val projectList by vm.projectList.observeAsState()
     val previousScreen by vm.previousScreen.observeAsState()
@@ -75,7 +75,23 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
     val counterProgetti by vm.counterProgetti.observeAsState()
     val counterProgettiCompletati by vm.counterProgettiCompletati.observeAsState()
 
+    val opened by vm.popUpOpened.observeAsState()
+    val numberToDelete by vm.projectToDelete.observeAsState()
 
+    if(opened==true && numberToDelete!=-1){
+        // Log.d("DELETEPOPUP", "chiamata popup")
+        PopUpCheckIntentions(
+            question = "Sei sicuro di voler eliminare il tuo progetto?",
+            paragraph = "",
+            buttonConfirm = "SI",
+            buttonCancel = "NO",
+            navigationConfirm = Screens.StoricoProgetti,
+            navigationCancel = Screens.StoricoProgetti,
+            navController = navController,
+            vm= vm,
+            numberToDelete= numberToDelete!!
+        )
+    }
     val counterProgettiEliminati by vm.counterProgettiEliminati.observeAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -177,6 +193,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
                             var openOptions by remember {
                                 mutableStateOf(false)
                             }
+                            vm.setProjectToDelete(i)
                             // Log.d("LISTAPROGETTICOMPLETATI", vm.projectList.value!!.toString())
                             if (vm.projectList.value!![i].status == "completato") {
                                 Card(
@@ -281,7 +298,8 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
                                                     modifier = Modifier.height(38.dp),
                                                     onClick = {
                                                         openOptions = false
-                                                        vm.setCounterProgettiCompletati(
+                                                        vm.setPopUpOpened(true)
+                                                        /*vm.setCounterProgettiCompletati(
                                                             counterProgettiCompletati!! - 1
                                                         )
                                                         Firebase.database.getReference("Progetti")
@@ -294,7 +312,7 @@ fun StoricoProgetti(navController:NavController, vm: MusaViewModel) {
                                                             }
                                                             launchSingleTop = true
                                                             restoreState = true
-                                                        }
+                                                        }*/
                                                     },
                                                     text = {
                                                         Box(modifier = Modifier.fillMaxSize()) {
