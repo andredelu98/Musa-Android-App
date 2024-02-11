@@ -67,6 +67,7 @@ import it.polito.musaapp.Screens
 @Composable
 fun NewProject(navController: NavController, vm:MusaViewModel){
     val context= LocalContext.current
+    vm.setFormOpened(true)
     var i by remember{
         mutableStateOf(0)
     }

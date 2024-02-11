@@ -54,7 +54,7 @@ import java.time.LocalDate
 fun TaskListPage(navController: NavController, vm:MusaViewModel){
     RefreshVariablesTask(vm)
     GetTask(vm)
-
+    vm.setFormOpened(false)
     val taskList by vm.TaskList.observeAsState()
     var taskToDisplay: Int =0
     //Log.d("TASKLIST", taskList.toString())

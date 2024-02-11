@@ -74,6 +74,7 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
     val context= LocalContext.current
     val fromProjectList by vm.fromProjectList.observeAsState()
     val popUpOpened by vm.popUpOpened.observeAsState()
+    vm.setFormOpened(true)
 
     //Log.d("POPUP", popUpOpened.toString())
     if(popUpOpened == true){

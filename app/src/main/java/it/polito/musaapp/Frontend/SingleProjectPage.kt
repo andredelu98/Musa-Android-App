@@ -59,6 +59,7 @@ import it.polito.musaapp.Screens
 fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
     GetReferenceProject(vm)
     val projects by vm.projectList.observeAsState()
+    vm.setFormOpened(false)
     var openOptions by remember { mutableStateOf(false) }
     var completed=false
     var restored=false

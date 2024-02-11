@@ -47,7 +47,6 @@ import it.polito.musaapp.Screens
 fun ModifyPlanExercise(navController: NavController, vm: MusaViewModel){
 
     val previousScreen by vm.previousScreen.observeAsState()
-
     val opened by vm.popUpOpened.observeAsState()
     if (opened==true){
         PopUpCheckIntentions(

@@ -69,8 +69,9 @@ import it.polito.musaapp.Screens
 @Composable
 fun FormExercise(navController: NavController, vm: MusaViewModel){
     val context = LocalContext.current
-
+    vm.setFormOpened(true)
     val popUpOpened by vm.popUpOpened.observeAsState()
+
 
     //Log.d("POPUP", popUpOpened.toString())
     if(popUpOpened == true){
@@ -287,7 +288,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint = if(count>1&&popUpOpened==false){ Color.Black} else Color.Gray
+                tint = if(count>1&&popUpOpened==false){ MaterialTheme.colorScheme.onPrimary} else Color(0x26000000)
             )
         }
         Text(
@@ -306,7 +307,7 @@ fun SelettoreCountGiorni(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint=   if(count<7&&popUpOpened==false){ Color.Black} else Color.Gray
+                tint=   if(count<7&&popUpOpened==false){ MaterialTheme.colorScheme.onPrimary} else Color(0x26000000)
             )
         }
     }
@@ -344,7 +345,7 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint= Color(0XFFD68D02)
+                tint= Color(0x26000000)
             )
         }
         Text(
@@ -361,7 +362,7 @@ fun SelettoreCountSettimane(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint= Color(0XFFD68D02)
+                tint= Color(0x26000000)
             )
         }
     }

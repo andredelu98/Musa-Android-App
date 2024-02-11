@@ -65,6 +65,7 @@ fun ProjectPage(navController: NavController, vm:MusaViewModel){
 
     val projectList by vm.projectList.observeAsState()
     var count=-1
+    vm.setFormOpened(false)
     val myRef = Firebase.database.getReference("Progetti").child("CounterProgetti")
     if(count==-1){
         myRef.get().addOnSuccessListener {

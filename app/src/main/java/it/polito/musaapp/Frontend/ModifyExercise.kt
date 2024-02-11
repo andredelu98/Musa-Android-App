@@ -65,7 +65,6 @@ var daysL: MutableList<Boolean> = mutableListOf(false, false, false, false, fals
 @Composable
 fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
     val context = LocalContext.current
-
     val myRefTask = Firebase.database.getReference("ModuloEsercizi")
     var taskInserito by remember {
         mutableStateOf(false)
@@ -280,7 +279,9 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
             Icon(
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
+                tint = if(count>1){ MaterialTheme.colorScheme.onPrimary} else Color(0x26000000)
+
             )
         }
 
@@ -305,6 +306,7 @@ fun SelettoreCountGiorniModify(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
+                tint = if(count<7){ MaterialTheme.colorScheme.onPrimary} else Color(0x26000000)
             )
         }
     }
@@ -351,7 +353,7 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciasx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint= Color(0x1A001219)
+                tint= Color(0x26000000)
             )
         }
 
@@ -374,7 +376,7 @@ fun SelettoreCountSettimaneModify(vm: MusaViewModel){
                 painter = painterResource(id = R.drawable.frecciadx),
                 contentDescription = "",
                 modifier = Modifier.size(28.dp),
-                tint= Color(0x1A001219)
+                tint= Color(0x26000000)
             )
         }
     }

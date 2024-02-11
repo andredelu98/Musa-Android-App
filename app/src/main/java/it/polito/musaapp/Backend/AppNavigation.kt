@@ -80,6 +80,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
     val currentDestination = navBackStackEntry?.destination
     val tutorialActive by vm.tutorialActive.observeAsState()
     val opened by vm.popUpOpened.observeAsState()
+    val formOpened by vm.formOpened.observeAsState()
 
     navController.addOnDestinationChangedListener { controller, _, _ ->
         val currentDestination = controller.currentBackStackEntry?.destination
@@ -108,7 +109,7 @@ fun AppNavigation(vm: MusaViewModel, applicationContext: Context) {
                                 colors = NavigationBarItemDefaults.colors(
                                     indicatorColor = MaterialTheme.colorScheme.onPrimary
                                 ),
-                                enabled = tutorialActive != true && opened !=true,
+                                enabled = tutorialActive != true && opened != true && formOpened != true,
                                 onClick = {
                                     //listOfNavItems.forEach { it.selected = it == navItem }
                                     navController.navigate(navItem.route) {

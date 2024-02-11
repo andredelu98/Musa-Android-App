@@ -10,16 +10,21 @@ class MusaViewModel : ViewModel() {
 
     private var _registered= MutableLiveData<Boolean>(false)
     var registered: LiveData<Boolean> = _registered
-
     fun setRegistered(value: Boolean){
         _registered.value=value
     }
 
     private var _tutorialActive= MutableLiveData<Boolean>(false)
     var tutorialActive: LiveData<Boolean> = _tutorialActive
-
     fun setTutorial(value: Boolean){
         _tutorialActive.value=value
+    }
+
+    private var _formOpened= MutableLiveData<Boolean>(false)
+    var formOpened: LiveData<Boolean> = _formOpened
+
+    fun setFormOpened(value: Boolean){
+        _formOpened.value=value
     }
 
     private var _previousScreen = MutableLiveData<Screens>(null)

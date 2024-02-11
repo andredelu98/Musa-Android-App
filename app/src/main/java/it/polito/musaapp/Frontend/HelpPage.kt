@@ -60,7 +60,7 @@ import it.polito.musaapp.Screens
 
 @Composable
 fun HelpPage(navController: NavController, musaViewModel: MusaViewModel, applicationContext: Context){
-
+    musaViewModel.setFormOpened(false)
     Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(false);
     PageContent(musaViewModel, navController)
 }
