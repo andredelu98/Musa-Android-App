@@ -1,16 +1,9 @@
 package it.polito.musaapp.Backend
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
 import it.polito.musaapp.Screens
 
 class MusaViewModel : ViewModel() {
@@ -119,7 +112,7 @@ class MusaViewModel : ViewModel() {
 
     private var _taskRefreshed= MutableLiveData<Int>(0)
     var taskRefreshed: LiveData<Int> = _taskRefreshed
-    fun setTaskRefreshed(i :Int){
+    fun setTaskRefreshed(i: Int){
         _taskRefreshed.value=i
         //Log.d("NEXTTASK",_taskCounter.value.toString())
     }

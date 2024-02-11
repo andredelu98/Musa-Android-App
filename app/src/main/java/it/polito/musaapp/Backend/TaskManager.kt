@@ -6,14 +6,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.Observer
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
-import okhttp3.internal.userAgent
 import java.time.LocalDate
-import java.time.Period
-import java.util.Date
-import kotlin.time.days
 
 var WorkingDays: Array<Boolean> = arrayOf(false,false,false,false,false,false,false)
 var NumberOfDays: Int = 0
@@ -87,7 +82,13 @@ fun RefreshVariablesTask(vm: MusaViewModel){
     }
     //Log.d("TASKMANAGER", "WorkingDays $WorkingDays");
 
-
+    myRef.child("TaskRefreshed").get().addOnSuccessListener {
+        //  Log.d("TASKMANAGER", "  task list${it.value}")
+        vm.setTaskRefreshed(it.value.toString().toInt())
+        //vm.setTaskList(list)
+    }.addOnFailureListener {
+        Log.d("TASKMANAGER", "Error", it);
+    }
 
     val myRefTaskIns= Firebase.database.getReference("ModuloEsercizi")
     myRefTaskIns.child("TaskCompletati").get().addOnSuccessListener {
@@ -118,7 +119,7 @@ fun GetTask(vm: MusaViewModel){
     val levelObs by vm.level.observeAsState()
     val list: MutableList<String> = mutableListOf();
     val listRefreshed: MutableMap<Int, String> =  mutableMapOf()
-    vm.setTaskRefreshed(0)
+
    // Log.d("TASKMANAGER", "Livello ${vm.level.value} Categoria ${vm.category.value}");
 
     if(!categoryObs.isNullOrEmpty() &&!levelObs.isNullOrEmpty()){
@@ -134,12 +135,13 @@ fun GetTask(vm: MusaViewModel){
             Log.d("TASKMANAGER", "Error", it);
         }
 
+        Log.d("REFRESHTASK", "number of task ${vm.taskRefreshed.value}")
         myRef.child("TaskRefreshed${vm.level.value!!}").get().addOnSuccessListener {
             //  Log.d("TASKMANAGER", "  task list${it.value}")
             for(i in it.children) {
+                if(!listRefreshed.containsKey(i.key.toString()[4].toString().toInt()-1))
                 //  Log.d("TASKMANAGER", " singoli task ${i.value.toString()}, number task ${list.count()+1}")
-                listRefreshed[i.key.toString()[4].toString().toInt()-1] = i.value!!.toString()
-                vm.setTaskRefreshed(vm.taskRefreshed.value!!+1)
+                    listRefreshed[i.key.toString()[4].toString().toInt()-1] = i.value!!.toString()
             }
             for (i in 0.. list.count()){
                 if(listRefreshed.containsKey(i)){
@@ -147,6 +149,7 @@ fun GetTask(vm: MusaViewModel){
                 }
             }
             vm.setTaskList(list)
+            Log.d("REFRESHTASK", "number of task ${vm.taskRefreshed.value}")
             // vm.setTaskList(list)
         }.addOnFailureListener {
             Log.d("TASKMANAGER", "Error", it);
