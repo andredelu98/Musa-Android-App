@@ -139,9 +139,8 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxSize()
                 .padding(horizontal = 25.dp)
-                //.verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState())
         ){
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -327,7 +326,7 @@ fun ModifyProfile(navController: NavController, vm: MusaViewModel){
                     color = MaterialTheme.colorScheme.background
                 )
             }
-            Spacer(modifier = Modifier.height(22.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 

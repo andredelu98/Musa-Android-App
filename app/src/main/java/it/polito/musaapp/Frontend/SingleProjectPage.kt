@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
@@ -227,6 +229,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
+                //.verticalScroll(rememberScrollState())
                 .padding(8.dp),
         ) {
             Text(
@@ -243,7 +246,7 @@ fun SingleProjectPage(navController: NavController, vm: MusaViewModel){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
             ){
                 Text(
                     text = projects?.get(vm.projectToPrintCounter.value!!)!!.description,

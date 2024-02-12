@@ -121,7 +121,7 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
-                .alpha(if(popUpOpened == true) 0.3f else 1f)
+                .alpha(if (popUpOpened == true) 0.3f else 1f)
                 .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
@@ -161,96 +161,103 @@ fun FormExercise(navController: NavController, vm: MusaViewModel){
                             }*/
                         }
                 )
-                Text(
-                    text= "Programma quando vuoi ricevere gli esercizi",
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                    modifier= Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(18.dp))
-                Divider(
-                    color = Color(0XFFD68D02),
-                    thickness = 4.dp,
-                    modifier = Modifier.width(200.dp)
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-                Text(
-                    text= "Quanti giorni a settimana?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier= Modifier.fillMaxWidth()
-                )
-                SelettoreCountGiorni(vm)
-                Spacer(modifier = Modifier.height(12.dp))
-                Divider(
-                    color = Color(0XFFD68D02),
-                    thickness = 4.dp,
-                    modifier = Modifier.width(200.dp)
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-                Text(
-                    text= "Quali giorni preferisci?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier= Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                SelettoreGiorni(vm)
-                Spacer(modifier = Modifier.height(24.dp))
-                Divider(
-                    color = Color(0XFFD68D02),
-                    thickness = 4.dp,
-                    modifier = Modifier.width(200.dp)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text= "Per quante settimane?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier= Modifier.fillMaxWidth()
-                )
-                SelettoreCountSettimane(vm)
-                Spacer(modifier = Modifier.height(14.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.verticalScroll(rememberScrollState()))
+                {
+                    Text(
+                        text= "Programma quando vuoi ricevere gli esercizi",
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center,
+                        modifier= Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(18.dp))
+                    Divider(
+                        color = Color(0XFFD68D02),
+                        thickness = 4.dp,
+                        modifier = Modifier.width(200.dp)
+                    )
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Text(
+                        text= "Quanti giorni a settimana?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier= Modifier.fillMaxWidth()
+                    )
+                    SelettoreCountGiorni(vm)
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Divider(
+                        color = Color(0XFFD68D02),
+                        thickness = 4.dp,
+                        modifier = Modifier.width(200.dp)
+                    )
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Text(
+                        text= "Quali giorni preferisci?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier= Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SelettoreGiorni(vm)
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Divider(
+                        color = Color(0XFFD68D02),
+                        thickness = 4.dp,
+                        modifier = Modifier.width(200.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text= "Per quante settimane?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier= Modifier.fillMaxWidth()
+                    )
+                    SelettoreCountSettimane(vm)
+                    Spacer(modifier = Modifier.height(14.dp))
 
-                Button(
-                    shape = MaterialTheme.shapes.large,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier
-                        .width(160.dp),
-                    onClick = {
-                        if(popUpOpened==false){
-                            var i =0
-                            for(j in 0..6){
-                                if(vm.daysListEx.value!!.get(j)==true)
-                                    i++
-                            }
-                            if(vm.daysEx.value!=i){
-                                Toast.makeText(context, "Inserisci il numero corretto di giorni", Toast.LENGTH_SHORT).show()
-                            }
-                            else{
-                                Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
-                                Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
-                                navController.navigate(Screens.TaskListPage.name) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                    Button(
+                        shape = MaterialTheme.shapes.large,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        modifier = Modifier
+                            .width(160.dp),
+                        onClick = {
+                            if(popUpOpened==false){
+                                var i =0
+                                for(j in 0..6){
+                                    if(vm.daysListEx.value!!.get(j)==true)
+                                        i++
+                                }
+                                if(vm.daysEx.value!=i){
+                                    Toast.makeText(context, "Inserisci il numero corretto di giorni", Toast.LENGTH_SHORT).show()
+                                }
+                                else{
+                                    Firebase.database.getReference("ModuloEsercizi").child("Inserito").setValue(true);
+                                    Firebase.database.getReference("ModuloEsercizi").child("TaskCompletati").setValue(0);
+                                    navController.navigate(Screens.TaskListPage.name) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                        setRoute(Screens.TaskListPage.name)
+
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                    setRoute(Screens.TaskListPage.name)
-
                                 }
                             }
                         }
+                    ){
+                        Text(
+                            text= "AVVIA",
+                            style = MaterialTheme.typography.headlineLarge,
+                            color = MaterialTheme.colorScheme.background
+                        )
                     }
-                ){
-                    Text(
-                        text= "AVVIA",
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.background
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
+
             }
 
         }

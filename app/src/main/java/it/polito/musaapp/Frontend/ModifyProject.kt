@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
@@ -215,153 +217,160 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                             }*/
                         }
                 )
-                Text(
-                    text= "Modifica progetto personale",
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                    modifier= Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-
-                OutlinedTextField(
-                    value = filledName,
-                    onValueChange = {
-                        if(it.length<=20)
-                            filledName = it
-                        else
-                            Toast.makeText(context, "Inserisci un nome del progetto di massimo 20 caratteri", Toast.LENGTH_SHORT).show()
-                    },
-                    shape = RoundedCornerShape(15.dp),
-                    placeholder =
-                    {
-                        if(filledName==""){
-                            Text(text = "Nome progetto",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = Color(0xFF775c15)
-                            )
-                        }
-                    },
-                    modifier = Modifier
-                        .border(
-                            5.dp,
-                            MaterialTheme.colorScheme.primaryContainer,
-                            RoundedCornerShape(15.dp)
-                        )
-                        .fillMaxWidth(),
-
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        cursorColor = MaterialTheme.colorScheme.onPrimary,
-                        selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
-                        textColor = MaterialTheme.colorScheme.onPrimary
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.verticalScroll(rememberScrollState()))
+                {
+                    Text(
+                        text= "Modifica progetto personale",
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center,
+                        modifier= Modifier.fillMaxWidth()
                     )
-                )
-                Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-
-                filledCategory= CategoryDropdownProjectsModify(vm)
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                OutlinedTextField(
-                    value = filledDescription,
-                    onValueChange = {
-                        filledDescription = it
-                    },
-                    shape = RoundedCornerShape(15.dp),
-                    placeholder =
-                    {
-                        if(filledDescription==""){
-                            Text(text = "Descrizione",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = Color(0xFF775c15)
+                    OutlinedTextField(
+                        value = filledName,
+                        onValueChange = {
+                            if(it.length<=20)
+                                filledName = it
+                            else
+                                Toast.makeText(context, "Inserisci un nome del progetto di massimo 20 caratteri", Toast.LENGTH_SHORT).show()
+                        },
+                        shape = RoundedCornerShape(15.dp),
+                        placeholder =
+                        {
+                            if(filledName==""){
+                                Text(text = "Nome progetto",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color(0xFF775c15)
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .border(
+                                5.dp,
+                                MaterialTheme.colorScheme.primaryContainer,
+                                RoundedCornerShape(15.dp)
                             )
-                        }
-                    },
-                    modifier = Modifier
-                        .border(
-                            5.dp,
-                            MaterialTheme.colorScheme.primaryContainer,
-                            RoundedCornerShape(15.dp)
+                            .fillMaxWidth(),
+
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            cursorColor = MaterialTheme.colorScheme.onPrimary,
+                            selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
+                            textColor = MaterialTheme.colorScheme.onPrimary
                         )
-                        .fillMaxWidth()
-                        .height(130.dp),
-
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        cursorColor = MaterialTheme.colorScheme.onPrimary,
-                        selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
-                        textColor = MaterialTheme.colorScheme.onPrimary
                     )
-                )
-                Spacer(modifier = Modifier.height(18.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().alpha(0.3f),
-                ) {
+
+                    filledCategory= CategoryDropdownProjectsModify(vm)
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    OutlinedTextField(
+                        value = filledDescription,
+                        onValueChange = {
+                            filledDescription = it
+                        },
+                        shape = RoundedCornerShape(15.dp),
+                        placeholder =
+                        {
+                            if(filledDescription==""){
+                                Text(text = "Descrizione",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color(0xFF775c15)
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .border(
+                                5.dp,
+                                MaterialTheme.colorScheme.primaryContainer,
+                                RoundedCornerShape(15.dp)
+                            )
+                            .fillMaxWidth()
+                            .height(130.dp),
+
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            cursorColor = MaterialTheme.colorScheme.onPrimary,
+                            selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
+                            textColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(18.dp))
+
                     Row(
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable {  })
-                    {
-                        Icon(
-                            painter = painterResource(id = R.drawable.allega),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "Allega file",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        modifier = Modifier.fillMaxWidth().alpha(0.3f),
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.clickable {  })
+                        {
+                            Icon(
+                                painter = painterResource(id = R.drawable.allega),
+                                contentDescription = "",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Allega file",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+
                     }
 
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-                Button(
-                    shape = MaterialTheme.shapes.large,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier
-                        .width(150.dp),
-                    onClick = {
-                        if(vm.fromProjectList.value == true){
-                            ModifySingleProject(filledName, if(filledCategory=="") vm.projectToModify.value!!.category else filledCategory, filledDescription, vm, vm.projectToModifyCount.value!!)
-                            navController.navigate(Screens.ProjectPage.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                    Spacer(modifier = Modifier.height(22.dp))
+                    Button(
+                        shape = MaterialTheme.shapes.large,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        modifier = Modifier
+                            .width(150.dp),
+                        onClick = {
+                            if(vm.fromProjectList.value == true){
+                                ModifySingleProject(filledName, if(filledCategory=="") vm.projectToModify.value!!.category else filledCategory, filledDescription, vm, vm.projectToModifyCount.value!!)
+                                navController.navigate(Screens.ProjectPage.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            }else {
+                                ModifySingleProject(
+                                    filledName,
+                                    if (filledCategory == "") vm.projectToModify.value!!.category else filledCategory,
+                                    filledDescription,
+                                    vm,
+                                    vm.projectToModifyCount.value!!
+                                )
+                                navController.navigate(Screens.SinglePageProject.name) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                        }else {
-                            ModifySingleProject(
-                                filledName,
-                                if (filledCategory == "") vm.projectToModify.value!!.category else filledCategory,
-                                filledDescription,
-                                vm,
-                                vm.projectToModifyCount.value!!
-                            )
-                            navController.navigate(Screens.SinglePageProject.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
                             }
                         }
+                    ){
+                        Text(
+                            text= "SALVA",
+                            style = MaterialTheme.typography.headlineLarge,
+                            color = MaterialTheme.colorScheme.background
+                        )
                     }
-                ){
-                    Text(
-                        text= "SALVA",
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.background
-                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
+
             }
 
         }
