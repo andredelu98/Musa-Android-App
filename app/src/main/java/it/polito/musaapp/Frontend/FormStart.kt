@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -86,7 +87,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
         Image(
             painter = painterResource(id = R.drawable.big_logo),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.size(815.dp).offset(x = (-8).dp, y = (25).dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,7 +101,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                 text = "MUSA",
                 style = MaterialTheme.typography.displayLarge,
             )
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             OutlinedTextField(
                 value = filledName,
                 onValueChange = {
@@ -141,7 +142,7 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                 )
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             //Text(text = vm.mail.value.toString())
             OutlinedTextField(
                 value = filledMail,
@@ -175,19 +176,19 @@ fun FormStart(navController: NavController, vm: MusaViewModel){
                     textColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             CategoryDropdown(vm)
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             ProfessionDropdown(vm)
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             LevelDropdown(vm)
 
-            Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             Button(
                 shape = MaterialTheme.shapes.large,
