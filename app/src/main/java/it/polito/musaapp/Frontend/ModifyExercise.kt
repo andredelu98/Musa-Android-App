@@ -114,72 +114,80 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
             text = "Modifica durata del piano",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                //.padding(bottom = 20.dp)
         )
 
         Column(
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .height(560.dp)
-                .padding(top = 40.dp, bottom = 10.dp, start = 50.dp, end = 50.dp)
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
         )
         {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.height(140.dp)
-            ) {
-                Text(
-                    text = "Quanti giorni a settimana?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                SelettoreCountGiorniModify(vm)
-
-                Divider(
-                    color = Color(0x1A001219),
-                    thickness = 4.dp,
-                    modifier = Modifier.width(200.dp)
-                )
-            }
-
-            Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.height(160.dp)
-            ) {
-                Text(
-                    text = "Quali giorni preferisci?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                SelettoreGiorniModify(vm)
-                Divider(
-                    color = Color(0x1A001219),
-                    thickness = 4.dp,
-                    modifier = Modifier.width(200.dp)
-                )
-            }
+                modifier = Modifier
+                    .height(560.dp)
+                    .padding(top = 40.dp, start = 50.dp, end = 50.dp)
+            )
+            {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.height(140.dp)
+                ) {
+                    Text(
+                        text = "Quanti giorni a settimana?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    SelettoreCountGiorniModify(vm)
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.height(150.dp)
-            ) {
-                Text(
-                    text = "Per quante settimane?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                SelettoreCountSettimaneModify(vm)
-                Spacer(modifier = Modifier.height(20.dp))
-            }
+                    Divider(
+                        color = Color(0x1A001219),
+                        thickness = 4.dp,
+                        modifier = Modifier.width(200.dp)
+                    )
+                }
 
-        }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.height(160.dp)
+                ) {
+                    Text(
+                        text = "Quali giorni preferisci?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    SelettoreGiorniModify(vm)
+                    Divider(
+                        color = Color(0x1A001219),
+                        thickness = 4.dp,
+                        modifier = Modifier.width(200.dp)
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.height(150.dp)
+                ) {
+                    Text(
+                        text = "Per quante settimane?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    SelettoreCountSettimaneModify(vm)
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
+            }
 
             Button(
                 shape = MaterialTheme.shapes.large,
@@ -188,7 +196,7 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
                 ),
                 modifier = Modifier
                     .width(180.dp)
-                    .padding(top = 8.dp),
+                    .padding(bottom = 40.dp),
                 onClick = {
                     //RefreshVariablesTask()
 
@@ -227,6 +235,11 @@ fun ModifyExercise(navController: NavController, vm: MusaViewModel) {
                 )
             }
         }
+
+        }
+
+
+
 
 
 }
