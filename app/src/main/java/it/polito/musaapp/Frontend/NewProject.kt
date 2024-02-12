@@ -213,12 +213,12 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                         selectionColors = TextSelectionColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.tertiary),
                     )
                 )
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 filledCategory=CategoryDropdownProjects(vm)
 
 
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = filledDescription,
@@ -239,7 +239,7 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                             RoundedCornerShape(15.dp)
                         )
                         .fillMaxWidth()
-                        .height(165.dp),
+                        .height(130.dp),
 
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
@@ -251,7 +251,33 @@ fun NewProject(navController: NavController, vm:MusaViewModel){
                 var intentionsChecked by remember {
                     mutableStateOf(false)
                 }
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().alpha(0.3f),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable {  })
+                    {
+                        Icon(
+                            painter = painterResource(id = R.drawable.allega),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Allega file",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(

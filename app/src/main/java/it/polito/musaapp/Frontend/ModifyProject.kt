@@ -166,7 +166,7 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
         Box( //box effettivo
             modifier= Modifier
                 .fillMaxSize()
-                .alpha(if(popUpOpened == true) 0.3f else 1f)
+                .alpha(if (popUpOpened == true) 0.3f else 1f)
                 .padding(top = 20.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primary,
@@ -196,7 +196,7 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                         .align(Alignment.End)
                         .clickable {
                             vm.setPopUpOpened(true)
-                           /* if(vm.fromProjectList.value == true){
+                            /* if(vm.fromProjectList.value == true){
                                 navController.navigate(Screens.ProjectPage.name) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
@@ -256,12 +256,12 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                         textColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
 
                 filledCategory= CategoryDropdownProjectsModify(vm)
 
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = filledDescription,
@@ -285,7 +285,7 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                             RoundedCornerShape(15.dp)
                         )
                         .fillMaxWidth()
-                        .height(165.dp),
+                        .height(130.dp),
 
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
@@ -294,7 +294,33 @@ fun ModifyProject(navController: NavController, vm:MusaViewModel){
                         textColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().alpha(0.3f),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable {  })
+                    {
+                        Icon(
+                            painter = painterResource(id = R.drawable.allega),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Allega file",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(

@@ -134,7 +134,10 @@ fun ProjectReference(navController: NavController, vm:MusaViewModel) {
                     .padding(end = 16.dp)
                     .clickable {  }
             ) {
-                Row(modifier = Modifier.clickable {  }){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {  })
+                {
                     Icon(
                         painter = painterResource(id = R.drawable.filter),
                         tint = MaterialTheme.colorScheme.onBackground,

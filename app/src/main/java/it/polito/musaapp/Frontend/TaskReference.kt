@@ -138,7 +138,11 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
                     .alpha(0.3f)
                     .padding(end = 16.dp)
             ) {
-                Row(modifier = Modifier.clickable {  }) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                    .clickable {  })
+                {
                     Icon(
                         painter = painterResource(id = R.drawable.filter),
                         tint = MaterialTheme.colorScheme.onBackground,
