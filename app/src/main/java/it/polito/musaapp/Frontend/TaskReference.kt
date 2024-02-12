@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.rememberScrollState
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -128,9 +130,30 @@ fun TaskReference(navController: NavController, vm:MusaViewModel) {
                     style = MaterialTheme.typography.headlineMedium,
                 )
             }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .alpha(0.3f)
+                    .padding(end = 16.dp)
+            ) {
+                Row(modifier = Modifier.clickable {  }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.filter),
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        contentDescription = "",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Text(
+                        text = "Filtri",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
+            }
 
             /*TODO() Aggiungere dropdown per filtrare le reference?*/
-            Spacer(modifier = Modifier.height(12.dp))
             if(list?.isEmpty() == true){
                 IndicatorReference()
             }

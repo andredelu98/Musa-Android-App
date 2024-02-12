@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import it.polito.musaapp.Backend.AppNavigation
 import it.polito.musaapp.Backend.GetProjectsFromDb
 import it.polito.musaapp.Backend.MusaViewModel
+import it.polito.musaapp.Frontend.DeleteProfile
 import it.polito.musaapp.ui.theme.MusaAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
         val isFirstRun = prefs.getBoolean("isFirstRun", true)
         if (isFirstRun) {
             vm.setTutorial(true)
+            DeleteProfile(vm)
             prefs.edit().putBoolean("isFirstRun", false).apply()
         }
 
