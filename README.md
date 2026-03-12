@@ -6,7 +6,7 @@ Per poter visualizzare correttamente il prototipo inserire le seguenti specifich
 
 
 
-![Screenshot 2024-02-12 130917](https://github.com/polito-uxd-2023/Musa/assets/73126864/c60e9e8e-9b37-4c39-9fc1-c76edb102bd0)
+![Musa App Screenshot](img/display.png)
 
 
 
