@@ -56,7 +56,11 @@ The application was built around three main tasks identified during the research
 2. **Consultation (Moderate Task):** Consult restricted and targeted references for the personal project you are working on.
 3. **Customization (Complex Task):** Customize the duration of the exercise plan, requesting a higher or lower number of tasks.
 
-![Musa Main Features](img/features.png)
+<p align="center">
+  <img src="img/features.png" width="600" alt="Musa Main Features">
+  <br>
+  <i>(Overview of Musa's core workflows: personalized exercise planning, daily task execution, and targeted reference consultation)</i>
+</p>
 
 </details>
 
@@ -64,7 +68,7 @@ The application was built around three main tasks identified during the research
 <summary><b>🚀 4. Practical Info and Testing</b></summary>
 <br>
 
-![Display Setup](img/display.png)
+<img src="img/display.png" align="right" width="340" alt="Display Setup">
 
 In order to correctly view the prototype, make sure to set the following specifications for the virtual device dimensions within Android Studio:
 
@@ -79,9 +83,15 @@ The first time the application is installed on the virtual phone (or on a real d
 * To start from scratch, uninstall and reinstall the app.
 * Alternatively, delete the account from the profile section (note: this returns to the initial form, but will skip the tutorial).
 
+<br clear="all">
 </details>
 
+<br>
+
+> 📄 **Want to dive deeper?** Read the full [Project Report (PDF) 🇮🇹](docs/Musa_Report.pdf) for all the details.
+
 ---
----
+
 *Project created for the User Experience Design course (A.Y. 2023/24) at Politecnico di Torino.*
+
 *Credits: Federica Cuomo, Andrea De Luca, Francesca Porro, Giorgio Spegis.*
