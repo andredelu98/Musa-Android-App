@@ -1,10 +1,12 @@
 # 🎨 Musa - A tool to keep your creative process alive
 
-<img src="img/home.png" align="right" width="250" alt="Musa Home Page">
+<img src="img/home.png" align="right" width="150" alt="Musa Home Page">
 
-**Musa** is a mobile application designed for artists, musicians, and creatives facing the dreaded "writer's block" or creative block. Our solution consists of providing the user with targeted inputs and simple activities to overcome blocks, allowing them to keep their creativity alive even in personal projects.
+**Musa** is a mobile application designed for artists, musicians, and creatives facing the dreaded "writer's block" or creative block. The challenge of maintaining a steady creative flow affects both professionals and hobbyists, often leading to scattered ideas and frustration.
 
-Project originally created for the *User Experience Design* course (A.Y. 2023/24), developed starting from user research up to the creation of a native Android prototype.
+Our solution acts as a digital companion, providing the user with targeted inputs and simple daily activities designed to overcome these moments of standstill. Heavily inspired by the philosophy of Rick Rubin's *The Creative Act: A Way of Being*, Musa aims to stimulate the mind without forcing rigid routines.
+
+Through the app, users can generate personalized exercise plans, organize their personal projects, and keep track of their visual and conceptual references in a single, dedicated space. This prevents the common issue of losing valuable inspiration scattered across different social media or disorganized phone notes. The ultimate goal is to offer a supportive environment that allows creatives to keep their spark alive and seamlessly resume their work.
 
 <br clear="all">
 
@@ -80,4 +82,6 @@ The first time the application is installed on the virtual phone (or on a real d
 </details>
 
 ---
-*Project created by the GAFF Project Group: Federica Cuomo, Andrea De Luca, Francesca Porro, Giorgio Spegis.*
+---
+*Project created for the User Experience Design course (A.Y. 2023/24) at Politecnico di Torino.*
+*Credits: Federica Cuomo, Andrea De Luca, Francesca Porro, Giorgio Spegis.*
